@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 
 
 @Entity
-public class RegisteredUser {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,12 +15,10 @@ public class RegisteredUser {
     private String address;
     private String phoneNumber;
 
-    // Default (no-argument) constructor
-    public RegisteredUser() {
+    public User() {
     }
 
-    // Parameterized constructor (optional, for convenience)
-    public RegisteredUser(String name, String email, String address, String phoneNumber) {
+    public User(String name, String email, String address, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.address = address;
