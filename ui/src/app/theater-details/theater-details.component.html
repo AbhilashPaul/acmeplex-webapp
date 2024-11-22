@@ -1,17 +1,32 @@
-<div class="acmeplex-theater-container">
+<!-- <div class="acmeplex-theater-container">
     <header class="acmeplex-header">
-      <div class="theater-info">
-        <h1>{{ theaterDetails.name }}</h1>
-        <p>
-          <i class="material-icons">Address</i>
-          {{ theaterDetails.address }}
-        </p>
-      </div>
-      <div class="theater-rating">
-        <i class="material-icons">star</i>
-        <span>{{ theaterDetails.rating }}/5</span>
-      </div>
-    </header>
+        <mat-card class="available-theaters">
+            <mat-card-header>
+              <mat-card-title>Available Theaters</mat-card-title>
+                <div class="theater-info">
+                    <h1>{{ theaterDetails.name }}</h1>
+                    <p>
+                    <i class="material-icons">Address</i>
+                    {{ theaterDetails.address }}
+                    </p>
+                </div> -->
+                <div class="theater-container">
+                    <!-- Available Theaters List -->
+                    <div class="theater-list">
+                      <mat-card *ngFor="let theater of theaters" (click)="selectTheater(theater)" class="theater-item">
+                        <mat-card-header>
+                          <mat-card-title>{{ theater.name }}</mat-card-title>
+                          <mat-card-subtitle>{{ theater.address }}</mat-card-subtitle>
+                        </mat-card-header>
+                      </mat-card>
+                    </div>
+                <!-- <div class="theater-rating">
+                    <i class="material-icons">star</i>
+                    <span>{{ theaterDetails.rating }}/5</span>
+                </div> -->
+            <!-- </mat-card-header>
+        </mat-card>
+    </header> -->
   
     <nav class="cineplex-tabs">
       <button 

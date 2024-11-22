@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { NgModule } from '@angular/core';
 
 interface Movie {
   id: number;
@@ -23,7 +25,11 @@ interface TheaterDetails {
 @Component({
   selector: 'app-theater-details',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule, 
+    FormsModule,
+    MatCardModule,
+  ],
   templateUrl: './theater-details.component.html',
   styleUrl: './theater-details.component.css'
 })
