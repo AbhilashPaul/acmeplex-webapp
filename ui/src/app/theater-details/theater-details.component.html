@@ -1,1 +1,70 @@
-<p>theater-details works!</p>
+<div class="acmeplex-theater-container">
+    <header class="acmeplex-header">
+      <div class="theater-info">
+        <h1>{{ theaterDetails.name }}</h1>
+        <p>
+          <i class="material-icons">Address</i>
+          {{ theaterDetails.address }}
+        </p>
+      </div>
+      <div class="theater-rating">
+        <i class="material-icons">star</i>
+        <span>{{ theaterDetails.rating }}/5</span>
+      </div>
+    </header>
+  
+    <nav class="cineplex-tabs">
+      <button 
+        (click)="setActiveTab('movies')"
+        [class.active]="activeTab === 'movies'">
+        Movies
+      </button>
+      <button 
+        (click)="setActiveTab('info')"
+        [class.active]="activeTab === 'info'">
+        Info
+      </button>
+      <button 
+        (click)="setActiveTab('facilities')"
+        [class.active]="activeTab === 'facilities'">
+        Facilities
+      </button>
+    </nav>
+  
+    <div *ngIf="activeTab === 'movies'" class="movies-grid">
+      <div 
+        *ngFor="let movie of movies" 
+        class="movie-card"
+        (click)="selectMovie(movie)">
+        <img [src]="movie.poster" [alt]="movie.title">
+        <div class="movie-details">
+          <h2>{{ movie.title }}</h2>
+          <div class="movie-meta">
+            <span>{{ movie.genre }}</span>
+            <span>{{ movie.duration }}</span>
+          </div>
+          <div class="showtimes">
+            <span *ngFor="let time of movie.showtimes" class="showtime-chip">
+              {{ time }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="activeTab === 'info'" class="cineplex-info-section">
+      <div class="info-grid">
+        <div class="theater-details">
+          <h2>Theater Details</h2>
+          <div class="detail-item">
+            <i class="material-icons">Screens</i>
+            <span>{{ theaterDetails.screens }} Screens Available</span>
+          </div>
+          <div class="detail-item">
+            <i class="material-icons">Parking</i>
+            <span>Parking {{ theaterDetails.parkingAvailable ? 'Available' : 'Not Available' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
