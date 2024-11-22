@@ -1,0 +1,31 @@
+<div class="movie-details-container">
+    <div class="movie-header">
+      <img [src]="movie.posterUrl" alt="{{ movie.title }} poster" class="movie-poster">
+      <div class="movie-header-text">
+        <h1>{{ movie.title }}</h1>
+        <p class="movie-release-year">Released: {{ movie.releaseYear }}</p>
+        <p class="movie-genre"><strong>Genre:</strong> {{ movie.genre }}</p>
+        <p class="movie-rating"><strong>Rating:</strong> {{ movie.rating }} / 10</p>
+      </div>
+    </div>
+
+    <div class="movie-poster">
+        <img src="assets/images/the-matrix.jpg" alt="{{ movie.title }} Poster" class="poster-img" />
+
+      </div>
+  
+    <div class="movie-description">
+      <h2>Description</h2>
+      <p>{{ movie.description }}</p>
+    </div>
+  
+    <div class="movie-cast">
+        <h3>Cast:</h3>
+        <ul>
+          <li>Keanu Reeves</li>
+          <li>Laurence Fishburne</li>
+          <li>Carrie-Anne Moss</li>
+        </ul>
+      </div>
+  </div>
+  
