@@ -1,11 +1,7 @@
 package com.acmeplex.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Movie {
@@ -21,6 +17,14 @@ public class Movie {
     private String duration;
 
     private String genre;
+
+    @ManyToMany
+    @JoinTable(
+            name = "MovieTheatre",
+            joinColumns = @JoinColumn(name = "movieId"),
+            inverseJoinColumns = @JoinColumn(name = "theatreId")
+    )
+    private Set<Theatre> playingTheatres;
 
     @Enumerated(EnumType.STRING)
     private MovieRating movieRating;
@@ -93,5 +97,9 @@ public class Movie {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Set<Theatre> getPlayingTheatres() {
+        return playingTheatres;
     }
 }
