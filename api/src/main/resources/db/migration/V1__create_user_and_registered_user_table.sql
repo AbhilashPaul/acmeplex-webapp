@@ -6,3 +6,10 @@ CREATE TABLE User (
     address VARCHAR(255),
     phoneNumber VARCHAR(20)
 );
+
+CREATE TABLE RegisteredUser (
+    userId BIGINT PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    memberSince DATE NOT NULL,
+    FOREIGN KEY (userId) REFERENCES User(id)
+);
