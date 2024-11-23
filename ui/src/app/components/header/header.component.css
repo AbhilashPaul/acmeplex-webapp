@@ -20,7 +20,7 @@
   text-decoration: none;
   color: white;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.5rem;
   font-size: 1.5rem;
 }
@@ -30,5 +30,6 @@
 }
 
 .mat-icon {
-  font-size: 1.2rem;
+  font-size: 1.8rem;
+  vertical-align: middle;
 }
