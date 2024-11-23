@@ -7,7 +7,7 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String row;
+    private String rowLabel;
     private Integer seatNumber;
     @ManyToOne
     @JoinColumn(name = "showtimeId", nullable = false)
@@ -21,12 +21,12 @@ public class Seat {
         this.id = id;
     }
 
-    public String getRow() {
-        return row;
+    public String getRowLabel() {
+        return rowLabel;
     }
 
-    public void setRow(String row) {
-        this.row = row;
+    public void setRowLabel(String rowLabel) {
+        this.rowLabel = rowLabel;
     }
 
     public Integer getSeatNumber() {
