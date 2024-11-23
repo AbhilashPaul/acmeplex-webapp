@@ -1,0 +1,14 @@
+<section class="featured-movies">
+    <mat-card style="background-color: black;">
+        <mat-card-header><mat-card-title >Now Playing</mat-card-title></mat-card-header>
+        <div class="movie-list">
+        <div mat-card *ngFor="let movie of movies" class="movie-card">
+            <img mat-card-image [src]="movie.image" [alt]="movie.title" />
+            <div mat-card-content>
+            <h4 class="movie-title">{{ movie.title }}</h4>
+            </div>
+        </div>
+        </div>
+    </mat-card>
+  </section>
+  
