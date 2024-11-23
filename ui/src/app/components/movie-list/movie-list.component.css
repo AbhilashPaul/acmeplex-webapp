@@ -1,0 +1,28 @@
+.featured-movies {
+    padding: 20px;
+    background-color: #121212; /* Optional: Dark background */
+    color: white; /* Ensure text contrasts with background */
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  
+  
+  .movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .movie-card {
+    width: 200px;
+    border-radius: 8px;
+  }
+  
+  .movie-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
