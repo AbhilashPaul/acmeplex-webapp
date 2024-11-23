@@ -1,6 +1,6 @@
 <div class="movie-details-container">
     <div class="movie-header">
-      <img [src]="movie.posterUrl" alt="{{ movie.title }} poster" class="movie-poster">
+      <img mat-card-image [src]="movie.imageUrl" alt="{{ movie.title }} poster" class="movie-poster">
 
       <div class="movie-header-text">
         <h1>{{ movie.title }}</h1>
@@ -10,11 +10,6 @@
       </div>
       <button class="ticket-button" (click)="getTicket()">Get Ticket</button>
     </div>
-
-    <div class="movie-poster">
-        <img src="assets/images/the-matrix.png" alt="{{ movie.title }} Poster" class="poster-img" />
-
-      </div>
   
     <div class="movie-description">
       <h2>Description</h2>

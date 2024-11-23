@@ -20,38 +20,39 @@
   height: auto;
   display: block;
 }
-  .movie-header-text {
-    max-width: 70%;
-  }
-  
-  .movie-header h1 {
-    font-size: 2.8em;
-    font-weight: 600;
-    color: #eee8e8;
-    margin-bottom: 10px;
-  }
-  
-  .movie-release-year, .movie-genre, .movie-rating {
-    font-size: 1.0em;
-    color: #eee8e8;
-  }
-  
-  .movie-release-year {
-    margin-bottom: 5px;
-  }
 
-  .ticket-button {
-    padding: 12px 60px;
-    font-size: 1.2em;
-    background-color: #007bff; /* Blue color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    position: absolute; /* Position the button absolutely within the movie-header */
-    right: 40%; /* Push button to the far right */
-    top: 25%;
+.movie-header-text {
+  max-width: 70%;
+}
+
+.movie-header h1 {
+  font-size: 2.8em;
+  font-weight: 600;
+  color: #eee8e8;
+  margin-bottom: 10px;
+}
+
+.movie-release-year, .movie-genre, .movie-rating {
+  font-size: 1.0em;
+  color: #eee8e8;
+}
+
+.movie-release-year {
+  margin-bottom: 5px;
+}
+
+.ticket-button {
+  padding: 12px 60px;
+  font-size: 1.2em;
+  background-color: #007bff; /* Blue color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: absolute; /* Position the button absolutely within the movie-header */
+  right: 40%; /* Push button to the far right */
+  top: 25%;
 }
 
 .ticket-button:hover {

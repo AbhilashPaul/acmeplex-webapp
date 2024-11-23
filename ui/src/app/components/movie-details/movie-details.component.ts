@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-movie-details',
@@ -15,7 +16,7 @@ export class MovieDetailsComponent implements OnInit {
     rating: 8.7,
     
     description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
-    posterUrl: 'assets/images/the-matrix.png',
+    imageUrl: 'assets/the-matrix.png',
     cast: ['Keanu Reeves', 'Laurence Fishburne', 'Carrie-Anne Moss']
   };
 
