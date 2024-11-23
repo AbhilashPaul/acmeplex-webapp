@@ -1,16 +1,18 @@
 <div class="movie-details-container">
     <div class="movie-header">
       <img [src]="movie.posterUrl" alt="{{ movie.title }} poster" class="movie-poster">
+
       <div class="movie-header-text">
         <h1>{{ movie.title }}</h1>
         <p class="movie-release-year">Released: {{ movie.releaseYear }}</p>
         <p class="movie-genre"><strong>Genre:</strong> {{ movie.genre }}</p>
         <p class="movie-rating"><strong>Rating:</strong> {{ movie.rating }} / 10</p>
       </div>
+      <button class="ticket-button" (click)="getTicket()">Get Ticket</button>
     </div>
 
     <div class="movie-poster">
-        <img src="assets/images/the-matrix.jpg" alt="{{ movie.title }} Poster" class="poster-img" />
+        <img src="assets/images/the-matrix.png" alt="{{ movie.title }} Poster" class="poster-img" />
 
       </div>
   
@@ -27,5 +29,9 @@
           <li>Carrie-Anne Moss</li>
         </ul>
       </div>
-  </div>
+      <div class="movie-ticket">
+    
+      </div>
+    </div>
+
   
