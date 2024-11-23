@@ -1,25 +1,28 @@
 package com.acmeplex.api.model;
+
 import jakarta.persistence.*;
 
+import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class Theatre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private String address;
     private String phoneNumber;
 
-    public User() {
+    @ManyToMany(mappedBy = "playingTheatres")
+    private Set<Movie> shownMovies;
+
+    public Theatre() {
     }
 
-    public User(String firstName, String lastName,String email, String address, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Theatre(Long id, String name, String email, String address, String phoneNumber) {
+        this.id = id;
+        this.name = name;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -33,20 +36,12 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -56,6 +51,7 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getAddress() {
         return address;
     }
@@ -70,5 +66,9 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Set<Movie> getShownMovies() {
+        return shownMovies;
     }
 }
