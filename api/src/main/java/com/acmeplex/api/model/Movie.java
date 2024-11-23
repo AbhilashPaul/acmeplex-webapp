@@ -22,6 +22,8 @@ public class Movie {
     private MovieRating movieRating;
 
     private String imageUrl;
+    @OneToMany(mappedBy = "movie")
+    private Set<Showtime> showtimes;
 
     public Movie() {
     }
@@ -67,6 +69,7 @@ public class Movie {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
     public String getGenre() {
         return genre;
     }
@@ -89,5 +92,9 @@ public class Movie {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Set<Showtime> getShowtimes() {
+        return showtimes;
     }
 }
