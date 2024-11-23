@@ -18,14 +18,6 @@ public class Movie {
 
     private String genre;
 
-    @ManyToMany
-    @JoinTable(
-            name = "MovieTheatre",
-            joinColumns = @JoinColumn(name = "movieId"),
-            inverseJoinColumns = @JoinColumn(name = "theatreId")
-    )
-    private Set<Theatre> playingTheatres;
-
     @Enumerated(EnumType.STRING)
     private MovieRating movieRating;
 
@@ -97,9 +89,5 @@ public class Movie {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public Set<Theatre> getPlayingTheatres() {
-        return playingTheatres;
     }
 }

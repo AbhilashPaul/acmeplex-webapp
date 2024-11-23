@@ -14,9 +14,6 @@ public class Theatre {
     private String address;
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "playingTheatres")
-    private Set<Movie> shownMovies;
-
     public Theatre() {
     }
 
@@ -66,9 +63,5 @@ public class Theatre {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Set<Movie> getShownMovies() {
-        return shownMovies;
     }
 }
