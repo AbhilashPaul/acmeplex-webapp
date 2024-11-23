@@ -1,0 +1,5 @@
+CREATE TABLE Showtime (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    date DATE NOT NULL,
+    time TIME NOT NULL
+);
