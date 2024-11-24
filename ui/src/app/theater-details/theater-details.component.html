@@ -1,83 +1,45 @@
-<!-- <div class="acmeplex-theater-container">
-    <header class="acmeplex-header">
-        <mat-card class="available-theaters">
-            <mat-card-header>
-              <mat-card-title>Available Theaters</mat-card-title>
-                <div class="theater-info">
-                    <h1>{{ theaterDetails.name }}</h1>
-                    <p>
-                    <i class="material-icons">Address</i>
-                    {{ theaterDetails.address }}
-                    </p>
-                </div> -->
-                <div class="theater-container">
-                    <!-- Available Theaters List -->
-                    <div class="theater-list">
-                      <mat-card *ngFor="let theater of theaters" (click)="selectTheater(theater)" class="theater-item">
-                        <mat-card-header>
-                          <mat-card-title>{{ theater.name }}</mat-card-title>
-                          <mat-card-subtitle>{{ theater.address }}</mat-card-subtitle>
-                        </mat-card-header>
-                      </mat-card>
-                    </div>
-                <!-- <div class="theater-rating">
-                    <i class="material-icons">star</i>
-                    <span>{{ theaterDetails.rating }}/5</span>
-                </div> -->
-            <!-- </mat-card-header>
-        </mat-card>
-    </header> -->
-  
-    <nav class="cineplex-tabs">
-      <button 
-        (click)="setActiveTab('movies')"
-        [class.active]="activeTab === 'movies'">
-        Movies
-      </button>
-      <button 
-        (click)="setActiveTab('info')"
-        [class.active]="activeTab === 'info'">
-        Info
-      </button>
-      <button 
-        (click)="setActiveTab('facilities')"
-        [class.active]="activeTab === 'facilities'">
-        Facilities
-      </button>
-    </nav>
-  
-    <div *ngIf="activeTab === 'movies'" class="movies-grid">
-      <div 
-        *ngFor="let movie of movies" 
-        class="movie-card"
-        (click)="selectMovie(movie)">
-        <img [src]="movie.poster" [alt]="movie.title">
-        <div class="movie-details">
-          <h2>{{ movie.title }}</h2>
-          <div class="movie-meta">
-            <span>{{ movie.genre }}</span>
-            <span>{{ movie.duration }}</span>
-          </div>
-          <div class="showtimes">
-            <span *ngFor="let time of movie.showtimes" class="showtime-chip">
-              {{ time }}
-            </span>
-          </div>
-        </div>
-      </div>
+<div class="theater-container">
+    <!-- Available Theaters List -->
+    <div class="theater-list">
+      <h2>Available Theaters</h2>
+      <mat-card *ngFor="let theater of theaters" (click)="selectTheater(theater)" class="theater-item">
+        <mat-card-header>
+          <mat-card-title>{{ theater.name }}</mat-card-title>
+          <mat-card-subtitle>{{ theater.address }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
     </div>
   
-    <div *ngIf="activeTab === 'info'" class="cineplex-info-section">
-      <div class="info-grid">
-        <div class="theater-details">
-          <h2>Theater Details</h2>
-          <div class="detail-item">
-            <i class="material-icons">Screens</i>
-            <span>{{ theaterDetails.screens }} Screens Available</span>
+    <div class="show-times" *ngIf="selectedTheater">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Available Show Times</mat-card-title>
+          <mat-card-subtitle>{{ selectedTheater.name }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="show-time-list">
+            <button mat-raised-button color="primary" *ngFor="let time of selectedTheater.showTimes"
+              (click)="selectShowTime(time)"
+              [class.active]="selectedShowTime === time">
+              {{ time }}
+            </button>
           </div>
-          <div class="detail-item">
-            <i class="material-icons">Parking</i>
-            <span>Parking {{ theaterDetails.parkingAvailable ? 'Available' : 'Not Available' }}</span>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="seat-selection" *ngIf="selectedShowTime">
+      <h2>Select Your Seats for {{ selectedShowTime }}</h2>
+      <div class="seat-map">
+        <div *ngFor="let row of seatMap; let rowIndex = index" class="seat-row">
+          <div
+            *ngFor="let seat of row; let seatIndex = index"
+            [class.available]="seat === 'A'"
+            [class.unavailable]="seat === 'N'"
+            [class.selected]="isSeatSelected(rowIndex, seatIndex)"
+            (click)="toggleSeatSelection(rowIndex, seatIndex, seat)"
+            class="seat"
+          >
+            {{ rowIndex + 1 }}{{ seatIndex + 1 }}
           </div>
         </div>
       </div>

@@ -3,24 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { NgModule } from '@angular/core';
-
-interface Movie {
-  id: number;
-  title: string;
-  poster: string;
-  showtimes: string[];
-  genre: string;
-  duration: string;
-}
-
-interface TheaterDetails {
-  name: string;
-  address: string;
-  rating: number;
-  screens: number;
-  parkingAvailable: boolean;
-}
 
 @Component({
   selector: 'app-theater-details',
@@ -29,51 +13,62 @@ interface TheaterDetails {
     CommonModule, 
     FormsModule,
     MatCardModule,
+    MatButtonModule,
   ],
   templateUrl: './theater-details.component.html',
   styleUrl: './theater-details.component.css'
 })
+
 export class TheaterDetailsComponent {
-  selectedMovie: Movie | null = null;
-  activeTab: 'movies' | 'info' | 'facilities' = 'movies';
-
-  theaterDetails: TheaterDetails = {
-    name: "Cineplex Grand Theater",
-    address: "123 Cinema Street, Downtown",
-    rating: 4.5,
-    screens: 12,
-    parkingAvailable: true
-  }
-  movies: Movie[] = [
-    { 
-      id: 1, 
-      title: "Blockbuster Action", 
-      poster: "assets/action-poster.jpg", 
-      showtimes: ["10:00 AM", "1:30 PM", "4:45 PM", "8:00 PM"],
-      genre: "Action",
-      duration: "2h 15m"
-    },
-    { 
-      id: 2, 
-      title: "Comedy Night", 
-      poster: "assets/comedy-poster.jpg", 
-      showtimes: ["11:15 AM", "2:45 PM", "5:30 PM", "9:00 PM"],
-      genre: "Comedy", 
-      duration: "1h 45m"
-    }
+  theaters = [
+    { name: 'Theater 1', address: '123 Main St', showTimes: ['10:00 AM', '1:00 PM', '6:00 PM'] },
+    { name: 'Theater 2', address: '456 Elm St', showTimes: ['11:00 AM', '2:00 PM', '7:00 PM'] },
+    { name: 'Theater 3', address: '789 Oak St', showTimes: ['12:00 PM', '4:00 PM', '8:00 PM'] },
   ];
-  constructor() { }
 
-  ngOnInit(): void {
-    // Any initialization logic
+  seatMap = [
+    ['A', 'A', 'A', 'N', 'N', 'A', 'A'],
+    ['A', 'A', 'N', 'N', 'A', 'A', 'A'],
+    ['A', 'N', 'N', 'A', 'A', 'A', 'N'],
+    ['A', 'A', 'A', 'A', 'N', 'N', 'A'],
+  ];
+
+  selectedTheater: any = null;
+  selectedSeats: { row: number; seat: number }[] = [];
+  showTimes = ['10:00 AM', '1:00 PM', '6:00 PM']; // Example showtimes
+  selectedShowTime: string | null = null;
+  // seatMap: string[][] = [];
+
+  selectTheater(theater: any): void {
+    this.selectedTheater = theater;
+    this.selectedShowTime = null;
+    // this.seatMap = theater.seatMap;
+    this.selectedSeats = [];
   }
 
-  setActiveTab(tab: 'movies' | 'info' | 'facilities'): void {
-    this.activeTab = tab;
+  toggleSeatSelection(rowIndex: number, seatIndex: number, seat: string): void {
+    // Allow selection only if the seat is available
+    if (seat === 'A') {
+      const existingIndex = this.selectedSeats.findIndex(
+        (s) => s.row === rowIndex && s.seat === seatIndex
+      );
+      if (existingIndex > -1) {
+        // Deselect seat
+        this.selectedSeats.splice(existingIndex, 1);
+      } else {
+        // Select seat
+        this.selectedSeats.push({ row: rowIndex, seat: seatIndex });
+      }
+    }
+  }
+  isSeatSelected(rowIndex: number, seatIndex: number): boolean {
+    return this.selectedSeats.some(
+      (seat) => seat.row === rowIndex && seat.seat === seatIndex
+    );
   }
 
-  selectMovie(movie: Movie): void {
-    this.selectedMovie = movie;
+  selectShowTime(time: string): void {
+    this.selectedShowTime = time; // Set selected showtime
+    this.selectedSeats = []; // Reset selected seats when showtime changes
   }
 }
-
