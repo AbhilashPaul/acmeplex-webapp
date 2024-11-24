@@ -9,9 +9,27 @@ public class Seat {
     private Long id;
     private String rowLabel;
     private Integer seatNumber;
+    private Boolean isReserved;
+    private Double price;
     @ManyToOne
     @JoinColumn(name = "showtimeId", nullable = false)
     private Showtime showtime;
+
+    public Boolean getReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        isReserved = reserved;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
     public Long getId() {
         return id;
