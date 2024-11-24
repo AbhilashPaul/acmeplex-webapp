@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
+import { BannerComponent } from '../banner/banner.component';
+import { MovieListComponent } from '../movie-list/movie-list.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, HeaderComponent, BannerComponent, MovieListComponent],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  styleUrls: ['./home-page.component.css']
 })
-export class HomePageComponent {
-
-}
+export class HomePageComponent {}
