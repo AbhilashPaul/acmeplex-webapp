@@ -1,6 +1,7 @@
 package com.acmeplex.api.model;
 
 import jakarta.persistence.*;
+
 import java.util.Set;
 
 @Entity
@@ -69,5 +70,22 @@ public class Theatre {
 
     public Set<Showtime> getShowtimes() {
         return showtimes;
+    }
+
+    public void setShowtimes(Set<Showtime> showtimes) {
+        this.showtimes = showtimes;
+    }
+
+    /**
+     * Method to add a Showtime to the Theatre.
+     * Ensures bidirectional relationship is maintained.
+     *
+     * @param showtime The Showtime object to be added.
+     */
+    public void addShowtime(Showtime showtime) {
+        if (showtime != null) {
+            showtime.setTheatre(this); // Maintain bidirectional relationship
+            this.showtimes.add(showtime);
+        }
     }
 }
