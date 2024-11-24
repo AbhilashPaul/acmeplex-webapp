@@ -1,7 +1,6 @@
 package com.acmeplex.api.model;
 
 import jakarta.persistence.*;
-
 import java.util.Set;
 
 @Entity
@@ -14,8 +13,8 @@ public class Theatre {
     private String address;
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "playingTheatres")
-    private Set<Movie> shownMovies;
+    @OneToMany(mappedBy = "theatre")
+    private Set<Showtime> showtimes;
 
     public Theatre() {
     }
@@ -68,7 +67,7 @@ public class Theatre {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<Movie> getShownMovies() {
-        return shownMovies;
+    public Set<Showtime> getShowtimes() {
+        return showtimes;
     }
 }

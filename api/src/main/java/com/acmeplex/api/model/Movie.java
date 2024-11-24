@@ -18,18 +18,12 @@ public class Movie {
 
     private String genre;
 
-    @ManyToMany
-    @JoinTable(
-            name = "MovieTheatre",
-            joinColumns = @JoinColumn(name = "movieId"),
-            inverseJoinColumns = @JoinColumn(name = "theatreId")
-    )
-    private Set<Theatre> playingTheatres;
-
     @Enumerated(EnumType.STRING)
     private MovieRating movieRating;
 
     private String imageUrl;
+    @OneToMany(mappedBy = "movie")
+    private Set<Showtime> showtimes;
 
     public Movie() {
     }
@@ -75,6 +69,7 @@ public class Movie {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
     public String getGenre() {
         return genre;
     }
@@ -99,7 +94,7 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
-    public Set<Theatre> getPlayingTheatres() {
-        return playingTheatres;
+    public Set<Showtime> getShowtimes() {
+        return showtimes;
     }
 }

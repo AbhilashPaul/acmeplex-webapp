@@ -1,0 +1,7 @@
+CREATE TABLE Seat (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    rowLabel VARCHAR(2) NOT NULL,
+    seatNumber INT NOT NULL,
+    showtimeId BIGINT NOT NULL,
+    FOREIGN KEY (showtimeId) REFERENCES Showtime(id) ON DELETE CASCADE
+);
