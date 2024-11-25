@@ -14,8 +14,8 @@ public class Theatre {
     private String address;
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "playingTheatres")
-    private Set<Movie> shownMovies;
+    @OneToMany(mappedBy = "theatre")
+    private Set<Showtime> showtimes;
 
     public Theatre() {
     }
@@ -68,7 +68,24 @@ public class Theatre {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<Movie> getShownMovies() {
-        return shownMovies;
+    public Set<Showtime> getShowtimes() {
+        return showtimes;
+    }
+
+    public void setShowtimes(Set<Showtime> showtimes) {
+        this.showtimes = showtimes;
+    }
+
+    /**
+     * Method to add a Showtime to the Theatre.
+     * Ensures bidirectional relationship is maintained.
+     *
+     * @param showtime The Showtime object to be added.
+     */
+    public void addShowtime(Showtime showtime) {
+        if (showtime != null) {
+            showtime.setTheatre(this); // Maintain bidirectional relationship
+            this.showtimes.add(showtime);
+        }
     }
 }

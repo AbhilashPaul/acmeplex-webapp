@@ -23,6 +23,7 @@
   align-items: baseline;
   gap: 0.5rem;
   font-size: 1.5rem;
+  vertical-align: middle;
 }
 
 .nav-links li a:hover {
@@ -31,5 +32,5 @@
 
 .mat-icon {
   font-size: 1.8rem;
-  vertical-align: middle;
+  vertical-align: middle; 
 }
