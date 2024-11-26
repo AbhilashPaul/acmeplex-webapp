@@ -1,0 +1,61 @@
+<div class="register-container">
+    <mat-card class="register-card">
+      <mat-card-title class="register-title">Create Your Account</mat-card-title>
+      <mat-card-content>
+        <form class="register-form">
+            <div class="form-row">
+                <mat-form-field class="form-field" appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput type="text" placeholder="Enter your first name" />
+                </mat-form-field>
+    
+                <mat-form-field class="form-field" appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput type="text" placeholder="Enter your last name" />
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" placeholder="Enter your email" />
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field class="form-field" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" placeholder="Enter your password" />
+                </mat-form-field>
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Confirm Password</mat-label>
+                  <input matInput type="password" placeholder="Confirm your password" />
+                </mat-form-field>
+              </div>
+  
+            <div class="form-row">
+                <mat-form-field class="form-field address-field" appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput placeholder="Enter your address"></textarea>
+                </mat-form-field>
+            </div>
+    
+            <div class="form-row">
+                <mat-form-field class="form-field" appearance="outline">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="tel" placeholder="Enter your phone number" />
+                </mat-form-field>
+            </div>
+  
+          <div class="form-row">
+            <button mat-raised-button class="register-button">Register</button>
+          </div>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <p class="login-link">
+          Already have an account?
+          <a routerLink="/login" class="login-link-text">Login</a>
+        </p>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  

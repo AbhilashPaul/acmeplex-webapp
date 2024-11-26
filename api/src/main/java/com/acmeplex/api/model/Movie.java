@@ -1,6 +1,7 @@
 package com.acmeplex.api.model;
 
 import jakarta.persistence.*;
+
 import java.util.Set;
 
 @Entity
@@ -18,18 +19,12 @@ public class Movie {
 
     private String genre;
 
-    @ManyToMany
-    @JoinTable(
-            name = "MovieTheatre",
-            joinColumns = @JoinColumn(name = "movieId"),
-            inverseJoinColumns = @JoinColumn(name = "theatreId")
-    )
-    private Set<Theatre> playingTheatres;
-
     @Enumerated(EnumType.STRING)
     private MovieRating movieRating;
 
     private String imageUrl;
+    @OneToMany(mappedBy = "movie")
+    private Set<Showtime> showtimes;
 
     public Movie() {
     }
@@ -75,6 +70,7 @@ public class Movie {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
     public String getGenre() {
         return genre;
     }
@@ -99,7 +95,24 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
-    public Set<Theatre> getPlayingTheatres() {
-        return playingTheatres;
+    public Set<Showtime> getShowtimes() {
+        return showtimes;
+    }
+
+    public void setShowtimes(Set<Showtime> showtimes) {
+        this.showtimes = showtimes;
+    }
+
+    /**
+     * Method to add a Showtime to the Movie.
+     * Ensures bidirectional relationship is maintained.
+     *
+     * @param showtime The Showtime object to be added.
+     */
+    public void addShowtime(Showtime showtime) {
+        if (showtime != null) {
+            showtime.setMovie(this); // Maintain bidirectional relationship
+            this.showtimes.add(showtime);
+        }
     }
 }
