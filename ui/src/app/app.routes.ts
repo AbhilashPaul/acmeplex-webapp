@@ -12,5 +12,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginPageComponent},
   { path: 'movie-details', component: MovieDetailsComponent },
   { path: 'payment', component: PaymentComponent },
-  { path: 'theater-details', component: TheaterDetailsComponent }
+  { path: 'theater-details', component: TheaterDetailsComponent },
+  { path: 'movies/:title', component: MovieDetailsComponent },
 ];

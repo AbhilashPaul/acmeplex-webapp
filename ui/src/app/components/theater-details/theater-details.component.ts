@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { NgModule } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-theater-details',
@@ -20,6 +21,7 @@ import { NgModule } from '@angular/core';
 })
 
 export class TheaterDetailsComponent {
+  constructor(private router: Router){}
   theaters = [
     { name: 'Theater 1', address: '123 Main St', showTimes: ['10:00 AM', '1:00 PM', '6:00 PM'] },
     { name: 'Theater 2', address: '456 Elm St', showTimes: ['11:00 AM', '2:00 PM', '7:00 PM'] },
@@ -67,10 +69,10 @@ export class TheaterDetailsComponent {
     this.selectedSeats = []; // Reset selected seats when showtime changes
   }
 
-  bookTicket(): void {
+  bookTicket(){
     if (this.selectedSeats.length === 1) {
       const selectedSeat = this.selectedSeats[0];
-      alert(`Ticket booked for Seat: Row ${selectedSeat.row + 1}, Seat ${selectedSeat.seat + 1}`);
+      this.router.navigate(['/payment'])
       // You can add further functionality here, such as calling an API or navigating to a confirmation page
     } else {
       alert('Please select a seat before booking!');

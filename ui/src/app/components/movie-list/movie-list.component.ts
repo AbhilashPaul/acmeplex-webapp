@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
   standalone: true,
-  imports: [CommonModule, NgFor, MatCardModule], 
+  imports: [CommonModule, NgFor, MatCardModule, RouterModule], 
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.css']
 })
