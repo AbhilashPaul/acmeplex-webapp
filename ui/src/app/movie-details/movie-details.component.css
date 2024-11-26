@@ -1,115 +1,90 @@
 /* Movie Details Container */
 .movie-details-container {
-    width: 80%;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #1a1a1a;;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Roboto', sans-serif;
+  width: 80%;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #171819; /* Darker gray for a magical theme */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-.movie-header {
-    display: flex;
-    align-items: flex-start;  /* Align items to the top for better visual balance */
-    margin-bottom: 30px;
-}
-  
-.movie-poster {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-  .movie-header-text {
-    max-width: 70%;
-  }
-  
-  .movie-header h1 {
-    font-size: 2.8em;
-    font-weight: 600;
-    color: #eee8e8;
-    margin-bottom: 10px;
-  }
-  
-  .movie-release-year, .movie-genre, .movie-rating {
-    font-size: 1.0em;
-    color: #eee8e8;
-  }
-  
-  .movie-release-year {
-    margin-bottom: 5px;
-  }
 
-  .ticket-button {
-    padding: 12px 60px;
-    font-size: 1.2em;
-    background-color: #007bff; /* Blue color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    position: absolute; /* Position the button absolutely within the movie-header */
-    right: 40%; /* Push button to the far right */
-    top: 25%;
+/* Movie Header Text */
+.movie-header h1 {
+  font-size: 2.8em;
+  font-weight: 700;
+  color: #b0a6f6; 
+  margin-bottom: 10px;
+}
+
+/*   .movie-release-year, .movie-genre, .movie-rating {
+  font-size: 1.1em;
+  color: #ddd;
+} */
+.movie-poster {
+  max-width: 100%; /* Ensures it doesn't exceed the container's width */
+  height: auto; /* Keeps the aspect ratio intact */
+  width: 300px; /* Set a larger width */
+  border-radius: 10px; /* Optional: adds rounded corners for a polished look */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Optional: adds a shadow for depth */
+}
+.movie-description {
+  background-color: #1d1e21;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.movie-description h2 {
+  font-size: 2.2em;
+  color: #b0a6f6; 
+  margin-bottom: 15px;
+}
+
+.movie-description p {
+  font-size: 1.2em;
+  line-height: 1.8;
+  color: #eaeaea;
+  margin-bottom: 15px;
+}
+
+/* Ticket Button */
+.ticket-button {
+  padding: 12px 70px;
+  font-size: 1.2em;
+  background-color: #845ec2; /* Purple to match the magical vibe */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  right: 40%;
+  top: 17%;
 }
 
 .ticket-button:hover {
-    background-color: #0056b3; /* Darker blue when hovered */
+  background-color: #5d3c9d; /* Darker purple for hover effect */
 }
-  
-  .movie-description {
-    background-color: #696565;
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(234, 233, 233, 0.1);
-  }
-  
-  .movie-description h2 {
-    font-size: 2em;
-    color: #bdc7f2;
-    margin-bottom: 15px;
-  }
-  
-  .movie-description p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #ede4e4;
-  }
-  
-  .movie-cast {
-    background-color: #696565;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .movie-cast h3 {
-    font-size: 1.6em;
-    color: #eae0e0;
-    margin-bottom: 10px;
-  }
-  
-  .movie-cast ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  .movie-cast li {
-    font-size: 1.1em;
-    color: #c8c0c0;
-    margin-bottom: 8px;
-    padding-left: 10px;
-    position: relative;
-  }
-  
-  .movie-cast li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    font-size: 1.5em;
-    color: #f4eeee;
-  }
-  
-  
+
+
+.movie-info {
+  margin-top: 10px;
+  position: absolute;
+  right: 40%;
+  top: 22%; /* Add space above the movie info */
+}
+
+.movie-release-year, .movie-genre, .movie-rating {
+  font-size: 1.1em;
+  color: #ddd;
+  right: 40%;
+  top: 55%;
+}
+
+.movie-info-repeated {
+  margin-top: 80px; /* Add some spacing from the first movie info */
+  text-align: left; /* Ensure proper alignment */
+  font-size: 1.1em;
+  color: #ddd;
+}
