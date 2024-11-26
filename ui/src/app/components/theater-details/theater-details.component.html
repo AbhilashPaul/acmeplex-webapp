@@ -46,4 +46,13 @@
         </div>
       </mat-card>
     </div>
-  </div>
+    <div>
+      <button 
+      mat-raised-button
+      (click)="bookTicket()" 
+      [disabled]="selectedSeats.length === 0">
+      Book Ticket
+    </button>
+    </div>
+
+</div>
