@@ -49,18 +49,13 @@ export class TheaterDetailsComponent {
   toggleSeatSelection(rowIndex: number, seatIndex: number, seat: string): void {
     // Allow selection only if the seat is available
     if (seat === 'A') {
-      const existingIndex = this.selectedSeats.findIndex(
-        (s) => s.row === rowIndex && s.seat === seatIndex
-      );
-      if (existingIndex > -1) {
-        // Deselect seat
-        this.selectedSeats.splice(existingIndex, 1);
-      } else {
-        // Select seat
-        this.selectedSeats.push({ row: rowIndex, seat: seatIndex });
+      if (this.selectedSeats.length > 0) {
+        this.selectedSeats = [];
       }
+      this.selectedSeats.push({ row: rowIndex, seat: seatIndex });
     }
   }
+  
   isSeatSelected(rowIndex: number, seatIndex: number): boolean {
     return this.selectedSeats.some(
       (seat) => seat.row === rowIndex && seat.seat === seatIndex
