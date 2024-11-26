@@ -1,0 +1,1 @@
+ALTER TABLE RegisteredUser RENAME COLUMN userId TO id;
