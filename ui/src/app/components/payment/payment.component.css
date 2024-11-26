@@ -1,0 +1,97 @@
+.payment-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #1c1c1c; /* Darker background for contrast */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+  }
+  
+  .payment-container h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    color: #fff;
+    font-size: 1em;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #2a2a2a; /* Lighter dark background */
+    color: #fff;
+    box-sizing: border-box;
+  }
+  
+  input:focus {
+    border-color: #4CAF50;
+    background-color: #333; /* Slightly darker background on focus */
+    outline: none;
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2em;
+    background-color: #4CAF50; /* Green button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .error {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  .error::before {
+    content: '⚠️';
+    margin-right: 5px;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 480px) {
+    .payment-container {
+      padding: 15px;
+    }
+  
+    input, button {
+      font-size: 1em;
+    }
+  
+    .form-group {
+      margin-bottom: 10px;
+    }
+  
+    button {
+      font-size: 1.1em;
+    }
+  }
+  
