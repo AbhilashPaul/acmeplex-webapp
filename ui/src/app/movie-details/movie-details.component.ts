@@ -9,14 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MovieDetailsComponent implements OnInit {
   movie = {
-    title: 'The Matrix',
-    releaseYear: 1999,
-    genre: 'Science Fiction',
+    title: 'Harry Potter',
+    releaseYear: 2001,
+    genre: 'Fantasy, Adventure, Family',
     rating: 8.7,
-    
-    description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
-    posterUrl: 'assets/images/the-matrix.png',
-    cast: ['Keanu Reeves', 'Laurence Fishburne', 'Carrie-Anne Moss']
+    description: 'Harry Potter, a young orphan raised by his cruel aunt and uncle, learns on his 11th birthday that he is a wizard. He is invited to attend Hogwarts School of Witchcraft and Wizardry, where he makes new friends and uncovers secrets about his mysterious past. Harry soon learns that he is famous in the wizarding world for surviving a deadly curse cast by the dark wizard, Lord Voldemort. As Harry embarks on his first year at Hogwarts, he faces challenges and mysteries, ultimately confronting the truth about his past and the threat that still looms over the wizarding world.',
+    posterUrl: 'assets/HarryPotter.jpg',
+  
   };
 
   ngOnInit(): void {
