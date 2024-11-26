@@ -3,7 +3,7 @@ import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
-
+import { TheaterDetailsComponent } from './theater-details/theater-details.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
