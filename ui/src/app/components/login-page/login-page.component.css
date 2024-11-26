@@ -1,0 +1,63 @@
+/* Center the login form */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #121212; /* Dark background */
+    color: white;
+  }
+  
+  /* Card Styling */
+  .login-card {
+    width: 400px;
+    padding: 2rem;
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Title Styling */
+  .login-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-field {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-card .login-button {
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.8rem;
+    background-color: #ffe500;
+  }
+  
+  .login-button:hover {
+    background-color: #145ca4; 
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #555; 
+  }
+  
+  .register-link-text {
+    color: #1976d2; 
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  
+  .register-link-text:hover {
+    text-decoration: underline;
+  }
+  
