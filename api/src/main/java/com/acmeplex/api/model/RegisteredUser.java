@@ -1,12 +1,14 @@
 package com.acmeplex.api.model;
 
 import jakarta.persistence.Entity;
-
+import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity
 public class RegisteredUser extends User{
     private String password;
+
+    @CreationTimestamp
     private Date memberSince;
 
     public RegisteredUser(String firstName, String lastName, String email, String address, String phoneNumber, String password, Date memberSince) {
