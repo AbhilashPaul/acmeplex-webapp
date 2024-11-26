@@ -55,7 +55,7 @@ export class TheaterDetailsComponent {
       this.selectedSeats.push({ row: rowIndex, seat: seatIndex });
     }
   }
-  
+
   isSeatSelected(rowIndex: number, seatIndex: number): boolean {
     return this.selectedSeats.some(
       (seat) => seat.row === rowIndex && seat.seat === seatIndex
@@ -65,5 +65,15 @@ export class TheaterDetailsComponent {
   selectShowTime(time: string): void {
     this.selectedShowTime = time; // Set selected showtime
     this.selectedSeats = []; // Reset selected seats when showtime changes
+  }
+
+  bookTicket(): void {
+    if (this.selectedSeats.length === 1) {
+      const selectedSeat = this.selectedSeats[0];
+      alert(`Ticket booked for Seat: Row ${selectedSeat.row + 1}, Seat ${selectedSeat.seat + 1}`);
+      // You can add further functionality here, such as calling an API or navigating to a confirmation page
+    } else {
+      alert('Please select a seat before booking!');
+    }
   }
 }
