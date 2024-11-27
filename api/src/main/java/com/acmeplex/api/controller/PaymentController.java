@@ -3,10 +3,7 @@ package com.acmeplex.api.controller;
 import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -19,25 +16,32 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping
-    public PaymentReceipt processPayment(
-            @RequestParam String paymentType, // "BOOKING" or "ANNUAL_FEE"
-            @RequestParam(required = false) Long ticketId,
-            @RequestParam(required = false) Long userId,
-            @RequestParam Double amount) {
 
-        if ("BOOKING".equalsIgnoreCase(paymentType)) {
-            if (ticketId == null) {
-                throw new IllegalArgumentException("Booking ID is required for ticket booking payments.");
-            }
-            return paymentService.processTicketPayment(ticketId, amount);
-        } else if ("ANNUAL_FEE".equalsIgnoreCase(paymentType)) {
-            if (userId == null) {
-                throw new IllegalArgumentException("User ID is required for annual fee payments.");
-            }
-            return paymentService.processAnnualFeePayment(userId, amount);
-        } else {
-            throw new IllegalArgumentException("Invalid payment type. Use 'BOOKING' or 'ANNUAL_FEE'.");
-        }
+    /**
+     * Process payment for a ticket.
+     *
+     * @param ticketId      ID of the ticket for which payment is being made
+     * @param amount        Payment amount
+     * @return The PaymentReceipt object for the processed payment
+     */
+    @PostMapping("/ticket/{ticketId}")
+    public PaymentReceipt processTicketPayment(
+            @PathVariable Long ticketId,
+            @RequestParam Double amount) {
+        return paymentService.processTicketPayment(ticketId, amount);
+    }
+
+    /**
+     * Process annual fee payment for a registered user.
+     *
+     * @param userId        ID of the user paying the annual fee
+     * @param amount        Payment amount (e.g., $20.00)
+     * @return The PaymentReceipt object for the processed annual fee payment
+     */
+    @PostMapping("/annualFee/{userId}")
+    public PaymentReceipt processAnnualFeePayment(
+            @PathVariable Long userId,
+            @RequestParam Double amount) {
+        return paymentService.processAnnualFeePayment(userId, amount);
     }
 }
