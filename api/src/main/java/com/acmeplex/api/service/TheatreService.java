@@ -21,4 +21,8 @@ public class TheatreService {
     public void deleteTheatre(Long id) {
         theatreRepository.deleteById(id);
     }
+
+    public List<Theatre> getTheatresByMovieId(Long movieId) {
+        return theatreRepository.findTheatresByMovieId(movieId);
+    }
 }
