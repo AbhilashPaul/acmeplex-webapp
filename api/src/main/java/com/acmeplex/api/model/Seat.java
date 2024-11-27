@@ -62,4 +62,8 @@ public class Seat {
     public void setShowtime(Showtime showtime) {
         this.showtime = showtime;
     }
+
+    public boolean isReserved() {
+        return isReserved;
+    }
 }
