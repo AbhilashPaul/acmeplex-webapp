@@ -1,5 +1,6 @@
 package com.acmeplex.api.controller;
 
+import com.acmeplex.api.model.CreditVoucher;
 import com.acmeplex.api.model.Ticket;
 import com.acmeplex.api.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,16 @@ public class TicketController {
     @GetMapping("/{ticketId}")
     public Ticket getTicketDetails(@PathVariable Long ticketId) {
         return ticketService.getTicketDetails(ticketId);
+    }
+
+    /**
+     * Cancel a specific ticket and issue a credit voucher.
+     *
+     * @param ticketId ID of the ticket to cancel
+     * @return The created Credit Voucher object
+     */
+    @PostMapping("/{ticketId}/cancel")
+    public CreditVoucher cancelTicket(@PathVariable Long ticketId) {
+        return ticketService.cancelTicket(ticketId);
     }
 }
