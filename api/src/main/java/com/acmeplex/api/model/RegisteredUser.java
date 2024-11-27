@@ -90,4 +90,18 @@ public class RegisteredUser extends User implements UserDetails {
     public void setAnnualFeePaidDate(LocalDateTime annualFeePaidDate) {
         this.annualFeePaidDate = annualFeePaidDate;
     }
+
+    /**
+     * Check if the membership has expired.
+     *
+     * @return True if the current date is after the annualFeePaidDate + 1 year, otherwise False.
+     */
+    public boolean isMembershipExpired() {
+        if (annualFeePaidDate == null) {
+            return true; // Expired if no payment date exists
+        }
+        LocalDateTime expiryDate = annualFeePaidDate.plusYears(1);
+        return LocalDateTime.now().isAfter(expiryDate);
+    }
+
 }
