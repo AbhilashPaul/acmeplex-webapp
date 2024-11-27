@@ -1,0 +1,88 @@
+.profile-container {
+  display: flex;
+  justify-content: center; 
+  align-items: flex-start; 
+  gap: 2rem; 
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.user-details {
+  flex: 1; 
+  max-width: 600px;
+}
+
+.profile-card {
+  width: 400px;
+  padding: 1.5rem;
+  background-color: white;
+  color: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.profile-detail {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.profile-detail.credits {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4caf50; 
+
+}
+
+.booked-tickets {
+  flex: 1; 
+  max-width: 600px;
+}
+.tickets-card {
+  width: 600px;
+  padding: 1.5rem;
+  background-color: white;
+  color: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tickets-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ticket-item button {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background-color: #ffe500;
+  color:black;
+}
+.profile-card button{
+  background-color: #ffe500;
+}
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column; 
+    align-items: center; 
+  }
+
+  .user-details, .booked-tickets {
+    flex: none;
+    width: 100%; 
+  }
+}
