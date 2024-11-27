@@ -1,36 +1,19 @@
 <div class="movie-details-container">
-  <div class="movie-header">
-   
-
-      <div class="movie-header-text">
-          <h1>HARRY POTTER</h1>
-          <img [src]="movie.posterUrl" alt="{{ movie.title }} poster" class="movie-poster">
-          <button class="ticket-button" (click)="getTicket()">Get Ticket</button>
-          <div class="movie-info">
-              <p class="movie-release-year">Released: 2024</p>
-              <p class="movie-genre"><strong>Genre:</strong> Fantasy, Comedy</p>
-              <p class="movie-rating"><strong>Rating:</strong> 9.2 / 10</p>
-          </div>
-          
+    <div class="movie-header">
+      <h1>{{ movie.title }}</h1>
+      <img [src]="movie.imageUrl" alt="{{ movie.title }} poster" class="movie-poster" />
+      <div class="movie-info">
+        <p><strong>ID:</strong> {{ movie.id }}</p>
+        <p><strong>Genre:</strong> {{ movie.genre }}</p>
+        <p><strong>Duration:</strong> {{ movie.duration }} mins</p>
+        <p><strong>Rating:</strong> {{ movie.movieRating }} / 10</p>
       </div>
-  </div>
-
-  <div class="movie-description">
+      <button class="ticket-button" (click)="getTicket()">Get Ticket</button>
+    </div>
+  
+    <div class="movie-description">
       <h2>Description</h2>
-      <p>
-          In the whimsical town of Wizzardly Way, *Harry Potter* embarks on an extraordinary journey to master the ancient art of magic golf. 
-          Armed with a wand and a potter, Harry faces a series of comedic and fantastical challenges as he competes in the legendary Wizarding Golf Tournament.
-      </p>
-      <p>
-          Alongside his quirky companions, *Ron Birdie* and *Hermione Tee*, Harry must navigate magical bunkers, enchanted fairways, and a rival who will stop at nothing to claim the coveted Golden Potter.
-          This delightful fantasy-comedy blends spellbinding visuals, laugh-out-loud moments, and heartfelt friendships that resonate with all ages.
-      </p>
-      <p>
-          *Harry Potter* is a hole-in-one cinematic adventure that will leave you enchanted, entertained, and eager for the next swing.
-      </p>
+      <p>{{ movie.description }}</p>
+    </div>
   </div>
-
-  <div class="movie-ticket">
-      <!-- Placeholder for ticket information -->
-  </div>
-</div>
+  

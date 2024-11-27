@@ -1,19 +1,15 @@
 <section class="featured-movies">
-    <mat-card style="background-color: black;">
-      <mat-card-header>
-        <mat-card-title>Now Playing</mat-card-title>
-      </mat-card-header>
-      <div class="movie-list">
-        <div mat-card *ngFor="let movie of movies" class="movie-card">
-          <!-- Wrap image with a routerLink -->
-          <a [routerLink]="['/movies', movie.title]">
-            <img mat-card-image [src]="movie.image" [alt]="movie.title" />
-          </a>
-          <div mat-card-content>
-            <h4 class="movie-title">{{ movie.title }}</h4>
-          </div>
-        </div>
+  <mat-card style="background-color: black; color: white; padding: 1rem;">
+    <mat-card-header>
+      <mat-card-title>Now Playing</mat-card-title>
+    </mat-card-header>
+    <div class="movie-list">
+      <div mat-card *ngFor="let movie of movies" class="movie-card" (click)="viewMovieDetails(movie)">
+        <!-- Movie Poster -->
+        <img mat-card-image [src]="movie.imageUrl" [alt]="movie.title" class="movie-poster" />
+        <!-- Movie Title -->
+        <h4 class="movie-title">{{ movie.title }}</h4>
       </div>
-    </mat-card>
-  </section>
-  
+    </div>
+  </mat-card>
+</section>

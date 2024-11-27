@@ -1,39 +1,101 @@
+/* Overall Container */
 .movie-details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 2rem;
+  background-color: #121212; /* Dark theme background */
+  color: #ffffff; /* Light text for dark background */
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Movie Header Section */
 .movie-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.movie-header-text h1 {
-  font-size: 2rem;
+.movie-header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #ffe500; /* Highlight title */
 }
 
 .movie-poster {
-  max-width: 200px;
-  margin-left: 1rem;
+  max-width: 300px;
+  max-height: 450px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1.5rem;
 }
 
-.movie-info {
-  margin-top: 1rem;
-}
-
+/* Ticket Button */
 .ticket-button {
-  padding: 12px 70px;
-  font-size: 1.2em;
-  background-color: #ffe500; 
-  color: black;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #1976d2; /* Primary blue */
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  position: absolute;
-  right: 40%;
+}
+
+.ticket-button:hover {
+  background-color: #145ca4; /* Darker shade on hover */
+}
+
+/* Movie Info Section */
+.movie-info {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.movie-info p {
+  margin: 0.5rem 0;
+}
+
+.movie-info strong {
+  color: #ffe500; /* Highlight for labels */
+}
+
+/* Description Section */
+.movie-description {
+  margin-top: 2rem;
+  max-width: 800px;
+  line-height: 1.8;
+  font-size: 1.1rem;
 }
 
 .movie-description h2 {
-  margin-top: 2rem;
+  font-size: 1.8rem;
+  color: #ffe500;
+  margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .movie-details-container {
+    padding: 1.5rem;
+  }
+
+  .movie-header h1 {
+    font-size: 2rem;
+  }
+
+  .movie-poster {
+    max-width: 250px;
+    max-height: 375px;
+  }
+
+  .movie-description {
+    font-size: 1rem;
+  }
 }
