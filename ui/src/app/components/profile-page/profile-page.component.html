@@ -1,0 +1,39 @@
+<div class="profile-container">
+  <div class="user-details">
+    <mat-card class="profile-card">
+      <mat-card-title class="profile-title">User Profile</mat-card-title>
+      <mat-card-content>
+        <div class="profile-detail"><strong>First Name:</strong> {{ user.firstName }}</div>
+        <div class="profile-detail"><strong>Last Name:</strong> {{ user.lastName }}</div>
+        <div class="profile-detail"><strong>Email:</strong> {{ user.email }}</div>
+        <div class="profile-detail"><strong>Phone Number:</strong> {{ user.phoneNumber }}</div>
+        <div class="profile-detail credits">
+          <strong>Available Credits:</strong> {{ credits | currency }}
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="onLogout()">Logout</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="booked-tickets">
+    <mat-card class="tickets-card">
+      <mat-card-title class="tickets-title">Booked Tickets</mat-card-title>
+      <mat-card-content>
+        <div *ngFor="let ticket of bookedTickets" class="ticket-item">
+          <div>
+            <strong>Movie:</strong> {{ ticket.movie }}
+          </div>
+          <div>
+            <strong>Date:</strong> {{ ticket.date }}
+          </div>
+          <div>
+            <strong>Seat:</strong> {{ ticket.seat }}
+          </div>
+          <button mat-raised-button (click)="cancelTicket(ticket)">Cancel Ticket</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
