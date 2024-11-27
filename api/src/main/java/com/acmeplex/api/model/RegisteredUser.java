@@ -2,10 +2,14 @@ package com.acmeplex.api.model;
 
 import jakarta.persistence.Entity;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
-public class RegisteredUser extends User{
+public class RegisteredUser extends User implements UserDetails {
     private String password;
 
     @CreationTimestamp
@@ -20,8 +24,38 @@ public class RegisteredUser extends User{
     public RegisteredUser() {
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return super.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 
     public void setPassword(String password) {
