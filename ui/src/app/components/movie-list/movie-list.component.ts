@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MovieService, Movie } from '../../services/movie.service';
 import { CommonModule, NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule,Router } from '@angular/router';
@@ -10,42 +11,34 @@ import { RouterModule,Router } from '@angular/router';
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.css'],
 })
-export class MovieListComponent {
-  movies = [
-    {
-      id: 1,
-      title: 'Movie 1',
-      description: 'A thought-provoking film about society and individual struggles.',
-      duration: 120,
-      genre: 'Drama, Thriller',
-      movieRating: 8.5,
-      imageUrl: '/assets/Joker.jpg',
-    },
-    {
-      id: 2,
-      title: 'Movie 2',
-      description: 'A timeless love story set against the tragic sinking of the Titanic.',
-      duration: 195,
-      genre: 'Romance, Drama',
-      movieRating: 7.9,
-      imageUrl: '/assets/Titanic.jpg',
-    },
-    {
-      id: 3,
-      title: 'Movie 3',
-      description:
-        'A young wizard discovers his magical heritage and faces incredible adventures at Hogwarts.',
-      duration: 152,
-      genre: 'Fantasy, Adventure, Family',
-      movieRating: 8.7,
-      imageUrl: '/assets/HarryPotter.jpg',
-    },
-  ];
+export class MovieListComponent implements OnInit {
+  movies: Movie[] = []; // Movies fetched from the API
 
-  constructor(private router: Router) {}
+  constructor(private movieService: MovieService, private router: Router) {}
 
-  viewMovieDetails(movie: any) {
+  ngOnInit(): void {
+    this.fetchMovies();
+  }
+
+  // Fetch movies from the backend
+  fetchMovies() {
+    this.movieService.getMovies().subscribe({
+      next: (data) => {
+        console.log('Fetched movies:', data);
+        this.movies = data;
+      },
+      error: (error) => {
+        console.error('Error fetching movies:', error);
+      },
+      complete: () => {
+        console.log('Movie fetching completed.');
+      }
+    });
+  }
+  
+
+  // Navigate to movie details
+  viewMovieDetails(movie: Movie) {
     this.router.navigate(['/movie-details'], { state: { movie } });
   }
 }
-

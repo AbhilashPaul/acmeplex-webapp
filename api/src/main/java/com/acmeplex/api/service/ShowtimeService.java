@@ -19,7 +19,7 @@ public class ShowtimeService {
     private ShowtimeRepository showtimeRepository;
 
     public List<ShowtimeDto> getAllShowtimes() {
-        List<ShowtimeDto> showtimes = new ArrayList<ShowtimeDto>();
+        List<ShowtimeDto> showtimes = new ArrayList<>();
         for (Showtime item : showtimeRepository.findAll()) {
             showtimes.add(ShowtimeMapper.toShowtimeDto(item));
         }

@@ -1,7 +1,7 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';  // <-- Ensure ReactiveFormsModule is imported
+import { ReactiveFormsModule } from '@angular/forms';  
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
