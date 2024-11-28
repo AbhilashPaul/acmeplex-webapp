@@ -1,7 +1,9 @@
 package com.acmeplex.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Seat {
@@ -10,20 +12,7 @@ public class Seat {
     private Long id;
     private String rowLabel;
     private Integer seatNumber;
-    private Boolean isReserved;
     private Double price;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "showtimeId", nullable = false)
-    @JsonIgnore
-    private Showtime showtime;
-
-    public Boolean getReserved() {
-        return isReserved;
-    }
-
-    public void setReserved(Boolean reserved) {
-        isReserved = reserved;
-    }
 
     public Double getPrice() {
         return price;
@@ -55,17 +44,5 @@ public class Seat {
 
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
-    }
-
-    public Showtime getShowtime() {
-        return showtime;
-    }
-
-    public void setShowtime(Showtime showtime) {
-        this.showtime = showtime;
-    }
-
-    public boolean isReserved() {
-        return isReserved;
     }
 }

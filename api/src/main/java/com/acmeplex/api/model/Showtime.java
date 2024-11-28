@@ -1,6 +1,5 @@
 package com.acmeplex.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -16,18 +15,27 @@ public class Showtime {
     private LocalDate date;
     private LocalTime time;
 
-    @OneToMany(mappedBy = "showtime")
-    private Set<Seat> seats;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movieId", nullable = false)
-    @JsonIgnore
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theatreId", nullable = false)
-    @JsonIgnore
     private Theatre theatre;
+
+    @OneToMany(mappedBy = "showtime")
+    private Set<ShowtimeSeat> showtimeSeats;
+
+    public Showtime() {
+    }
+
+    public Showtime(Long id, LocalDate date, LocalTime time, Movie movie, Theatre theatre) {
+        this.id = id;
+        this.date = date;
+        this.time = time;
+        this.movie = movie;
+        this.theatre = theatre;
+    }
 
     public Long getId() {
         return id;
@@ -53,14 +61,6 @@ public class Showtime {
         this.time = time;
     }
 
-    public Set<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(Set<Seat> seats) {
-        this.seats = seats;
-    }
-
     public Movie getMovie() {
         return movie;
     }
@@ -77,13 +77,11 @@ public class Showtime {
         this.theatre = theatre;
     }
 
-    public void addSeat(Seat seat) {
-        seats.add(seat);
-        seat.setShowtime(this);
+    public Set<ShowtimeSeat> getShowtimeSeats() {
+        return showtimeSeats;
     }
 
-    public void removeSeat(Seat seat) {
-        seats.remove(seat);
-        seat.setShowtime(null);
+    public void setShowtimeSeats(Set<ShowtimeSeat> showtimeSeats) {
+        this.showtimeSeats = showtimeSeats;
     }
 }
