@@ -1,27 +1,15 @@
-package com.acmeplex.api.model;
+package com.acmeplex.api.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
-@Entity
-public class Seat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SeatDto {
     private Long id;
     private String rowLabel;
     private Integer seatNumber;
     private Double price;
 
-    public Double getPrice() {
-        return price;
-    }
+    private Boolean isReserved;
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -44,5 +32,21 @@ public class Seat {
 
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Boolean isReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        isReserved = reserved;
     }
 }

@@ -1,5 +1,6 @@
 package com.acmeplex.api.controller;
 
+import com.acmeplex.api.dto.ShowtimeDto;
 import com.acmeplex.api.model.Showtime;
 import com.acmeplex.api.service.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class ShowtimeController {
     private ShowtimeService showtimeService;
 
     @GetMapping
-    public List<Showtime> getAllShowtimes() {
+    public List<ShowtimeDto> getAllShowtimes() {
         return showtimeService.getAllShowtimes();
     }
 
