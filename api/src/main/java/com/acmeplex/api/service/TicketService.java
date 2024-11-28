@@ -17,44 +17,43 @@ public class TicketService {
     public static final double DEDUCTION_PERCENT_GUEST_USERS = 0.15;
     public static final int CREDIT_VOUCHER_VALIDITY_PERIOD_IN_YEARS = 1;
     private final TicketRepository ticketRepository;
-    private final SeatRepository seatRepository;
     private final ShowtimeRepository showtimeRepository;
     private final CreditVoucherRepository creditVoucherRepository;
     private final RegisteredUserRepository registeredUserRepository;
+    private final ShowtimeSeatRepository showtimeSeatRepository;
 
     @Autowired
     public TicketService(TicketRepository ticketRepository,
-                         SeatRepository seatRepository,
                          ShowtimeRepository showtimeRepository,
                          CreditVoucherRepository creditVoucherRepository,
-                         RegisteredUserRepository registeredUserRepository) {
+                         RegisteredUserRepository registeredUserRepository,
+                         ShowtimeSeatRepository showtimeSeatRepository) {
         this.ticketRepository = ticketRepository;
-        this.seatRepository = seatRepository;
         this.showtimeRepository = showtimeRepository;
         this.creditVoucherRepository = creditVoucherRepository;
         this.registeredUserRepository = registeredUserRepository;
+        this.showtimeSeatRepository = showtimeSeatRepository;
     }
 
     // Create a new ticket
     public Ticket createTicket(String customerName, String customerEmail, Long seatId, Long showtimeId) {
-        // Fetch Seat and Showtime from DB
-        Seat seat = seatRepository.findById(seatId)
-                .orElseThrow(() -> new RuntimeException("Seat not found"));
-        if (seat.isReserved()) {
+        ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
+                .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+        if (showtimeSeat.getIsReserved()) {
             throw new RuntimeException("Seat is already reserved");
         }
 
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Showtime not found"));
 
-        Double ticketPrice = calculateTicketPrice(customerEmail, seat);
+        Double ticketPrice = calculateTicketPrice(customerEmail, showtimeSeat.getSeat());
 
         // Mark seat as reserved
-        seat.setReserved(true);
-        seatRepository.save(seat);
+        showtimeSeat.setIsReserved(true);
+        showtimeSeatRepository.save(showtimeSeat);
 
         // Create and save Ticket
-        Ticket ticket = new Ticket(customerName, customerEmail, ticketPrice, seat, showtime, PaymentStatus.PENDING);
+        Ticket ticket = new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, PaymentStatus.PENDING);
         return ticketRepository.save(ticket);
     }
 
@@ -116,9 +115,13 @@ public class TicketService {
         creditVoucherRepository.save(creditVoucher);
 
         // Release the seat back to available status
-        Seat seat = ticket.getSeat();
-        seat.setReserved(false);
-        seatRepository.save(seat);
+        Long showtimeId = ticket.getShowtime().getId();
+        Long seatId = ticket.getSeat().getId();
+        ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
+                .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+
+        showtimeSeat.setIsReserved(false);
+        showtimeSeatRepository.save(showtimeSeat);
 
         return creditVoucher;
     }
