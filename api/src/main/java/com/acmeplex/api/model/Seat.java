@@ -1,5 +1,6 @@
 package com.acmeplex.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,8 +12,9 @@ public class Seat {
     private Integer seatNumber;
     private Boolean isReserved;
     private Double price;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showtimeId", nullable = false)
+    @JsonIgnore
     private Showtime showtime;
 
     public Boolean getReserved() {

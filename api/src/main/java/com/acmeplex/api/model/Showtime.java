@@ -1,5 +1,6 @@
 package com.acmeplex.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -18,12 +19,14 @@ public class Showtime {
     @OneToMany(mappedBy = "showtime")
     private Set<Seat> seats;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movieId", nullable = false)
+    @JsonIgnore
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theatreId", nullable = false)
+    @JsonIgnore
     private Theatre theatre;
 
     public Long getId() {
