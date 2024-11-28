@@ -14,6 +14,8 @@ public class Ticket {
     private String customerName;
     private String customerEmail;
 
+    private Double price;
+
     @ManyToOne
     @JoinColumn(name = "seatId", nullable = false)
     private Seat seat;
@@ -25,7 +27,7 @@ public class Ticket {
     @CreationTimestamp
     private Date bookingTime;
 
-    private String paymentStatus;
+    private PaymentStatus paymentStatus;
 
 
     @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
@@ -34,11 +36,13 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(String customerName, String customerEmail, Seat seat, Showtime showtime) {
+    public Ticket(String customerName, String customerEmail, Double price, Seat seat, Showtime showtime, PaymentStatus paymentStatus) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
+        this.price = price;
         this.seat = seat;
         this.showtime = showtime;
+        this.paymentStatus = paymentStatus;
     }
 
     public Long getId() {
@@ -89,11 +93,11 @@ public class Ticket {
         this.bookingTime = bookingTime;
     }
 
-    public String getPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -103,5 +107,13 @@ public class Ticket {
 
     public void setPaymentReceipt(PaymentReceipt paymentReceipt) {
         this.paymentReceipt = paymentReceipt;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
