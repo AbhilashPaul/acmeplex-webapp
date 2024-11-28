@@ -21,11 +21,11 @@
         </a>
       </li>
       <li>
-        <a routerLink="/contact">
+        <a [routerLink]="isLoggedIn ? '/profile' : '/login'">
           <mat-icon>person</mat-icon>
           Account
         </a>
-      </li>
+      </li>      
     </ul>
   </nav>
 </header>
