@@ -30,12 +30,13 @@ public class CreditVoucher {
     }
 
     public CreditVoucher(Double amount, LocalDateTime issuedAt, LocalDateTime expiryDate,
-                         String customerEmail, String code, Ticket ticket) {
+                         String customerEmail, String code, Boolean used, Ticket ticket) {
         this.amount = amount;
         this.issuedAt = issuedAt;
         this.expiryDate = expiryDate;
         this.customerEmail = customerEmail;
         this.code =code;
+        this.isUsed = used;
         this.ticket = ticket;
     }
 
@@ -95,11 +96,11 @@ public class CreditVoucher {
         this.code = code;
     }
 
-    public Boolean getUsed() {
+    public Boolean getIsUsed() {
         return isUsed;
     }
 
-    public void setUsed(Boolean used) {
+    public void setIsUsed(Boolean used) {
         isUsed = used;
     }
 }
