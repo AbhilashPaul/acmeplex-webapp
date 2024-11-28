@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -46,13 +47,43 @@ public class TicketService {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Showtime not found"));
 
+        Double ticketPrice = calculateTicketPrice(customerEmail, seat);
+
         // Mark seat as reserved
         seat.setReserved(true);
         seatRepository.save(seat);
 
         // Create and save Ticket
-        Ticket ticket = new Ticket(customerName, customerEmail, seat, showtime);
+        Ticket ticket = new Ticket(customerName, customerEmail, ticketPrice, seat, showtime, PaymentStatus.PENDING);
         return ticketRepository.save(ticket);
+    }
+
+    private Double calculateTicketPrice(String customerEmail, Seat seat) {
+        // Calculate initial ticket price based on seat price
+        Double ticketPrice = seat.getPrice();
+        // Apply unused credit vouchers
+        List<CreditVoucher> vouchers = creditVoucherRepository.findByCustomerEmailAndIsUsedFalse(customerEmail);
+        for (CreditVoucher voucher : vouchers) {
+            if (ticketPrice <= 0) break; // No need to apply more vouchers if price is zero
+
+            double voucherAmount = voucher.getAmount();
+            if (voucherAmount >= ticketPrice) {
+                // Fully cover the ticket price with this voucher
+                voucher.setAmount(voucherAmount - ticketPrice);
+                ticketPrice = 0.0;
+            } else {
+                // Partially cover the ticket price with this voucher
+                ticketPrice -= voucherAmount;
+                voucher.setAmount(0.0);
+            }
+
+            // Mark voucher as used if fully utilized
+            if (voucher.getAmount() == 0) {
+                voucher.setIsUsed(true);
+            }
+            creditVoucherRepository.save(voucher);
+        }
+        return ticketPrice;
     }
 
     // Retrieve ticket details by ID
@@ -69,7 +100,6 @@ public class TicketService {
         LocalDateTime now = LocalDateTime.now();
         isCancellationAllowed(ticket, now);
 
-
         double refundAmount = calculateRefundAmount(ticket);
 
         // Create a Credit Voucher
@@ -79,6 +109,7 @@ public class TicketService {
                 now.plusYears(CREDIT_VOUCHER_VALIDITY_PERIOD_IN_YEARS),
                 ticket.getCustomerEmail(),
                 generateCouponCode(),
+                Boolean.FALSE,
                 ticket
         );
 

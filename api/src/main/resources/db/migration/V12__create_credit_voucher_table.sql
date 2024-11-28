@@ -4,7 +4,8 @@ CREATE TABLE CreditVoucher (
     issuedAt DATETIME NOT NULL,
     expiryDate DATETIME NOT NULL,
     customerEmail VARCHAR(255) NOT NULL,
-    code VARCHAR(25) NOT NULL,
+    code VARCHAR(25) UNIQUE NOT NULL,
+    isUsed BOOLEAN NOT NULL DEFAULT FALSE
     ticketId BIGINT NOT NULL,
     CONSTRAINT fk_ticket_credit_voucher FOREIGN KEY (ticketId) REFERENCES Ticket(id) ON DELETE CASCADE
 );

@@ -20,6 +20,8 @@ public class CreditVoucher {
 
     private String code;
 
+    private Boolean isUsed;
+
     @OneToOne
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket; // The ticket associated with this credit voucher
@@ -28,12 +30,13 @@ public class CreditVoucher {
     }
 
     public CreditVoucher(Double amount, LocalDateTime issuedAt, LocalDateTime expiryDate,
-                         String customerEmail, String code, Ticket ticket) {
+                         String customerEmail, String code, Boolean used, Ticket ticket) {
         this.amount = amount;
         this.issuedAt = issuedAt;
         this.expiryDate = expiryDate;
         this.customerEmail = customerEmail;
         this.code =code;
+        this.isUsed = used;
         this.ticket = ticket;
     }
 
@@ -91,5 +94,13 @@ public class CreditVoucher {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Boolean getIsUsed() {
+        return isUsed;
+    }
+
+    public void setIsUsed(Boolean used) {
+        isUsed = used;
     }
 }
