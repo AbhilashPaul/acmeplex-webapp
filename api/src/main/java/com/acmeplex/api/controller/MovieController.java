@@ -1,5 +1,6 @@
 package com.acmeplex.api.controller;
 
+import com.acmeplex.api.dto.MovieDto;
 import com.acmeplex.api.model.Movie;
 import com.acmeplex.api.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping
-    public List<Movie> getAllMovies() {
+    public List<MovieDto> getAllMovies() {
         return movieService.getAllMovies();
     }
 
@@ -29,5 +30,10 @@ public class MovieController {
     @DeleteMapping("/{id}")
     public void deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
+    }
+
+    @GetMapping("/search")
+    public List<MovieDto> searchUsers(@RequestParam String title) {
+        return movieService.searchMovies(title);
     }
 }
