@@ -1,0 +1,33 @@
+ALTER TABLE Seat
+DROP FOREIGN KEY seat_ibfk_1;
+
+
+ALTER TABLE Seat
+DROP COLUMN showtimeId,
+DROP COLUMN isReserved;
+
+CREATE TABLE ShowtimeSeat (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seatId BIGINT NOT NULL,
+    showtimeId BIGINT NOT NULL,
+    isReserved BOOLEAN NOT NULL DEFAULT FALSE,
+    UNIQUE (seatId, showtimeId),
+    FOREIGN KEY (seatId) REFERENCES Seat(id) ON DELETE CASCADE,
+    FOREIGN KEY (showtimeId) REFERENCES Showtime(id) ON DELETE CASCADE
+);
+
+ALTER TABLE Ticket
+DROP FOREIGN KEY fk_seat;
+
+ALTER TABLE Ticket
+DROP FOREIGN KEY fk_showtime;
+
+ALTER TABLE Ticket
+DROP COLUMN seatId,
+DROP COLUMN showtimeId;
+
+ALTER TABLE Ticket
+ADD showtimeSeatId BIGINT NOT NULL;
+
+ALTER TABLE Ticket
+ADD CONSTRAINT fk_showtime_seat FOREIGN KEY (showtimeSeatId) REFERENCES ShowtimeSeat(id);
