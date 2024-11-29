@@ -1,6 +1,7 @@
 package com.acmeplex.api.controller;
 
 import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.model.CreditVoucher;
 import com.acmeplex.api.model.Ticket;
 import com.acmeplex.api.service.TicketService;
@@ -21,7 +22,7 @@ public class TicketController {
 
 
     @PostMapping
-    public Ticket createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
+    public TicketDto createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
         return ticketService.createTicket(createTicketRequestDto);
     }
 

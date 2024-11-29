@@ -1,6 +1,8 @@
 package com.acmeplex.api.service;
 
 import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.TicketDto;
+import com.acmeplex.api.mappers.TicketMapper;
 import com.acmeplex.api.model.*;
 import com.acmeplex.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class TicketService {
     }
 
     // Create a new ticket
-    public Ticket createTicket(CreateTicketRequestDto createTicketRequestDto) {
+    public TicketDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
         Long showtimeId = createTicketRequestDto.getShowtimeId();
         Long seatId = createTicketRequestDto.getSeatId();
         String customerName = createTicketRequestDto.getCustomerName();
@@ -58,9 +60,8 @@ public class TicketService {
         showtimeSeat.setIsReserved(true);
         showtimeSeatRepository.save(showtimeSeat);
 
-        // Create and save Ticket
-        Ticket ticket = new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, PaymentStatus.PENDING);
-        return ticketRepository.save(ticket);
+        return TicketMapper.toTicketDto(
+                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, PaymentStatus.PENDING)));
     }
 
     private Double calculateTicketPrice(String customerEmail, Seat seat) {
