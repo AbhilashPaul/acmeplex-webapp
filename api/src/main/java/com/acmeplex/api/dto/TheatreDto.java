@@ -1,31 +1,25 @@
-package com.acmeplex.api.model;
-
-import jakarta.persistence.*;
+package com.acmeplex.api.dto;
 
 import java.util.List;
 
-@Entity
-public class Theatre {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TheatreDto {
     private Long id;
     private String name;
     private String email;
     private String address;
     private String phoneNumber;
+    private List<ShowtimeDto> showtimes;
 
-    @OneToMany(mappedBy = "theatre")
-    private List<Showtime> showtimes;
-
-    public Theatre() {
+    public TheatreDto() {
     }
 
-    public Theatre(Long id, String name, String email, String address, String phoneNumber) {
+    public TheatreDto(Long id, String name, String email, String address, String phoneNumber, List<ShowtimeDto> showtimes) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.showtimes = showtimes;
     }
 
     public Long getId() {
@@ -68,24 +62,11 @@ public class Theatre {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Showtime> getShowtimes() {
+    public List<ShowtimeDto> getShowtimes() {
         return showtimes;
     }
 
-    public void setShowtimes(List<Showtime> showtimes) {
+    public void setShowtimes(List<ShowtimeDto> showtimes) {
         this.showtimes = showtimes;
-    }
-
-    /**
-     * Method to add a Showtime to the Theatre.
-     * Ensures bidirectional relationship is maintained.
-     *
-     * @param showtime The Showtime object to be added.
-     */
-    public void addShowtime(Showtime showtime) {
-        if (showtime != null) {
-            showtime.setTheatre(this); // Maintain bidirectional relationship
-            this.showtimes.add(showtime);
-        }
     }
 }

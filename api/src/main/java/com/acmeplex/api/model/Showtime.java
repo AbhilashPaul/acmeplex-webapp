@@ -15,7 +15,7 @@ public class Showtime {
     private LocalDate date;
     private LocalTime time;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "movieId", nullable = false)
     private Movie movie;
 
