@@ -16,12 +16,18 @@ export interface Movie {
   providedIn: 'root',
 })
 export class MovieService {
-  private apiUrl = 'http://localhost:8080/api/movies'; // Backend API URL
+  private apiUrl = 'http://localhost:8080/api/movies'; // Base URL
 
   constructor(private http: HttpClient) {}
 
-  // Fetch movies from the backend
+  // Fetch all movies
   getMovies(): Observable<Movie[]> {
     return this.http.get<Movie[]>(this.apiUrl);
+  }
+
+  // Search for movies by title
+  searchMovies(title: string): Observable<Movie[]> {
+    const searchUrl = `${this.apiUrl}/search?title=${title}`;
+    return this.http.get<Movie[]>(searchUrl);
   }
 }
