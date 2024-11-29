@@ -15,19 +15,3 @@ CREATE TABLE ShowtimeSeat (
     FOREIGN KEY (seatId) REFERENCES Seat(id) ON DELETE CASCADE,
     FOREIGN KEY (showtimeId) REFERENCES Showtime(id) ON DELETE CASCADE
 );
-
-ALTER TABLE Ticket
-DROP FOREIGN KEY fk_seat;
-
-ALTER TABLE Ticket
-DROP FOREIGN KEY fk_showtime;
-
-ALTER TABLE Ticket
-DROP COLUMN seatId,
-DROP COLUMN showtimeId;
-
-ALTER TABLE Ticket
-ADD showtimeSeatId BIGINT NOT NULL;
-
-ALTER TABLE Ticket
-ADD CONSTRAINT fk_showtime_seat FOREIGN KEY (showtimeSeatId) REFERENCES ShowtimeSeat(id);
