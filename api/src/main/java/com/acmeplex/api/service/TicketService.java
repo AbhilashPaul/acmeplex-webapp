@@ -1,5 +1,6 @@
 package com.acmeplex.api.service;
 
+import com.acmeplex.api.dto.CreateTicketRequestDto;
 import com.acmeplex.api.model.*;
 import com.acmeplex.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,12 @@ public class TicketService {
     }
 
     // Create a new ticket
-    public Ticket createTicket(String customerName, String customerEmail, Long seatId, Long showtimeId) {
+    public Ticket createTicket(CreateTicketRequestDto createTicketRequestDto) {
+        Long showtimeId = createTicketRequestDto.getShowtimeId();
+        Long seatId = createTicketRequestDto.getSeatId();
+        String customerName = createTicketRequestDto.getCustomerName();
+        String customerEmail = createTicketRequestDto.getCustomerEmail();
+
         ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
                 .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
         if (showtimeSeat.getIsReserved()) {
