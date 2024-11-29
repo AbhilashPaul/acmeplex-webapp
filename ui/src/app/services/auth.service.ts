@@ -13,10 +13,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login() {
-    this.loggedIn = true;
-  }
-
   logout() {
     this.loggedIn = false;
   }
@@ -27,5 +23,9 @@ export class AuthService {
 
   register(userData: any, options: { headers: HttpHeaders }) : Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/register`, userData, options);
+  }
+  login(userData: { email: string; password: string }): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/auth/login`, userData, { headers });
   }
 }
