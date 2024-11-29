@@ -1,5 +1,8 @@
 package com.acmeplex.api.controller;
 
+import com.acmeplex.api.dto.AnnualFeePaymentRequestDto;
+import com.acmeplex.api.dto.TicketPaymentRequestDto;
+import com.acmeplex.api.dto.TicketPaymentResponseDto;
 import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +22,25 @@ public class PaymentController {
 
     /**
      * Process payment for a ticket.
-     *
-     * @param ticketId      ID of the ticket for which payment is being made
-     * @param amount        Payment amount
-     * @return The PaymentReceipt object for the processed payment
      */
-    @PostMapping("/ticket/{ticketId}")
-    public PaymentReceipt processTicketPayment(
-            @PathVariable Long ticketId,
-            @RequestParam Double amount) {
-        return paymentService.processTicketPayment(ticketId, amount);
+    @PostMapping("/ticket")
+    public TicketPaymentResponseDto processTicketPayment(
+            @RequestBody TicketPaymentRequestDto ticketPaymentRequestDto) {
+        return paymentService.processTicketPayment(
+                ticketPaymentRequestDto.getTicketId(),
+                ticketPaymentRequestDto.getAmount(),
+                ticketPaymentRequestDto.getPaymentCardDto()
+        );
     }
 
     /**
      * Process annual fee payment for a registered user.
-     *
-     * @param userId        ID of the user paying the annual fee
-     * @param amount        Payment amount (e.g., $20.00)
-     * @return The PaymentReceipt object for the processed annual fee payment
      */
-    @PostMapping("/annualFee/{userId}")
-    public PaymentReceipt processAnnualFeePayment(
-            @PathVariable Long userId,
-            @RequestParam Double amount) {
-        return paymentService.processAnnualFeePayment(userId, amount);
+    @PostMapping("/annualFee")
+    public PaymentReceipt processAnnualFeePayment(@RequestBody AnnualFeePaymentRequestDto annualFeePaymentRequestDto) {
+        return paymentService.processAnnualFeePayment(
+                annualFeePaymentRequestDto.getUserId(),
+                annualFeePaymentRequestDto.getAmount(),
+                annualFeePaymentRequestDto.getPaymentCardDto());
     }
 }
