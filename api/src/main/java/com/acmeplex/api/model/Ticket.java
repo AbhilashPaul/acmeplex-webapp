@@ -20,7 +20,7 @@ public class Ticket {
     @JoinColumn(name = "seatId", nullable = false)
     private Seat seat;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showtimeId", nullable = false)
     private Showtime showtime;
 

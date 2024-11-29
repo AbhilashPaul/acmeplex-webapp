@@ -23,7 +23,7 @@ public class CreditVoucher {
     private Boolean isUsed;
 
     @OneToOne
-    @JoinColumn(name = "ticket_id", nullable = false)
+    @JoinColumn(name = "ticketId", nullable = false)
     private Ticket ticket; // The ticket associated with this credit voucher
 
     public CreditVoucher() {

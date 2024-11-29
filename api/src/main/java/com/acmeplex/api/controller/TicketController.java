@@ -1,5 +1,7 @@
 package com.acmeplex.api.controller;
 
+import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.model.CreditVoucher;
 import com.acmeplex.api.model.Ticket;
 import com.acmeplex.api.service.TicketService;
@@ -18,22 +20,10 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    /**
-     * Create a new ticket.
-     *
-     * @param customerName  Name of the customer
-     * @param customerEmail Email of the customer
-     * @param seatId        ID of the seat being booked
-     * @param showtimeId    ID of the showtime for the ticket
-     * @return The created Ticket object
-     */
+
     @PostMapping
-    public Ticket createTicket(
-            @RequestParam String customerName,
-            @RequestParam String customerEmail,
-            @RequestParam Long seatId,
-            @RequestParam Long showtimeId) {
-        return ticketService.createTicket(customerName, customerEmail, seatId, showtimeId);
+    public TicketDto createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
+        return ticketService.createTicket(createTicketRequestDto);
     }
 
     /**
