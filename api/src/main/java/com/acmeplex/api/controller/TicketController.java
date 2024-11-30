@@ -3,7 +3,6 @@ package com.acmeplex.api.controller;
 import com.acmeplex.api.dto.CreateTicketRequestDto;
 import com.acmeplex.api.dto.CreditVoucherDto;
 import com.acmeplex.api.dto.TicketDto;
-import com.acmeplex.api.model.CreditVoucher;
 import com.acmeplex.api.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class TicketController {
 
     @PostMapping
     public TicketDto createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
-        return ticketService.createTicket(createTicketRequestDto);
+        return ticketService.reserveTicket(createTicketRequestDto);
     }
 
     @GetMapping("/by-email")
