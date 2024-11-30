@@ -5,10 +5,7 @@ import com.acmeplex.api.dto.PaymentReceiptDto;
 import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.mappers.PaymentReceiptMapper;
 import com.acmeplex.api.mappers.TicketMapper;
-import com.acmeplex.api.model.PaymentReceipt;
-import com.acmeplex.api.model.PaymentStatus;
-import com.acmeplex.api.model.RegisteredUser;
-import com.acmeplex.api.model.Ticket;
+import com.acmeplex.api.model.*;
 import com.acmeplex.api.repository.PaymentReceiptRepository;
 import com.acmeplex.api.repository.RegisteredUserRepository;
 import com.acmeplex.api.repository.TicketRepository;
@@ -57,7 +54,7 @@ public class PaymentService {
         );
         PaymentReceipt paymentReceipt = paymentReceiptRepository.save(receipt);
 
-        ticket.setPaymentStatus(PaymentStatus.SUCCESS);
+        ticket.setStatus(TicketStatus.CONFIRMED);
         ticket.setPaymentReceipt(paymentReceipt);
         TicketDto updatedTicket = TicketMapper.toTicketDto(ticketRepository.save(ticket));
         updatedTicket.getShowtime().setSeats(Collections.emptyList());

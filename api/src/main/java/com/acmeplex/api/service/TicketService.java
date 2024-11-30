@@ -66,7 +66,7 @@ public class TicketService {
         showtimeSeatRepository.save(showtimeSeat);
 
         return TicketMapper.toTicketDto(
-                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, PaymentStatus.PENDING)));
+                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, TicketStatus.BOOKED)));
     }
 
     private Double calculateTicketPrice(String customerEmail, Seat seat) {
@@ -132,6 +132,9 @@ public class TicketService {
         isCancellationAllowed(ticket, now);
 
         double refundAmount = calculateRefundAmount(ticket);
+
+        ticket.setStatus(TicketStatus.CANCELLED);
+        ticketRepository.save(ticket);
 
         // Create a Credit Voucher
         CreditVoucher creditVoucher = new CreditVoucher(
