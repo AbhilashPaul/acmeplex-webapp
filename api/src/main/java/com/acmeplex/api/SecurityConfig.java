@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/register", "/auth/login", "/api/movies/**", "/api/seats/**",
-                                "api/theatres/**", "api/payments/ticket/**", "/api/showtimes/**", "/api/tickets/**").permitAll()
+                                "api/theatres/**", "api/payments/ticket/**", "/api/showtimes/**", "/api/tickets/**", "/api/credits/**").permitAll()
                         .anyRequest().authenticated() // All other endpoints require authentication
                 )
                 .sessionManagement(session -> session
