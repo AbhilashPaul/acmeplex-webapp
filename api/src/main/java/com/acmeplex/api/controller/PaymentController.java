@@ -1,9 +1,9 @@
 package com.acmeplex.api.controller;
 
 import com.acmeplex.api.dto.AnnualFeePaymentRequestDto;
+import com.acmeplex.api.dto.PaymentReceiptDto;
 import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.dto.TicketPaymentRequestDto;
-import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/payments")
 public class PaymentController {
 
+    public static final double MEMBERSHIP_ANNUAL_FEE = 20.0;
     private final PaymentService paymentService;
 
     @Autowired
@@ -37,10 +38,9 @@ public class PaymentController {
      * Process annual fee payment for a registered user.
      */
     @PostMapping("/annualFee")
-    public PaymentReceipt processAnnualFeePayment(@RequestBody AnnualFeePaymentRequestDto annualFeePaymentRequestDto) {
+    public PaymentReceiptDto processAnnualFeePayment(@RequestBody AnnualFeePaymentRequestDto annualFeePaymentRequestDto) {
         return paymentService.processAnnualFeePayment(
-                annualFeePaymentRequestDto.getUserId(),
-                annualFeePaymentRequestDto.getAmount(),
-                annualFeePaymentRequestDto.getPaymentCardDto());
+                annualFeePaymentRequestDto.getUserId(), MEMBERSHIP_ANNUAL_FEE,
+                annualFeePaymentRequestDto.getPaymentCard());
     }
 }
