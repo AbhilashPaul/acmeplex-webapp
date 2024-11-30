@@ -3,14 +3,11 @@ package com.acmeplex.api.dto;
 public class AnnualFeePaymentRequestDto {
     private Long userId;
 
-    private Double amount;
+    private PaymentCardDto paymentCard;
 
-    private PaymentCardDto paymentCardDto;
-
-    public AnnualFeePaymentRequestDto(Long userId, Double amount, PaymentCardDto paymentCardDto) {
+    public AnnualFeePaymentRequestDto(Long userId, PaymentCardDto paymentCard) {
         this.userId = userId;
-        this.amount = amount;
-        this.paymentCardDto = paymentCardDto;
+        this.paymentCard = paymentCard;
     }
 
     public AnnualFeePaymentRequestDto() {
@@ -24,19 +21,11 @@ public class AnnualFeePaymentRequestDto {
         this.userId = userId;
     }
 
-    public Double getAmount() {
-        return amount;
+    public PaymentCardDto getPaymentCard() {
+        return paymentCard;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public PaymentCardDto getPaymentCardDto() {
-        return paymentCardDto;
-    }
-
-    public void setPaymentCardDto(PaymentCardDto paymentCardDto) {
-        this.paymentCardDto = paymentCardDto;
+    public void setPaymentCard(PaymentCardDto paymentCard) {
+        this.paymentCard = paymentCard;
     }
 }

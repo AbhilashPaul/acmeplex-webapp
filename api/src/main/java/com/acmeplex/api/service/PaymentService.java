@@ -1,7 +1,9 @@
 package com.acmeplex.api.service;
 
 import com.acmeplex.api.dto.PaymentCardDto;
+import com.acmeplex.api.dto.PaymentReceiptDto;
 import com.acmeplex.api.dto.TicketDto;
+import com.acmeplex.api.mappers.PaymentReceiptMapper;
 import com.acmeplex.api.mappers.TicketMapper;
 import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.model.PaymentStatus;
@@ -62,7 +64,7 @@ public class PaymentService {
         return updatedTicket;
     }
 
-    public PaymentReceipt processAnnualFeePayment(Long userId, Double amount, PaymentCardDto paymentCardDto) {
+    public PaymentReceiptDto processAnnualFeePayment(Long userId, Double amount, PaymentCardDto paymentCardDto) {
         // Fetch the user by ID
         RegisteredUser user = registeredUserRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Registered User %d not found", userId)));
@@ -82,6 +84,6 @@ public class PaymentService {
                 null
         );
 
-        return paymentReceiptRepository.save(receipt);
+        return PaymentReceiptMapper.toPaymentReceiptDto(paymentReceiptRepository.save(receipt));
     }
 }
