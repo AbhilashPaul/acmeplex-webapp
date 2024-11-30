@@ -25,40 +25,29 @@ public class TicketService {
     public static final double DEDUCTION_PERCENT_GUEST_USERS = 0.15;
     public static final int CREDIT_VOUCHER_VALIDITY_PERIOD_IN_YEARS = 1;
     private final TicketRepository ticketRepository;
-    private final ShowtimeRepository showtimeRepository;
     private final CreditVoucherRepository creditVoucherRepository;
     private final RegisteredUserRepository registeredUserRepository;
     private final ShowtimeSeatRepository showtimeSeatRepository;
 
     @Autowired
     public TicketService(TicketRepository ticketRepository,
-                         ShowtimeRepository showtimeRepository,
                          CreditVoucherRepository creditVoucherRepository,
                          RegisteredUserRepository registeredUserRepository,
                          ShowtimeSeatRepository showtimeSeatRepository) {
         this.ticketRepository = ticketRepository;
-        this.showtimeRepository = showtimeRepository;
         this.creditVoucherRepository = creditVoucherRepository;
         this.registeredUserRepository = registeredUserRepository;
         this.showtimeSeatRepository = showtimeSeatRepository;
     }
 
     // Create a new ticket
-    public TicketDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
-        Long showtimeId = createTicketRequestDto.getShowtimeId();
-        Long seatId = createTicketRequestDto.getSeatId();
-        String customerName = createTicketRequestDto.getCustomerName();
-        String customerEmail = createTicketRequestDto.getCustomerEmail();
+    public TicketDto reserveTicket(CreateTicketRequestDto reserveTicketRequestDto) {
+        Long showtimeId = reserveTicketRequestDto.getShowtimeId();
+        Long seatId = reserveTicketRequestDto.getSeatId();
+        String customerName = reserveTicketRequestDto.getCustomerName();
+        String customerEmail = reserveTicketRequestDto.getCustomerEmail();
 
-        ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
-        if (showtimeSeat.getIsReserved()) {
-            throw new RuntimeException("Seat is already reserved");
-        }
-
-        Showtime showtime = showtimeRepository.findById(showtimeId)
-                .orElseThrow(() -> new RuntimeException("Showtime not found"));
-
+        ShowtimeSeat showtimeSeat = getShowtimeSeat(showtimeId, seatId);
 
         Double ticketPrice = calculateTicketPrice(customerEmail, showtimeSeat.getSeat());
         TicketStatus ticketStatus = TicketStatus.BOOKED;
@@ -69,11 +58,21 @@ public class TicketService {
         showtimeSeatRepository.save(showtimeSeat);
 
         return TicketMapper.toTicketDto(
-                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, ticketStatus)));
+                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtimeSeat.getShowtime(), ticketStatus)));
+    }
+
+    private ShowtimeSeat getShowtimeSeat(Long showtimeId, Long seatId) {
+        ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+        if (showtimeSeat.getIsReserved()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Seat "+ seatId +" is already reserved");
+        }
+        return showtimeSeat;
     }
 
     private Double calculateTicketPrice(String customerEmail, Seat seat) {
-        // Calculate initial ticket price based on seat price
         Double ticketPrice = seat.getPrice();
         // Apply unused credit vouchers
         List<CreditVoucher> vouchers = creditVoucherRepository.findByCustomerEmailAndIsUsedFalse(customerEmail);
@@ -101,14 +100,7 @@ public class TicketService {
     }
 
     public List<TicketDto> getAllTickets() {
-        try {
-            List<Ticket> ticketList = ticketRepository.findAll();
-            return getTicketDtos(ticketList);
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Server error", e);
-        }
+        return getTicketDtos(ticketRepository.findAll());
     }
 
     public List<TicketDto> getTicketsByCustomerEmail(String customerEmail) {
@@ -167,7 +159,7 @@ public class TicketService {
         Long showtimeId = ticket.getShowtime().getId();
         Long seatId = ticket.getSeat().getId();
         ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
-                .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
 
         showtimeSeat.setIsReserved(false);
         showtimeSeatRepository.save(showtimeSeat);
@@ -180,7 +172,7 @@ public class TicketService {
         long hoursUntilShowtime = Duration.between(current_time, showtimeStart).toHours();
 
         if (hoursUntilShowtime < CANCELLATION_CUTOFF_HOURS) {
-            throw new RuntimeException("Cancellation is not allowed within 72 hours of the showtime.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancellation is not allowed within 72 hours of the showtime.");
         }
     }
 
