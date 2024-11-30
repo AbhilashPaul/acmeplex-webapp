@@ -111,6 +111,10 @@ public class TicketService {
         }
     }
 
+    public List<TicketDto> getTicketsByCustomerEmail(String customerEmail) {
+        return getTicketDtos(ticketRepository.findByCustomerEmail(customerEmail));
+    }
+
     private List<TicketDto> getTicketDtos(List<Ticket> ticketList) {
         List<TicketDto> tickets = new ArrayList<>();
         for (Ticket item : ticketList) {

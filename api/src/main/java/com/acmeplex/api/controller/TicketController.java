@@ -28,9 +28,9 @@ public class TicketController {
         return ticketService.createTicket(createTicketRequestDto);
     }
 
-    @GetMapping
-    public List<TicketDto> getAllTickets() {
-        return ticketService.getAllTickets();
+    @GetMapping("/by-email")
+    public List<TicketDto> getTicketsByCustomerEmail(@RequestParam String email) {
+        return ticketService.getTicketsByCustomerEmail(email);
     }
 
     /**
