@@ -49,7 +49,7 @@ public class TicketService {
         String customerEmail = createTicketRequestDto.getCustomerEmail();
 
         ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
-                .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
         if (showtimeSeat.getIsReserved()) {
             throw new RuntimeException("Seat is already reserved");
         }
@@ -123,7 +123,7 @@ public class TicketService {
 
     public CreditVoucher cancelTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
 
         // Check if cancellation is allowed (72 hours before showtime)
         LocalDateTime now = LocalDateTime.now();
@@ -168,7 +168,7 @@ public class TicketService {
     private double calculateRefundAmount(Ticket ticket) {
         PaymentReceipt paymentReceipt = ticket.getPaymentReceipt();
         if (paymentReceipt == null || paymentReceipt.getStatus() != PaymentStatus.SUCCESS) {
-            throw new RuntimeException("No successful payment found for this ticket.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No successful payment found for this ticket.");
         }
         // Retrieve the user based on customer email
         String customerEmail = ticket.getCustomerEmail();

@@ -14,8 +14,7 @@ public class PaymentReceipt {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "ticketId")
+    @OneToOne(mappedBy = "paymentReceipt", cascade = CascadeType.ALL)
     private Ticket ticket;
 
     public PaymentReceipt() {

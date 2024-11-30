@@ -7,12 +7,12 @@ public class TicketPaymentRequestDto {
 
     private Double amount;
 
-    private PaymentCardDto paymentCardDto;
+    private PaymentCardDto paymentCard;
 
-    public TicketPaymentRequestDto(Long ticketId, Double amount, PaymentCardDto paymentCardDto) {
+    public TicketPaymentRequestDto(Long ticketId, Double amount, PaymentCardDto paymentCard) {
         this.ticketId = ticketId;
         this.amount = amount;
-        this.paymentCardDto = paymentCardDto;
+        this.paymentCard = paymentCard;
     }
 
     public TicketPaymentRequestDto() {
@@ -34,11 +34,11 @@ public class TicketPaymentRequestDto {
         this.amount = amount;
     }
 
-    public PaymentCardDto getPaymentCardDto() {
-        return paymentCardDto;
+    public PaymentCardDto getPaymentCard() {
+        return paymentCard;
     }
 
-    public void setPaymentCardDto(PaymentCardDto paymentCardDto) {
-        this.paymentCardDto = paymentCardDto;
+    public void setPaymentCard(PaymentCardDto paymentCard) {
+        this.paymentCard = paymentCard;
     }
 }

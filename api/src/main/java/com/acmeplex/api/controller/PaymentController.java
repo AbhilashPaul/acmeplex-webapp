@@ -1,8 +1,8 @@
 package com.acmeplex.api.controller;
 
 import com.acmeplex.api.dto.AnnualFeePaymentRequestDto;
+import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.dto.TicketPaymentRequestDto;
-import com.acmeplex.api.dto.TicketPaymentResponseDto;
 import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ public class PaymentController {
      * Process payment for a ticket.
      */
     @PostMapping("/ticket")
-    public TicketPaymentResponseDto processTicketPayment(
+    public TicketDto processTicketPayment(
             @RequestBody TicketPaymentRequestDto ticketPaymentRequestDto) {
         return paymentService.processTicketPayment(
                 ticketPaymentRequestDto.getTicketId(),
                 ticketPaymentRequestDto.getAmount(),
-                ticketPaymentRequestDto.getPaymentCardDto()
+                ticketPaymentRequestDto.getPaymentCard()
         );
     }
 

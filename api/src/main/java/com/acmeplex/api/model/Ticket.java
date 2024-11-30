@@ -30,8 +30,8 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-
-    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "paymentReceiptId")
     private PaymentReceipt paymentReceipt;
 
     public Ticket() {

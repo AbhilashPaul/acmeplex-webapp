@@ -17,12 +17,12 @@ public class TicketDto {
     private MovieDto movie;
     private ShowtimeDto showtime;
     private PaymentStatus paymentStatus;
-    private PaymentReceipt paymentReceipt;
+    private PaymentReceiptDto paymentReceipt;
 
 
     public TicketDto(Long id, String customerName, String customerEmail,
                      Double price, Seat seat, MovieDto movie, ShowtimeDto showtime,
-                     PaymentStatus paymentStatus, PaymentReceipt paymentReceipt) {
+                     PaymentStatus paymentStatus, PaymentReceiptDto paymentReceipt) {
         this.id = id;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -101,11 +101,11 @@ public class TicketDto {
         this.paymentStatus = paymentStatus;
     }
 
-    public PaymentReceipt getPaymentReceipt() {
+    public PaymentReceiptDto getPaymentReceipt() {
         return paymentReceipt;
     }
 
-    public void setPaymentReceipt(PaymentReceipt paymentReceipt) {
+    public void setPaymentReceipt(PaymentReceiptDto paymentReceipt) {
         this.paymentReceipt = paymentReceipt;
     }
 }
