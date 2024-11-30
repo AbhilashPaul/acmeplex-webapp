@@ -1,5 +1,9 @@
 package com.acmeplex.api.service;
 
+import com.acmeplex.api.dto.PaymentCardDto;
+import com.acmeplex.api.dto.TicketPaymentResponseDto;
+import com.acmeplex.api.mappers.PaymentReceiptMapper;
+import com.acmeplex.api.mappers.TicketMapper;
 import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.model.PaymentStatus;
 import com.acmeplex.api.model.RegisteredUser;
@@ -19,20 +23,25 @@ public class PaymentService {
     private final TicketRepository ticketRepository;
     private final RegisteredUserRepository registeredUserRepository;
     private final PaymentReceiptRepository paymentReceiptRepository;
+    private final PaymentGateway paymentGateway;
 
     @Autowired
-    public PaymentService(TicketRepository ticketRepository, PaymentReceiptRepository paymentReceiptRepository, RegisteredUserRepository registeredUserRepository) {
+    public PaymentService(TicketRepository ticketRepository,
+                          PaymentReceiptRepository paymentReceiptRepository,
+                          RegisteredUserRepository registeredUserRepository,
+                          PaymentGateway paymentGateway) {
         this.ticketRepository = ticketRepository;
         this.paymentReceiptRepository = paymentReceiptRepository;
         this.registeredUserRepository = registeredUserRepository;
+        this.paymentGateway = paymentGateway;
     }
 
-    public PaymentReceipt processTicketPayment(Long ticketId, Double amount) {
+    public TicketPaymentResponseDto processTicketPayment(Long ticketId, Double amount, PaymentCardDto paymentCardDto) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         // Simulate transaction processing (e.g., via a third-party gateway)
-        String transactionId = UUID.randomUUID().toString(); // Simulated transaction ID
+        String transactionId = paymentGateway.processPayment(paymentCardDto);
 
         PaymentReceipt receipt = new PaymentReceipt(
                 amount,
@@ -41,17 +50,21 @@ public class PaymentService {
                 PaymentStatus.SUCCESS,
                 ticket
         );
+        PaymentReceipt paymentReceipt = paymentReceiptRepository.save(receipt);
 
-        return paymentReceiptRepository.save(receipt);
+        ticket.setPaymentStatus(PaymentStatus.SUCCESS);
+        ticket.setPaymentReceipt(paymentReceipt);
+        Ticket updatedTicket = ticketRepository.save(ticket);
+
+        return new TicketPaymentResponseDto(TicketMapper.toTicketDto(ticket), PaymentReceiptMapper.toPaymentReceiptDto(receipt));
     }
 
-    public PaymentReceipt processAnnualFeePayment(Long userId, Double amount) {
+    public PaymentReceipt processAnnualFeePayment(Long userId, Double amount, PaymentCardDto paymentCardDto) {
         // Fetch the user by ID
         RegisteredUser user = registeredUserRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Registered user not found"));
 
-        // Simulate transaction processing (e.g., via a third-party gateway)
-        String transactionId = UUID.randomUUID().toString();
+        String transactionId = paymentGateway.processPayment(paymentCardDto);
 
         user.setAnnualFeePaid(true);
         user.setAnnualFeePaidDate(LocalDateTime.now());

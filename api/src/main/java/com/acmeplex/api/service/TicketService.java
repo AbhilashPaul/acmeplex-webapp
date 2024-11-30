@@ -6,10 +6,13 @@ import com.acmeplex.api.mappers.TicketMapper;
 import com.acmeplex.api.model.*;
 import com.acmeplex.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,10 +95,30 @@ public class TicketService {
         return ticketPrice;
     }
 
+    public List<TicketDto> getAllTickets() {
+        try {
+            List<Ticket> ticketList = ticketRepository.findAll();
+            return getTicketDtos(ticketList);
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Server error", e);
+        }
+    }
+
+    private List<TicketDto> getTicketDtos(List<Ticket> ticketList) {
+        List<TicketDto> tickets = new ArrayList<>();
+        for (Ticket item : ticketList) {
+            tickets.add(TicketMapper.toTicketDto(item));
+        }
+        return tickets;
+    }
+
     // Retrieve ticket details by ID
-    public Ticket getTicketDetails(Long ticketId) {
-        return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+    public TicketDto getTicketDetails(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
+        return TicketMapper.toTicketDto(ticket);
     }
 
     public CreditVoucher cancelTicket(Long ticketId) {
