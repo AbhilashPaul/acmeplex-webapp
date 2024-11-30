@@ -25,19 +25,16 @@ public class TicketService {
     public static final double DEDUCTION_PERCENT_GUEST_USERS = 0.15;
     public static final int CREDIT_VOUCHER_VALIDITY_PERIOD_IN_YEARS = 1;
     private final TicketRepository ticketRepository;
-    private final ShowtimeRepository showtimeRepository;
     private final CreditVoucherRepository creditVoucherRepository;
     private final RegisteredUserRepository registeredUserRepository;
     private final ShowtimeSeatRepository showtimeSeatRepository;
 
     @Autowired
     public TicketService(TicketRepository ticketRepository,
-                         ShowtimeRepository showtimeRepository,
                          CreditVoucherRepository creditVoucherRepository,
                          RegisteredUserRepository registeredUserRepository,
                          ShowtimeSeatRepository showtimeSeatRepository) {
         this.ticketRepository = ticketRepository;
-        this.showtimeRepository = showtimeRepository;
         this.creditVoucherRepository = creditVoucherRepository;
         this.registeredUserRepository = registeredUserRepository;
         this.showtimeSeatRepository = showtimeSeatRepository;
