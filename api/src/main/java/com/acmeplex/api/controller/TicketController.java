@@ -3,10 +3,11 @@ package com.acmeplex.api.controller;
 import com.acmeplex.api.dto.CreateTicketRequestDto;
 import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.model.CreditVoucher;
-import com.acmeplex.api.model.Ticket;
 import com.acmeplex.api.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
@@ -26,6 +27,11 @@ public class TicketController {
         return ticketService.createTicket(createTicketRequestDto);
     }
 
+    @GetMapping
+    public List<TicketDto> getAllTickets() {
+        return ticketService.getAllTickets();
+    }
+
     /**
      * Retrieve details of a specific ticket by ID.
      *
@@ -33,7 +39,7 @@ public class TicketController {
      * @return The Ticket object with associated details
      */
     @GetMapping("/{ticketId}")
-    public Ticket getTicketDetails(@PathVariable Long ticketId) {
+    public TicketDto getTicketDetails(@PathVariable Long ticketId) {
         return ticketService.getTicketDetails(ticketId);
     }
 

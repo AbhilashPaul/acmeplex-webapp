@@ -27,6 +27,7 @@ public class Ticket {
     @CreationTimestamp
     private Date bookingTime;
 
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
 
