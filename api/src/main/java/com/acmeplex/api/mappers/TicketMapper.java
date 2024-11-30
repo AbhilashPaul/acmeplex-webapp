@@ -1,6 +1,7 @@
 package com.acmeplex.api.mappers;
 
 import com.acmeplex.api.dto.TicketDto;
+import com.acmeplex.api.model.PaymentReceipt;
 import com.acmeplex.api.model.Seat;
 import com.acmeplex.api.model.Ticket;
 
@@ -24,7 +25,12 @@ public class TicketMapper {
             ticketDto.setShowtime(ShowtimeMapper.toShowtimeDto(ticket.getShowtime()));
             ticketDto.setMovie(MovieMapper.toMovieDto(ticket.getShowtime().getMovie()));
         }
+        ticketDto.setPaymentStatus(ticket.getPaymentStatus());
+        PaymentReceipt paymentReceipt = ticket.getPaymentReceipt();
+        if (paymentReceipt != null){
 
+            ticketDto.setPaymentReceipt(PaymentReceiptMapper.toPaymentReceiptDto(paymentReceipt));
+        }
         return ticketDto;
     }
 }
