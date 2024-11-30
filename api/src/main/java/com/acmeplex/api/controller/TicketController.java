@@ -1,6 +1,7 @@
 package com.acmeplex.api.controller;
 
 import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.CreditVoucherDto;
 import com.acmeplex.api.dto.TicketDto;
 import com.acmeplex.api.model.CreditVoucher;
 import com.acmeplex.api.service.TicketService;
@@ -50,7 +51,7 @@ public class TicketController {
      * @return The created Credit Voucher object
      */
     @PostMapping("/{ticketId}/cancel")
-    public CreditVoucher cancelTicket(@PathVariable Long ticketId) {
+    public CreditVoucherDto cancelTicket(@PathVariable Long ticketId) {
         return ticketService.cancelTicket(ticketId);
     }
 }

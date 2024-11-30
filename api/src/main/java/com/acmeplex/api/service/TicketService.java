@@ -1,7 +1,9 @@
 package com.acmeplex.api.service;
 
 import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.CreditVoucherDto;
 import com.acmeplex.api.dto.TicketDto;
+import com.acmeplex.api.mappers.CreditVoucherMapper;
 import com.acmeplex.api.mappers.TicketMapper;
 import com.acmeplex.api.model.*;
 import com.acmeplex.api.repository.*;
@@ -121,7 +123,7 @@ public class TicketService {
         return TicketMapper.toTicketDto(ticket);
     }
 
-    public CreditVoucher cancelTicket(Long ticketId) {
+    public CreditVoucherDto cancelTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
 
@@ -153,7 +155,7 @@ public class TicketService {
         showtimeSeat.setIsReserved(false);
         showtimeSeatRepository.save(showtimeSeat);
 
-        return creditVoucher;
+        return CreditVoucherMapper.toCreditVoucherDto(creditVoucher);
     }
 
     private void isCancellationAllowed(Ticket ticket, LocalDateTime current_time) {
