@@ -59,14 +59,17 @@ public class TicketService {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Showtime not found"));
 
+
         Double ticketPrice = calculateTicketPrice(customerEmail, showtimeSeat.getSeat());
+        TicketStatus ticketStatus = TicketStatus.BOOKED;
+        if (ticketPrice > 0){ticketStatus = TicketStatus.CONFIRMED;}
 
         // Mark seat as reserved
         showtimeSeat.setIsReserved(true);
         showtimeSeatRepository.save(showtimeSeat);
 
         return TicketMapper.toTicketDto(
-                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, PaymentStatus.PENDING)));
+                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, ticketStatus)));
     }
 
     private Double calculateTicketPrice(String customerEmail, Seat seat) {
@@ -127,11 +130,21 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
 
+        if (ticket.getStatus() == TicketStatus.CANCELLED){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Ticket %d is already cancelled", ticketId));
+        }
+        if (ticket.getStatus() != TicketStatus.BOOKED && ticket.getPaymentReceipt() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Payment is yet to be made for ticket %d", ticketId));
+        }
+
         // Check if cancellation is allowed (72 hours before showtime)
         LocalDateTime now = LocalDateTime.now();
         isCancellationAllowed(ticket, now);
 
         double refundAmount = calculateRefundAmount(ticket);
+
+        ticket.setStatus(TicketStatus.CANCELLED);
+        ticketRepository.save(ticket);
 
         // Create a Credit Voucher
         CreditVoucher creditVoucher = new CreditVoucher(

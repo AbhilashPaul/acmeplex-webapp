@@ -25,7 +25,7 @@ public class TicketMapper {
             ticketDto.setShowtime(ShowtimeMapper.toShowtimeDto(ticket.getShowtime()));
             ticketDto.setMovie(MovieMapper.toMovieDto(ticket.getShowtime().getMovie()));
         }
-        ticketDto.setPaymentStatus(ticket.getPaymentStatus());
+        ticketDto.setStatus(ticket.getStatus());
         PaymentReceipt paymentReceipt = ticket.getPaymentReceipt();
         if (paymentReceipt != null){
 

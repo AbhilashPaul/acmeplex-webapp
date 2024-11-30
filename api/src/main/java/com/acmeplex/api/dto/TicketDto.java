@@ -1,8 +1,7 @@
 package com.acmeplex.api.dto;
 
-import com.acmeplex.api.model.PaymentReceipt;
-import com.acmeplex.api.model.PaymentStatus;
 import com.acmeplex.api.model.Seat;
+import com.acmeplex.api.model.TicketStatus;
 
 public class TicketDto {
     private Long id;
@@ -16,13 +15,13 @@ public class TicketDto {
 
     private MovieDto movie;
     private ShowtimeDto showtime;
-    private PaymentStatus paymentStatus;
+    private TicketStatus status;
     private PaymentReceiptDto paymentReceipt;
 
 
     public TicketDto(Long id, String customerName, String customerEmail,
                      Double price, Seat seat, MovieDto movie, ShowtimeDto showtime,
-                     PaymentStatus paymentStatus, PaymentReceiptDto paymentReceipt) {
+                     TicketStatus status, PaymentReceiptDto paymentReceipt) {
         this.id = id;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -30,7 +29,7 @@ public class TicketDto {
         this.seat = seat;
         this.movie = movie;
         this.showtime = showtime;
-        this.paymentStatus = paymentStatus;
+        this.status = status;
         this.paymentReceipt = paymentReceipt;
     }
 
@@ -93,12 +92,12 @@ public class TicketDto {
         this.showtime = showtime;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public TicketStatus getStatus() {
+        return status;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 
     public PaymentReceiptDto getPaymentReceipt() {

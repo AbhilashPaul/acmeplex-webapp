@@ -28,7 +28,7 @@ public class Ticket {
     private Date bookingTime;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private TicketStatus status;
 
     @OneToOne
     @JoinColumn(name = "paymentReceiptId")
@@ -37,13 +37,13 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(String customerName, String customerEmail, Double price, Seat seat, Showtime showtime, PaymentStatus paymentStatus) {
+    public Ticket(String customerName, String customerEmail, Double price, Seat seat, Showtime showtime, TicketStatus status) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.price = price;
         this.seat = seat;
         this.showtime = showtime;
-        this.paymentStatus = paymentStatus;
+        this.status = status;
     }
 
     public Long getId() {
@@ -94,12 +94,12 @@ public class Ticket {
         this.bookingTime = bookingTime;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public TicketStatus getStatus() {
+        return status;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 
     public PaymentReceipt getPaymentReceipt() {
