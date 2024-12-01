@@ -17,10 +17,10 @@
       </mat-card-header>
       <mat-card-content>
         <div class="show-time-list">
-          <button mat-raised-button color="primary" *ngFor="let time of selectedTheater.showTimes"
-            (click)="selectShowTime(time)"
-            [class.active]="selectedShowTime === time">
-            {{ time }}
+          <button mat-raised-button color="primary" *ngFor="let showtime of selectedTheater.showtimes"
+            (click)="selectShowTime(showtime)"
+            [class.active]="selectedShowTime === showtime">
+            {{ showtime.date + ' ' + showtime.time }}
           </button>
         </div>
       </mat-card-content>
@@ -28,7 +28,7 @@
   </div>
   
   <div class="seat-selection" *ngIf="selectedShowTime">
-    <h2>Select Your Seats for {{ selectedShowTime }}</h2>
+    <h2>Select Your Seats for {{ selectedShowTime.date + ' ' + selectedShowTime.time }}</h2>
     <mat-card>
       <div class="seat-map">
         <div *ngFor="let row of seatMap; let rowIndex = index" class="seat-row">

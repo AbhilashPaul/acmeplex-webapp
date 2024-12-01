@@ -22,7 +22,7 @@ export class TheaterDetailsComponent implements OnInit {
   selctedMovie: any;
   theaters: any[] = [];
   selectedTheater: any = null;
-  selectedShowTime: string | null = null;
+  selectedShowTime: any = null;
   selectedSeats: { row: number; seat: number }[] = [];
   seatMap: any[][] = []; // Dummy seat map
 
@@ -62,12 +62,9 @@ export class TheaterDetailsComponent implements OnInit {
 
   // Update the seatMap based on the selected showtime's data
   if (this.selectedTheater && this.selectedShowTime) {
-    const showtime = this.selectedTheater.showtimes.find(
-      (st: any) => st.time === this.selectedShowTime
-    );
-    if (showtime && showtime.seats) {
-      // Create a seat map based on the showtime's seats
-      this.seatMap = this.generateSeatMap(showtime.seats);
+    const seats: any[] = this.selectedShowTime.seats;
+    if (seats) {
+      this.seatMap = this.generateSeatMap(seats);
     } else {
       this.seatMap = []; // Reset if no seats are available
     }
