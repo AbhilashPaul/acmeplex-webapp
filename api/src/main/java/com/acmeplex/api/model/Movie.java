@@ -15,7 +15,7 @@ public class Movie {
 
     private String description;
 
-    private String duration;
+    private Integer durationInMinute;
 
     private String genre;
 
@@ -29,11 +29,11 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(Long id, String title, String description, String duration, String genre, MovieRating movieRating, String imageUrl) {
+    public Movie(Long id, String title, String description, Integer durationInMinute, String genre, MovieRating movieRating, String imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.duration = duration;
+        this.durationInMinute = durationInMinute;
         this.genre = genre;
         this.movieRating = movieRating;
         this.imageUrl = imageUrl;
@@ -63,12 +63,12 @@ public class Movie {
         this.description = description;
     }
 
-    public String getDuration() {
-        return duration;
+    public Integer getDurationInMinute() {
+        return durationInMinute;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setDurationInMinute(Integer durationInMinute) {
+        this.durationInMinute = durationInMinute;
     }
 
     public String getGenre() {
@@ -101,18 +101,5 @@ public class Movie {
 
     public void setShowtimes(Set<Showtime> showtimes) {
         this.showtimes = showtimes;
-    }
-
-    /**
-     * Method to add a Showtime to the Movie.
-     * Ensures bidirectional relationship is maintained.
-     *
-     * @param showtime The Showtime object to be added.
-     */
-    public void addShowtime(Showtime showtime) {
-        if (showtime != null) {
-            showtime.setMovie(this); // Maintain bidirectional relationship
-            this.showtimes.add(showtime);
-        }
     }
 }

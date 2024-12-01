@@ -20,10 +20,10 @@ public class CreditVoucherService {
         this.creditVoucherRepository = creditVoucherRepository;
     }
 
-    public List<CreditVoucherDto> getUnusedCreditVouchersByCustomerEmail(String email){
+    public List<CreditVoucherDto> getUnusedCreditVouchersByCustomerEmail(String email) {
         List<CreditVoucher> voucherList = creditVoucherRepository.findByCustomerEmailAndIsUsedFalse(email);
         List<CreditVoucherDto> vouchers = new ArrayList<>();
-        for( CreditVoucher voucher: voucherList){
+        for (CreditVoucher voucher : voucherList) {
             vouchers.add(CreditVoucherMapper.toCreditVoucherDto(voucher));
         }
         return vouchers;

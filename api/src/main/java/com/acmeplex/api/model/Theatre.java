@@ -75,17 +75,4 @@ public class Theatre {
     public void setShowtimes(List<Showtime> showtimes) {
         this.showtimes = showtimes;
     }
-
-    /**
-     * Method to add a Showtime to the Theatre.
-     * Ensures bidirectional relationship is maintained.
-     *
-     * @param showtime The Showtime object to be added.
-     */
-    public void addShowtime(Showtime showtime) {
-        if (showtime != null) {
-            showtime.setTheatre(this); // Maintain bidirectional relationship
-            this.showtimes.add(showtime);
-        }
-    }
 }

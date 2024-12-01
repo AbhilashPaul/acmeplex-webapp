@@ -20,7 +20,6 @@ public class NotificationManager {
         }
     }
 
-
     public void sendNotification(String message) {
         notifyObservers(message);
     }

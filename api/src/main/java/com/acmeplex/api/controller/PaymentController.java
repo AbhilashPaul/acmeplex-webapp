@@ -22,11 +22,10 @@ public class PaymentController {
 
 
     /**
-     * Process payment for a ticket.
+     * Processes payment for a ticket.
      */
     @PostMapping("/ticket")
-    public TicketDto processTicketPayment(
-            @RequestBody TicketPaymentRequestDto ticketPaymentRequestDto) {
+    public TicketDto processTicketPayment(@RequestBody TicketPaymentRequestDto ticketPaymentRequestDto) {
         return paymentService.processTicketPayment(
                 ticketPaymentRequestDto.getTicketId(),
                 ticketPaymentRequestDto.getAmount(),
@@ -35,7 +34,7 @@ public class PaymentController {
     }
 
     /**
-     * Process annual fee payment for a registered user.
+     * Processes annual fee payment for a registered user.
      */
     @PostMapping("/annualFee")
     public PaymentReceiptDto processAnnualFeePayment(@RequestBody AnnualFeePaymentRequestDto annualFeePaymentRequestDto) {

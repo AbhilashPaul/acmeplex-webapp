@@ -43,31 +43,26 @@ public class PaymentService {
     @Transactional
     public TicketDto processTicketPayment(Long ticketId, Double amount, PaymentCardDto paymentCardDto) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
 
         // Simulate transaction processing (e.g., via a third-party gateway)
         String transactionId = paymentGateway.processPayment(paymentCardDto, amount);
 
-        PaymentReceipt receipt = new PaymentReceipt(
-                amount,
-                LocalDateTime.now(),
-                transactionId,
-                PaymentStatus.SUCCESS,
-                ticket
-        );
-        PaymentReceipt paymentReceipt = paymentReceiptRepository.save(receipt);
+        PaymentReceipt paymentReceipt = paymentReceiptRepository.save(
+                new PaymentReceipt(amount, LocalDateTime.now(), transactionId, PaymentStatus.SUCCESS, ticket));
 
         ticket.setStatus(TicketStatus.CONFIRMED);
         ticket.setPaymentReceipt(paymentReceipt);
         Ticket updatedTicket = ticketRepository.save(ticket);
+
         userNotificationService.sendTicketAndReceiptDetails(updatedTicket);
+
         TicketDto updatedTicketDto = TicketMapper.toTicketDto(updatedTicket);
         updatedTicketDto.getShowtime().setSeats(Collections.emptyList());
         return updatedTicketDto;
     }
 
     public PaymentReceiptDto processAnnualFeePayment(Long userId, Double amount, PaymentCardDto paymentCardDto) {
-        // Fetch the user by ID
         RegisteredUser user = registeredUserRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Registered User %d not found", userId)));
 
@@ -77,10 +72,12 @@ public class PaymentService {
         user.setAnnualFeePaidDate(LocalDateTime.now());
         registeredUserRepository.save(user);
 
-        // Create and save the receipt (no associated Booking for annual fees)
+        // Create and save the receipt (no associated Ticket for annual fees)
         PaymentReceipt paymentReceipt = paymentReceiptRepository.save(
                 new PaymentReceipt(amount, LocalDateTime.now(), transactionId, PaymentStatus.SUCCESS, null));
+
         userNotificationService.sendReceiptDetails(paymentReceipt);
+
         return PaymentReceiptMapper.toPaymentReceiptDto(paymentReceipt);
     }
 }

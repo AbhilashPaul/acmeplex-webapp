@@ -1,12 +1,11 @@
 package com.acmeplex.api.service;
 
 import com.acmeplex.api.dto.MovieDto;
+import com.acmeplex.api.mappers.MovieMapper;
 import com.acmeplex.api.model.Movie;
 import com.acmeplex.api.repository.MovieRepository;
-import com.acmeplex.api.mappers.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.List;

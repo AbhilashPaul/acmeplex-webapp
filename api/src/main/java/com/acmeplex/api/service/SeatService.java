@@ -1,7 +1,6 @@
 package com.acmeplex.api.service;
 
 import com.acmeplex.api.model.Seat;
-import com.acmeplex.api.model.Showtime;
 import com.acmeplex.api.repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
