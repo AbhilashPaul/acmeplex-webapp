@@ -12,17 +12,26 @@ import { RouterOutlet } from '@angular/router';
 })
 export class PaymentComponent {
   paymentForm: FormGroup;
+  isSubmitted = false;
+  isRegistered = false;
 
   constructor(private fb: FormBuilder) {
     // Initialize the form group
     this.paymentForm = this.fb.group({
-      name: ['', Validators.required],
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      paymentCard: ['', Validators.required],
+      cardNumber: ['', [Validators.required,Validators.pattern(/^\d{16}$/)]],
+      expiryDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
     });
   }
 
+  get formControls() {
+    return this.paymentForm.controls;
+  }
+
   onSubmit() {
+    this.isSubmitted = true;
     if (this.paymentForm.valid) {
       // Handle form submission
       console.log(this.paymentForm.value);
