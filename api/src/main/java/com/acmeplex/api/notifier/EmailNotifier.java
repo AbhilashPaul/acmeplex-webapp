@@ -9,6 +9,6 @@ public class EmailNotifier implements NotificationObserver {
     @Override
     public void update(String message) {
         logger.info("Sending email with message: " + message);
-        // Logic to send actual email
+        // Logic to send actual email will go here
     }
 }

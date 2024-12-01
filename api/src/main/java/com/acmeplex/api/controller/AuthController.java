@@ -22,15 +22,14 @@ import java.util.Optional;
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @Autowired
-    private RegisteredUserService registeredUserService;
+    private final RegisteredUserService registeredUserService;
 
-    @Autowired
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager) {
+    public AuthController(AuthenticationManager authenticationManager, RegisteredUserService registeredUserService) {
         this.authenticationManager = authenticationManager;
+        this.registeredUserService = registeredUserService;
     }
 
     @PostMapping("/register")
@@ -50,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Optional<RegisteredUser>> login(@RequestBody RegisteredUser user) throws Exception {
+    public ResponseEntity<Optional<RegisteredUser>> login(@RequestBody RegisteredUser user) throws ResponseStatusException {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
