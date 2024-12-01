@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SessionStoreService } from '../../services/sessionstore.service';
 
 @Component({
   selector: 'app-header',
@@ -15,9 +16,12 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent {
   isLoggedIn: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private sessionStoreService: SessionStoreService,
+  ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.isLoggedIn(); // Check login state
+    this.isLoggedIn = this.sessionStoreService.getUser() != null // Check login state
   }
 }
