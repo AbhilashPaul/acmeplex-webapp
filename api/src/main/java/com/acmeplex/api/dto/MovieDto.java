@@ -9,7 +9,7 @@ public class MovieDto {
 
     private String description;
 
-    private String duration;
+    private Integer durationInMinute;
 
     private String genre;
 
@@ -17,11 +17,11 @@ public class MovieDto {
 
     private String imageUrl;
 
-    public MovieDto(Long id, String title, String description, String duration, String genre, MovieRating movieRating, String imageUrl) {
+    public MovieDto(Long id, String title, String description, Integer durationInMinute, String genre, MovieRating movieRating, String imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.duration = duration;
+        this.durationInMinute = durationInMinute;
         this.genre = genre;
         this.movieRating = movieRating;
         this.imageUrl = imageUrl;
@@ -54,12 +54,12 @@ public class MovieDto {
         this.description = description;
     }
 
-    public String getDuration() {
-        return duration;
+    public Integer getDurationInMinute() {
+        return durationInMinute;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setDurationInMinute(Integer durationInMinute) {
+        this.durationInMinute = durationInMinute;
     }
 
     public String getGenre() {
