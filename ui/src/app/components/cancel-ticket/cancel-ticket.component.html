@@ -35,4 +35,7 @@
     <div *ngIf="searchAttempted && searchResults.length === 0">
       <p>No tickets found for the provided email.</p>
     </div>
+    <div *ngIf="cancellationMessage" class="cancellation-message">
+        <p>{{ cancellationMessage }}</p>
+    </div>
 </div>

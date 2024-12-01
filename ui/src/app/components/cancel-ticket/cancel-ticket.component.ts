@@ -7,8 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardTitle } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core'; 
+import { CommonModule } from '@angular/common'; 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -26,7 +25,7 @@ export class CancelTicketComponent {
   searchResults: any[] = [];
   cancellationMessage: string = ''; 
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private cdRef: ChangeDetectorRef, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar) {
     this.searchForm = this.fb.group({
       email: [''],
     });
@@ -57,13 +56,9 @@ export class CancelTicketComponent {
       (response) => {
         alert(`Ticket ID ${ticketId} cancelled successfully!`);
         this.cancellationMessage = "Ticket cancelled successfully! You gained a credit, which will be automatically applied to your next purchase.";
-        
-        // Show snack bar with the message
         this.snackBar.open(this.cancellationMessage, 'Close', { duration: 5000 });
-        // Remove the cancelled ticket from search results
         this.searchResults = this.searchResults.filter(ticket => ticket.id !== ticketId);
         // this.searchTickets();
-        this.cdRef.detectChanges();
       },
       (error) => {
         console.error('Error cancelling ticket:', error);
