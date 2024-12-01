@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SessionStoreService } from '../../services/sessionstore.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -31,9 +32,14 @@ export class ProfilePageComponent {
     { id: 2, movie: 'Inception', date: '2024-12-05', seat: 'B3' },
   ]; 
    
-  constructor(private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private router: Router, 
+    private snackBar: MatSnackBar, 
+    private sessionStoreService: SessionStoreService,
+  ) {}
 
   onLogout() {
+    this.sessionStoreService.clearUser();
     this.snackBar.open('You have been logged out.', 'Close', {
       duration: 3000,
     });
