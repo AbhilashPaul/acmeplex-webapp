@@ -32,7 +32,7 @@ export class LoginPageComponent {
   constructor(
     private snackBar: MatSnackBar,
     private authService: AuthService,
-    private sessionStoreService: SessionStoreService; 
+    private sessionStoreService: SessionStoreService,
     private router: Router
   ) {}
 
