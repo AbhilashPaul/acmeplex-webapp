@@ -1,12 +1,13 @@
 package com.acmeplex.api.controller;
 
 import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.CreditVoucherDto;
 import com.acmeplex.api.dto.TicketDto;
-import com.acmeplex.api.model.CreditVoucher;
-import com.acmeplex.api.model.Ticket;
 import com.acmeplex.api.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
@@ -23,7 +24,12 @@ public class TicketController {
 
     @PostMapping
     public TicketDto createTicket(@RequestBody CreateTicketRequestDto createTicketRequestDto) {
-        return ticketService.createTicket(createTicketRequestDto);
+        return ticketService.reserveTicket(createTicketRequestDto);
+    }
+
+    @GetMapping("/by-email")
+    public List<TicketDto> getTicketsByCustomerEmail(@RequestParam String email) {
+        return ticketService.getTicketsByCustomerEmail(email);
     }
 
     /**
@@ -33,7 +39,7 @@ public class TicketController {
      * @return The Ticket object with associated details
      */
     @GetMapping("/{ticketId}")
-    public Ticket getTicketDetails(@PathVariable Long ticketId) {
+    public TicketDto getTicketDetails(@PathVariable Long ticketId) {
         return ticketService.getTicketDetails(ticketId);
     }
 
@@ -44,7 +50,7 @@ public class TicketController {
      * @return The created Credit Voucher object
      */
     @PostMapping("/{ticketId}/cancel")
-    public CreditVoucher cancelTicket(@PathVariable Long ticketId) {
+    public CreditVoucherDto cancelTicket(@PathVariable Long ticketId) {
         return ticketService.cancelTicket(ticketId);
     }
 }

@@ -1,15 +1,20 @@
 package com.acmeplex.api.service;
 
 import com.acmeplex.api.dto.CreateTicketRequestDto;
+import com.acmeplex.api.dto.CreditVoucherDto;
 import com.acmeplex.api.dto.TicketDto;
+import com.acmeplex.api.mappers.CreditVoucherMapper;
 import com.acmeplex.api.mappers.TicketMapper;
 import com.acmeplex.api.model.*;
 import com.acmeplex.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,52 +25,61 @@ public class TicketService {
     public static final double DEDUCTION_PERCENT_GUEST_USERS = 0.15;
     public static final int CREDIT_VOUCHER_VALIDITY_PERIOD_IN_YEARS = 1;
     private final TicketRepository ticketRepository;
-    private final ShowtimeRepository showtimeRepository;
     private final CreditVoucherRepository creditVoucherRepository;
     private final RegisteredUserRepository registeredUserRepository;
     private final ShowtimeSeatRepository showtimeSeatRepository;
 
+    private final UserNotificationService userNotificationService;
+
     @Autowired
     public TicketService(TicketRepository ticketRepository,
-                         ShowtimeRepository showtimeRepository,
                          CreditVoucherRepository creditVoucherRepository,
                          RegisteredUserRepository registeredUserRepository,
-                         ShowtimeSeatRepository showtimeSeatRepository) {
+                         ShowtimeSeatRepository showtimeSeatRepository,
+                         UserNotificationService userNotificationService) {
         this.ticketRepository = ticketRepository;
-        this.showtimeRepository = showtimeRepository;
         this.creditVoucherRepository = creditVoucherRepository;
         this.registeredUserRepository = registeredUserRepository;
         this.showtimeSeatRepository = showtimeSeatRepository;
+        this.userNotificationService = userNotificationService;
     }
 
-    // Create a new ticket
-    public TicketDto createTicket(CreateTicketRequestDto createTicketRequestDto) {
-        Long showtimeId = createTicketRequestDto.getShowtimeId();
-        Long seatId = createTicketRequestDto.getSeatId();
-        String customerName = createTicketRequestDto.getCustomerName();
-        String customerEmail = createTicketRequestDto.getCustomerEmail();
+    public TicketDto reserveTicket(CreateTicketRequestDto reserveTicketRequestDto) {
+        Long showtimeId = reserveTicketRequestDto.getShowtimeId();
+        Long seatId = reserveTicketRequestDto.getSeatId();
+        String customerName = reserveTicketRequestDto.getCustomerName();
+        String customerEmail = reserveTicketRequestDto.getCustomerEmail();
 
-        ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
-                .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
-        if (showtimeSeat.getIsReserved()) {
-            throw new RuntimeException("Seat is already reserved");
-        }
-
-        Showtime showtime = showtimeRepository.findById(showtimeId)
-                .orElseThrow(() -> new RuntimeException("Showtime not found"));
+        ShowtimeSeat showtimeSeat = getShowtimeSeat(showtimeId, seatId);
 
         Double ticketPrice = calculateTicketPrice(customerEmail, showtimeSeat.getSeat());
+        TicketStatus ticketStatus = TicketStatus.BOOKED;
+        if (ticketPrice <= 0){ticketStatus = TicketStatus.CONFIRMED;}
 
         // Mark seat as reserved
         showtimeSeat.setIsReserved(true);
         showtimeSeatRepository.save(showtimeSeat);
+        Ticket newTicket = ticketRepository.save(
+                new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtimeSeat.getShowtime(), ticketStatus));
 
-        return TicketMapper.toTicketDto(
-                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtime, PaymentStatus.PENDING)));
+        //Notification with ticket and receipt details will be sent after successfully processing the payment
+        //userNotificationService.sendTicketAndReceiptDetails(newTicket);
+
+        return TicketMapper.toTicketDto(newTicket);
+    }
+
+    private ShowtimeSeat getShowtimeSeat(Long showtimeId, Long seatId) {
+        ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+        if (showtimeSeat.getIsReserved()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Seat "+ seatId +" is already reserved");
+        }
+        return showtimeSeat;
     }
 
     private Double calculateTicketPrice(String customerEmail, Seat seat) {
-        // Calculate initial ticket price based on seat price
         Double ticketPrice = seat.getPrice();
         // Apply unused credit vouchers
         List<CreditVoucher> vouchers = creditVoucherRepository.findByCustomerEmailAndIsUsedFalse(customerEmail);
@@ -92,15 +106,39 @@ public class TicketService {
         return ticketPrice;
     }
 
-    // Retrieve ticket details by ID
-    public Ticket getTicketDetails(Long ticketId) {
-        return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+    public List<TicketDto> getAllTickets() {
+        return getTicketDtos(ticketRepository.findAll());
     }
 
-    public CreditVoucher cancelTicket(Long ticketId) {
+    public List<TicketDto> getTicketsByCustomerEmail(String customerEmail) {
+        return getTicketDtos(ticketRepository.findByCustomerEmail(customerEmail));
+    }
+
+    private List<TicketDto> getTicketDtos(List<Ticket> ticketList) {
+        List<TicketDto> tickets = new ArrayList<>();
+        for (Ticket item : ticketList) {
+            tickets.add(TicketMapper.toTicketDto(item));
+        }
+        return tickets;
+    }
+
+    // Retrieve ticket details by ID
+    public TicketDto getTicketDetails(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
+        return TicketMapper.toTicketDto(ticket);
+    }
+
+    public CreditVoucherDto cancelTicket(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Ticket %d not found", ticketId)));
+
+        if (ticket.getStatus() == TicketStatus.CANCELLED){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Ticket %d is already cancelled", ticketId));
+        }
+        if (ticket.getStatus() == TicketStatus.BOOKED && ticket.getPaymentReceipt() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Payment is yet to be made for ticket %d", ticketId));
+        }
 
         // Check if cancellation is allowed (72 hours before showtime)
         LocalDateTime now = LocalDateTime.now();
@@ -108,7 +146,11 @@ public class TicketService {
 
         double refundAmount = calculateRefundAmount(ticket);
 
-        // Create a Credit Voucher
+        ticket.setStatus(TicketStatus.CANCELLED);
+        ticketRepository.save(ticket);
+
+        makeSeatAvailable(ticket);
+
         CreditVoucher creditVoucher = new CreditVoucher(
                 refundAmount,
                 now,
@@ -118,19 +160,21 @@ public class TicketService {
                 Boolean.FALSE,
                 ticket
         );
+        CreditVoucher savedCreditVoucher =creditVoucherRepository.save(creditVoucher);
 
-        creditVoucherRepository.save(creditVoucher);
+        userNotificationService.sendCreditVoucherDetails(savedCreditVoucher);
 
-        // Release the seat back to available status
+        return CreditVoucherMapper.toCreditVoucherDto(savedCreditVoucher);
+    }
+
+    private void makeSeatAvailable(Ticket ticket) {
         Long showtimeId = ticket.getShowtime().getId();
         Long seatId = ticket.getSeat().getId();
         ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
-                .orElseThrow(() -> new RuntimeException("ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ShowtimeSeat not found for showtimeId: " + showtimeId + " and seatId: " + seatId));
 
         showtimeSeat.setIsReserved(false);
         showtimeSeatRepository.save(showtimeSeat);
-
-        return creditVoucher;
     }
 
     private void isCancellationAllowed(Ticket ticket, LocalDateTime current_time) {
@@ -138,14 +182,14 @@ public class TicketService {
         long hoursUntilShowtime = Duration.between(current_time, showtimeStart).toHours();
 
         if (hoursUntilShowtime < CANCELLATION_CUTOFF_HOURS) {
-            throw new RuntimeException("Cancellation is not allowed within 72 hours of the showtime.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancellation is not allowed within 72 hours of the showtime.");
         }
     }
 
     private double calculateRefundAmount(Ticket ticket) {
         PaymentReceipt paymentReceipt = ticket.getPaymentReceipt();
         if (paymentReceipt == null || paymentReceipt.getStatus() != PaymentStatus.SUCCESS) {
-            throw new RuntimeException("No successful payment found for this ticket.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No successful payment found for this ticket.");
         }
         // Retrieve the user based on customer email
         String customerEmail = ticket.getCustomerEmail();

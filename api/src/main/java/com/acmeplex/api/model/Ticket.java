@@ -27,22 +27,23 @@ public class Ticket {
     @CreationTimestamp
     private Date bookingTime;
 
-    private PaymentStatus paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private TicketStatus status;
 
-
-    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "paymentReceiptId")
     private PaymentReceipt paymentReceipt;
 
     public Ticket() {
     }
 
-    public Ticket(String customerName, String customerEmail, Double price, Seat seat, Showtime showtime, PaymentStatus paymentStatus) {
+    public Ticket(String customerName, String customerEmail, Double price, Seat seat, Showtime showtime, TicketStatus status) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.price = price;
         this.seat = seat;
         this.showtime = showtime;
-        this.paymentStatus = paymentStatus;
+        this.status = status;
     }
 
     public Long getId() {
@@ -93,12 +94,12 @@ public class Ticket {
         this.bookingTime = bookingTime;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public TicketStatus getStatus() {
+        return status;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 
     public PaymentReceipt getPaymentReceipt() {
@@ -115,5 +116,19 @@ public class Ticket {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", Name='" + customerName + '\'' +
+                ", Email='" + customerEmail + '\'' +
+                ", Seat= " + seat.getRowLabel() + seat.getSeatNumber() +
+                ", Showtime=" + showtime.getDate() +  ", " + showtime.getTime() +
+                ", Booking Time=" + bookingTime +
+                ", status=" + status +
+                (paymentReceipt != null ?  ", paymentReceipt=" + paymentReceipt.toString() : "")+
+                '}';
     }
 }

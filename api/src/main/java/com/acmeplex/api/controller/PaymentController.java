@@ -1,6 +1,9 @@
 package com.acmeplex.api.controller;
 
-import com.acmeplex.api.model.PaymentReceipt;
+import com.acmeplex.api.dto.AnnualFeePaymentRequestDto;
+import com.acmeplex.api.dto.PaymentReceiptDto;
+import com.acmeplex.api.dto.TicketDto;
+import com.acmeplex.api.dto.TicketPaymentRequestDto;
 import com.acmeplex.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/payments")
 public class PaymentController {
 
+    public static final double MEMBERSHIP_ANNUAL_FEE = 20.0;
     private final PaymentService paymentService;
 
     @Autowired
@@ -19,29 +23,24 @@ public class PaymentController {
 
     /**
      * Process payment for a ticket.
-     *
-     * @param ticketId      ID of the ticket for which payment is being made
-     * @param amount        Payment amount
-     * @return The PaymentReceipt object for the processed payment
      */
-    @PostMapping("/ticket/{ticketId}")
-    public PaymentReceipt processTicketPayment(
-            @PathVariable Long ticketId,
-            @RequestParam Double amount) {
-        return paymentService.processTicketPayment(ticketId, amount);
+    @PostMapping("/ticket")
+    public TicketDto processTicketPayment(
+            @RequestBody TicketPaymentRequestDto ticketPaymentRequestDto) {
+        return paymentService.processTicketPayment(
+                ticketPaymentRequestDto.getTicketId(),
+                ticketPaymentRequestDto.getAmount(),
+                ticketPaymentRequestDto.getPaymentCard()
+        );
     }
 
     /**
      * Process annual fee payment for a registered user.
-     *
-     * @param userId        ID of the user paying the annual fee
-     * @param amount        Payment amount (e.g., $20.00)
-     * @return The PaymentReceipt object for the processed annual fee payment
      */
-    @PostMapping("/annualFee/{userId}")
-    public PaymentReceipt processAnnualFeePayment(
-            @PathVariable Long userId,
-            @RequestParam Double amount) {
-        return paymentService.processAnnualFeePayment(userId, amount);
+    @PostMapping("/annualFee")
+    public PaymentReceiptDto processAnnualFeePayment(@RequestBody AnnualFeePaymentRequestDto annualFeePaymentRequestDto) {
+        return paymentService.processAnnualFeePayment(
+                annualFeePaymentRequestDto.getUserId(), MEMBERSHIP_ANNUAL_FEE,
+                annualFeePaymentRequestDto.getPaymentCard());
     }
 }

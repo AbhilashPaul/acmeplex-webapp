@@ -6,6 +6,9 @@ CREATE TABLE Ticket (
     seatId BIGINT NOT NULL,
     showtimeId BIGINT NOT NULL,
     bookingTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    paymentStatus ENUM('SUCCESS', 'FAILED', 'PENDING') NOT NULL,
+    paymentReceiptId BIGINT,
+    CONSTRAINT fk_receipt FOREIGN KEY (paymentReceiptId) REFERENCES PaymentReceipt(id) ON DELETE CASCADE,
     CONSTRAINT fk_seat FOREIGN KEY (seatId) REFERENCES Seat(id) ON DELETE CASCADE,
     CONSTRAINT fk_showtime FOREIGN KEY (showtimeId) REFERENCES Showtime(id) ON DELETE CASCADE
 );

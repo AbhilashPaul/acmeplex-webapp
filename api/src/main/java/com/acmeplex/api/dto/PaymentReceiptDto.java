@@ -1,31 +1,25 @@
-package com.acmeplex.api.model;
+package com.acmeplex.api.dto;
 
-import jakarta.persistence.*;
+import com.acmeplex.api.model.PaymentStatus;
+
 import java.time.LocalDateTime;
 
-@Entity
-public class PaymentReceipt {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PaymentReceiptDto {
     private Long id;
     private Double amount;
     private LocalDateTime paymentDate;
     private String transactionId;
-    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
-    @OneToOne(mappedBy = "paymentReceipt", cascade = CascadeType.ALL)
-    private Ticket ticket;
-
-    public PaymentReceipt() {
-    }
-
-    public PaymentReceipt(Double amount, LocalDateTime paymentDate, String transactionId, PaymentStatus status, Ticket ticket) {
+    public PaymentReceiptDto(Long id, Double amount, LocalDateTime paymentDate, String transactionId, PaymentStatus status) {
+        this.id = id;
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.transactionId = transactionId;
         this.status = status;
-        this.ticket = ticket;
+    }
+
+    public PaymentReceiptDto() {
     }
 
     public Long getId() {
@@ -66,23 +60,5 @@ public class PaymentReceipt {
 
     public void setStatus(PaymentStatus status) {
         this.status = status;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    @Override
-    public String toString() {
-        return "PaymentReceipt{" +
-                "id=" + id +
-                ", amount=" + amount +
-                ", Payment Date=" + paymentDate +
-                ", Transaction ID:=" + transactionId +
-                '}';
     }
 }

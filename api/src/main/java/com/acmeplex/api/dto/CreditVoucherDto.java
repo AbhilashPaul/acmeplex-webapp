@@ -1,13 +1,9 @@
-package com.acmeplex.api.model;
+package com.acmeplex.api.dto;
 
-import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
-@Entity
-public class CreditVoucher {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CreditVoucherDto {
     private Long id;
 
     private Double amount;
@@ -22,22 +18,20 @@ public class CreditVoucher {
 
     private Boolean isUsed;
 
-    @OneToOne
-    @JoinColumn(name = "ticketId", nullable = false)
-    private Ticket ticket; // The ticket associated with this credit voucher
+    private Long ticketId;
 
-    public CreditVoucher() {
+    public CreditVoucherDto() {
     }
 
-    public CreditVoucher(Double amount, LocalDateTime issuedAt, LocalDateTime expiryDate,
-                         String customerEmail, String code, Boolean used, Ticket ticket) {
+    public CreditVoucherDto(Long id, Double amount, LocalDateTime issuedAt, LocalDateTime expiryDate, String customerEmail, String code, Boolean isUsed, Long ticketId) {
+        this.id = id;
         this.amount = amount;
         this.issuedAt = issuedAt;
         this.expiryDate = expiryDate;
         this.customerEmail = customerEmail;
-        this.code =code;
-        this.isUsed = used;
-        this.ticket = ticket;
+        this.code = code;
+        this.isUsed = isUsed;
+        this.ticketId = ticketId;
     }
 
     public Long getId() {
@@ -80,14 +74,6 @@ public class CreditVoucher {
         this.customerEmail = customerEmail;
     }
 
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
     public String getCode() {
         return code;
     }
@@ -96,23 +82,19 @@ public class CreditVoucher {
         this.code = code;
     }
 
-    public Boolean getIsUsed() {
+    public Boolean getUsed() {
         return isUsed;
     }
 
-    public void setIsUsed(Boolean used) {
+    public void setUsed(Boolean used) {
         isUsed = used;
     }
 
-    @Override
-    public String toString() {
-        return "CreditVoucher{" +
-                "id=" + id +
-                ", Email='" + customerEmail + '\'' +
-                ", Voucher Code=" + code +
-                ", amount=" + amount +
-                ", Date Issued=" + issuedAt +
-                ", Expiry Date=" + expiryDate +
-                '}';
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 }
