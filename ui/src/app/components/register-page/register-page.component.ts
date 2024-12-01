@@ -9,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -20,6 +21,7 @@ import { HttpHeaders } from '@angular/common/http';
     MatInputModule,
     MatButtonModule,
     FormsModule,
+    RouterModule,
   ],
   // providers: [AuthService],
   templateUrl: './register-page.component.html',
