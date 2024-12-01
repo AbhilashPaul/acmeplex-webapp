@@ -14,14 +14,13 @@ import { SessionStoreService } from '../../services/sessionstore.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  isLoggedIn: boolean = false;
 
   constructor(
     private authService: AuthService,
     private sessionStoreService: SessionStoreService,
   ) {}
 
-  ngOnInit(): void {
-    this.isLoggedIn = this.sessionStoreService.getUser() != null // Check login state
+  isLoggedIn(): boolean {
+    return this.sessionStoreService.getUser() != null
   }
 }

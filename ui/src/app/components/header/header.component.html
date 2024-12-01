@@ -9,7 +9,7 @@
         </a>
       </li>
       <li>
-        <a [routerLink]="isLoggedIn ? '/profile' : '/login'">
+        <a [routerLink]="isLoggedIn() ? '/profile' : '/login'">
           <mat-icon>person</mat-icon>
           Account
         </a>
