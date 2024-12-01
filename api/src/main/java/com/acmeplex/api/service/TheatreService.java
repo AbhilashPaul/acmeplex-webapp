@@ -49,5 +49,4 @@ public class TheatreService {
         }
         return theatres;
     }
-
 }

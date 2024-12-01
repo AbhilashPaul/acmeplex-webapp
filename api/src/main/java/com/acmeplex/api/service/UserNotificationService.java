@@ -16,15 +16,15 @@ public class UserNotificationService {
         this.notificationManager = notificationManager;
     }
 
-    public void sendTicketAndReceiptDetails(Ticket ticket){
+    public void sendTicketAndReceiptDetails(Ticket ticket) {
         notificationManager.sendNotification(ticket.toString());
     }
 
-    public void sendReceiptDetails(PaymentReceipt receipt){
+    public void sendReceiptDetails(PaymentReceipt receipt) {
         notificationManager.sendNotification(receipt.toString());
     }
 
-    public void sendCreditVoucherDetails(CreditVoucher voucher){
+    public void sendCreditVoucherDetails(CreditVoucher voucher) {
         notificationManager.sendNotification(voucher.toString());
     }
 }
