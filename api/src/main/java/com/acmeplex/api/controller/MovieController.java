@@ -33,7 +33,7 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public List<MovieDto> searchUsers(@RequestParam String title) {
+    public List<MovieDto> searchMovies(@RequestParam String title) {
         return movieService.searchMovies(title);
     }
 }
