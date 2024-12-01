@@ -1,34 +1,38 @@
-<div class="cancel-ticket">
-    <h2>Cancel Ticket</h2>
+<div class="cancel-ticket-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Search and Cancel Ticket</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Search Form -->
+        <form [formGroup]="searchForm" (ngSubmit)="searchTickets()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Enter Email</mat-label>
+            <input matInput formControlName="email" placeholder="Enter your email" />
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit">Search</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
   
-    <!-- For logged-in users -->
-    <div *ngIf="isLoggedIn">
-      <h3>Your Booked Tickets</h3>
-      <ul>
-        <li *ngFor="let ticket of bookedTickets">
-          {{ ticket.movie }} - {{ ticket.date }} ({{ ticket.seat }})
-          <button (click)="cancelTicket(ticket.id)">Cancel</button>
-        </li>
-      </ul>
+    <!-- Display Tickets -->
+    <div *ngIf="searchAttempted && searchResults.length > 0" class="tickets-container">
+      <h2>Search Results</h2>
+      <mat-card *ngFor="let ticket of searchResults" class="ticket-item">
+        <mat-card-header>
+          <mat-card-title>Ticket ID: {{ ticket.id }}</mat-card-title>
+          <mat-card-subtitle>{{ ticket.movie.title }} - {{ ticket.showtime.date }} {{ ticket.showtime.time }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button mat-raised-button color="warn" (click)="cancelTicket(ticket.id)">
+            Cancel Ticket
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
-  
-    <!-- For non-logged-in users -->
-    <div *ngIf="!isLoggedIn">
-      <form [formGroup]="searchForm" (ngSubmit)="searchTickets()">
-        <label for="email">Enter Email to Search Tickets:</label>
-        <input id="email" formControlName="email" type="email" />
-        <button type="submit">Search</button>
-      </form>
-  
-      <div *ngIf="searchResults.length > 0">
-        <h3>Search Results</h3>
-        <ul>
-          <li *ngFor="let ticket of searchResults">
-            {{ ticket.movie }} - {{ ticket.date }} ({{ ticket.seat }})
-            <button (click)="cancelTicket(ticket.id)">Cancel</button>
-          </li>
-        </ul>
-      </div>
+
+    <!-- No Results -->
+    <div *ngIf="searchAttempted && searchResults.length === 0">
+      <p>No tickets found for the provided email.</p>
     </div>
-  </div>
-  
+</div>
