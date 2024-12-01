@@ -19,6 +19,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./theater-details.component.css']
 })
 export class TheaterDetailsComponent implements OnInit {
+  selctedMovie: any;
   theaters: any[] = [];
   selectedTheater: any = null;
   selectedShowTime: string | null = null;
@@ -28,7 +29,8 @@ export class TheaterDetailsComponent implements OnInit {
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchTheaters(1); // Example movieId = 1
+    this.selctedMovie = window.history.state.selectedMovie;
+    this.fetchTheaters(this.selctedMovie.id); 
   }
 
   fetchTheaters(movieId: number): void {
@@ -77,7 +79,7 @@ generateSeatMap(seats: any[]): string[][] {
 
   seats.forEach((seat) => {
     const rowLabel = seat.rowLabel;
-    if (!rowMap[rowLabel]) {
+    if (!rowMap[rowLabel] ) {
       rowMap[rowLabel] = [];
     }
     rowMap[rowLabel].push(seat.reserved ? 'N' : 'A');
