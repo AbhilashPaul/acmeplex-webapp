@@ -62,7 +62,8 @@ public class TicketService {
         Ticket newTicket = ticketRepository.save(
                 new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtimeSeat.getShowtime(), ticketStatus));
 
-        userNotificationService.sendTicketAndReceiptDetails(newTicket);
+        //Notification with ticket and receipt details will be sent after successfully processing the payment
+        //userNotificationService.sendTicketAndReceiptDetails(newTicket);
 
         return TicketMapper.toTicketDto(newTicket);
     }
