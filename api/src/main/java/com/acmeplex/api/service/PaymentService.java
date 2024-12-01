@@ -25,16 +25,19 @@ public class PaymentService {
     private final RegisteredUserRepository registeredUserRepository;
     private final PaymentReceiptRepository paymentReceiptRepository;
     private final PaymentGateway paymentGateway;
+    private final UserNotificationService userNotificationService;
 
     @Autowired
     public PaymentService(TicketRepository ticketRepository,
                           PaymentReceiptRepository paymentReceiptRepository,
                           RegisteredUserRepository registeredUserRepository,
-                          PaymentGateway paymentGateway) {
+                          PaymentGateway paymentGateway,
+                          UserNotificationService userNotificationService) {
         this.ticketRepository = ticketRepository;
         this.paymentReceiptRepository = paymentReceiptRepository;
         this.registeredUserRepository = registeredUserRepository;
         this.paymentGateway = paymentGateway;
+        this.userNotificationService = userNotificationService;
     }
 
     @Transactional
@@ -56,9 +59,11 @@ public class PaymentService {
 
         ticket.setStatus(TicketStatus.CONFIRMED);
         ticket.setPaymentReceipt(paymentReceipt);
-        TicketDto updatedTicket = TicketMapper.toTicketDto(ticketRepository.save(ticket));
-        updatedTicket.getShowtime().setSeats(Collections.emptyList());
-        return updatedTicket;
+        Ticket updatedTicket = ticketRepository.save(ticket);
+        userNotificationService.sendTicketAndReceiptDetails(updatedTicket);
+        TicketDto updatedTicketDto = TicketMapper.toTicketDto(updatedTicket);
+        updatedTicketDto.getShowtime().setSeats(Collections.emptyList());
+        return updatedTicketDto;
     }
 
     public PaymentReceiptDto processAnnualFeePayment(Long userId, Double amount, PaymentCardDto paymentCardDto) {
@@ -73,14 +78,9 @@ public class PaymentService {
         registeredUserRepository.save(user);
 
         // Create and save the receipt (no associated Booking for annual fees)
-        PaymentReceipt receipt = new PaymentReceipt(
-                amount,
-                LocalDateTime.now(),
-                transactionId,
-                PaymentStatus.SUCCESS,
-                null
-        );
-
-        return PaymentReceiptMapper.toPaymentReceiptDto(paymentReceiptRepository.save(receipt));
+        PaymentReceipt paymentReceipt = paymentReceiptRepository.save(
+                new PaymentReceipt(amount, LocalDateTime.now(), transactionId, PaymentStatus.SUCCESS, null));
+        userNotificationService.sendReceiptDetails(paymentReceipt);
+        return PaymentReceiptMapper.toPaymentReceiptDto(paymentReceipt);
     }
 }

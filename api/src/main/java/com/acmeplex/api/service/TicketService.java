@@ -29,18 +29,21 @@ public class TicketService {
     private final RegisteredUserRepository registeredUserRepository;
     private final ShowtimeSeatRepository showtimeSeatRepository;
 
+    private final UserNotificationService userNotificationService;
+
     @Autowired
     public TicketService(TicketRepository ticketRepository,
                          CreditVoucherRepository creditVoucherRepository,
                          RegisteredUserRepository registeredUserRepository,
-                         ShowtimeSeatRepository showtimeSeatRepository) {
+                         ShowtimeSeatRepository showtimeSeatRepository,
+                         UserNotificationService userNotificationService) {
         this.ticketRepository = ticketRepository;
         this.creditVoucherRepository = creditVoucherRepository;
         this.registeredUserRepository = registeredUserRepository;
         this.showtimeSeatRepository = showtimeSeatRepository;
+        this.userNotificationService = userNotificationService;
     }
 
-    // Create a new ticket
     public TicketDto reserveTicket(CreateTicketRequestDto reserveTicketRequestDto) {
         Long showtimeId = reserveTicketRequestDto.getShowtimeId();
         Long seatId = reserveTicketRequestDto.getSeatId();
@@ -51,14 +54,17 @@ public class TicketService {
 
         Double ticketPrice = calculateTicketPrice(customerEmail, showtimeSeat.getSeat());
         TicketStatus ticketStatus = TicketStatus.BOOKED;
-        if (ticketPrice > 0){ticketStatus = TicketStatus.CONFIRMED;}
+        if (ticketPrice <= 0){ticketStatus = TicketStatus.CONFIRMED;}
 
         // Mark seat as reserved
         showtimeSeat.setIsReserved(true);
         showtimeSeatRepository.save(showtimeSeat);
+        Ticket newTicket = ticketRepository.save(
+                new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtimeSeat.getShowtime(), ticketStatus));
 
-        return TicketMapper.toTicketDto(
-                ticketRepository.save(new Ticket(customerName, customerEmail, ticketPrice,showtimeSeat.getSeat(), showtimeSeat.getShowtime(), ticketStatus)));
+        userNotificationService.sendTicketAndReceiptDetails(newTicket);
+
+        return TicketMapper.toTicketDto(newTicket);
     }
 
     private ShowtimeSeat getShowtimeSeat(Long showtimeId, Long seatId) {
@@ -129,7 +135,7 @@ public class TicketService {
         if (ticket.getStatus() == TicketStatus.CANCELLED){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Ticket %d is already cancelled", ticketId));
         }
-        if (ticket.getStatus() != TicketStatus.BOOKED && ticket.getPaymentReceipt() == null){
+        if (ticket.getStatus() == TicketStatus.BOOKED && ticket.getPaymentReceipt() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Payment is yet to be made for ticket %d", ticketId));
         }
 
@@ -142,7 +148,8 @@ public class TicketService {
         ticket.setStatus(TicketStatus.CANCELLED);
         ticketRepository.save(ticket);
 
-        // Create a Credit Voucher
+        makeSeatAvailable(ticket);
+
         CreditVoucher creditVoucher = new CreditVoucher(
                 refundAmount,
                 now,
@@ -152,10 +159,14 @@ public class TicketService {
                 Boolean.FALSE,
                 ticket
         );
+        CreditVoucher savedCreditVoucher =creditVoucherRepository.save(creditVoucher);
 
-        creditVoucherRepository.save(creditVoucher);
+        userNotificationService.sendCreditVoucherDetails(savedCreditVoucher);
 
-        // Release the seat back to available status
+        return CreditVoucherMapper.toCreditVoucherDto(savedCreditVoucher);
+    }
+
+    private void makeSeatAvailable(Ticket ticket) {
         Long showtimeId = ticket.getShowtime().getId();
         Long seatId = ticket.getSeat().getId();
         ShowtimeSeat showtimeSeat = showtimeSeatRepository.findByShowtimeIdAndSeatId(showtimeId, seatId)
@@ -163,8 +174,6 @@ public class TicketService {
 
         showtimeSeat.setIsReserved(false);
         showtimeSeatRepository.save(showtimeSeat);
-
-        return CreditVoucherMapper.toCreditVoucherDto(creditVoucher);
     }
 
     private void isCancellationAllowed(Ticket ticket, LocalDateTime current_time) {
