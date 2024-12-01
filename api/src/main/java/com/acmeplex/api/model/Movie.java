@@ -102,17 +102,4 @@ public class Movie {
     public void setShowtimes(Set<Showtime> showtimes) {
         this.showtimes = showtimes;
     }
-
-    /**
-     * Method to add a Showtime to the Movie.
-     * Ensures bidirectional relationship is maintained.
-     *
-     * @param showtime The Showtime object to be added.
-     */
-    public void addShowtime(Showtime showtime) {
-        if (showtime != null) {
-            showtime.setMovie(this); // Maintain bidirectional relationship
-            this.showtimes.add(showtime);
-        }
-    }
 }
