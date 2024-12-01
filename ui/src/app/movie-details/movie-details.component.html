@@ -2,18 +2,17 @@
     <div class="movie-header">
       <h1>{{ movie.title }}</h1>
       <img [src]="movie.imageUrl" alt="{{ movie.title }} poster" class="movie-poster" />
+      <div class="movie-description">
+        <p>{{ movie.description }}</p>
+      </div>
       <div class="movie-info">
-        <p><strong>ID:</strong> {{ movie.id }}</p>
         <p><strong>Genre:</strong> {{ movie.genre }}</p>
-        <p><strong>Duration:</strong> {{ movie.duration }} mins</p>
-        <p><strong>Rating:</strong> {{ movie.movieRating }} / 10</p>
+        <p><strong>Duration:</strong> {{ movie.durationInMinute }} mins</p>
+        <p><strong>Rating:</strong> {{ movie.movieRating }}</p>
       </div>
       <button class="ticket-button" (click)="getTicket()">Get Ticket</button>
     </div>
   
-    <div class="movie-description">
-      <h2>Description</h2>
-      <p>{{ movie.description }}</p>
-    </div>
+
   </div>
   
