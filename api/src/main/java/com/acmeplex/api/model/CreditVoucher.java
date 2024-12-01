@@ -103,4 +103,16 @@ public class CreditVoucher {
     public void setIsUsed(Boolean used) {
         isUsed = used;
     }
+
+    @Override
+    public String toString() {
+        return "CreditVoucher{" +
+                "id=" + id +
+                ", Email='" + customerEmail + '\'' +
+                ", Voucher Code=" + code +
+                ", amount=" + amount +
+                ", Date Issued=" + issuedAt +
+                ", Expiry Date=" + expiryDate +
+                '}';
+    }
 }

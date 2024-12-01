@@ -117,4 +117,18 @@ public class Ticket {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", Name='" + customerName + '\'' +
+                ", Email='" + customerEmail + '\'' +
+                ", Seat= " + seat.getRowLabel() + seat.getSeatNumber() +
+                ", Showtime=" + showtime.getDate() +  ", " + showtime.getTime() +
+                ", Booking Time=" + bookingTime +
+                ", status=" + status +
+                (paymentReceipt != null ?  ", paymentReceipt=" + paymentReceipt.toString() : "")+
+                '}';
+    }
 }
