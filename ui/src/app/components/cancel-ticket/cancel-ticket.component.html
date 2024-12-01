@@ -1,0 +1,34 @@
+<div class="cancel-ticket">
+    <h2>Cancel Ticket</h2>
+  
+    <!-- For logged-in users -->
+    <div *ngIf="isLoggedIn">
+      <h3>Your Booked Tickets</h3>
+      <ul>
+        <li *ngFor="let ticket of bookedTickets">
+          {{ ticket.movie }} - {{ ticket.date }} ({{ ticket.seat }})
+          <button (click)="cancelTicket(ticket.id)">Cancel</button>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- For non-logged-in users -->
+    <div *ngIf="!isLoggedIn">
+      <form [formGroup]="searchForm" (ngSubmit)="searchTickets()">
+        <label for="email">Enter Email to Search Tickets:</label>
+        <input id="email" formControlName="email" type="email" />
+        <button type="submit">Search</button>
+      </form>
+  
+      <div *ngIf="searchResults.length > 0">
+        <h3>Search Results</h3>
+        <ul>
+          <li *ngFor="let ticket of searchResults">
+            {{ ticket.movie }} - {{ ticket.date }} ({{ ticket.seat }})
+            <button (click)="cancelTicket(ticket.id)">Cancel</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
