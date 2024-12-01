@@ -8,6 +8,9 @@ import { MatCardTitle } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   standalone: true,
   imports: [ReactiveFormsModule,MatButtonModule,MatCardModule, MatCardTitle, MatFormFieldModule, MatInputModule, CommonModule
@@ -21,8 +24,9 @@ export class CancelTicketComponent {
   // isLoggedIn = false;
   searchAttempted = false;
   searchResults: any[] = [];
+  cancellationMessage: string = ''; 
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private cdRef: ChangeDetectorRef, private snackBar: MatSnackBar) {
     this.searchForm = this.fb.group({
       email: [''],
     });
@@ -52,9 +56,14 @@ export class CancelTicketComponent {
     this.http.post(cancelUrl, {}).subscribe(
       (response) => {
         alert(`Ticket ID ${ticketId} cancelled successfully!`);
+        this.cancellationMessage = "Ticket cancelled successfully! You gained a credit, which will be automatically applied to your next purchase.";
+        
+        // Show snack bar with the message
+        this.snackBar.open(this.cancellationMessage, 'Close', { duration: 5000 });
         // Remove the cancelled ticket from search results
-        // this.searchResults = this.searchResults.filter(ticket => ticket.id !== ticketId);
-        this.searchTickets();
+        this.searchResults = this.searchResults.filter(ticket => ticket.id !== ticketId);
+        // this.searchTickets();
+        this.cdRef.detectChanges();
       },
       (error) => {
         console.error('Error cancelling ticket:', error);
