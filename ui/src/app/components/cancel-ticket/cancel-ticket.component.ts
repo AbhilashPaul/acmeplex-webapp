@@ -1,44 +1,65 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms'; 
-
-
+import { HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardTitle } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,MatButtonModule,MatCardModule, MatCardTitle, MatFormFieldModule, MatInputModule, CommonModule
+  ],
   selector: 'app-cancel-ticket',
   templateUrl: './cancel-ticket.component.html',
   styleUrls: ['./cancel-ticket.component.css'],
 })
 export class CancelTicketComponent {
   searchForm: FormGroup;
-  isLoggedIn = false; // Replace with actual login logic
-  bookedTickets = [
-    { id: 1, movie: 'Movie 1', date: '2024-12-02', seat: 'A1' },
-    { id: 2, movie: 'Movie 2', date: '2024-12-03', seat: 'B3' },
-  ]; // Replace with real data
+  // isLoggedIn = false;
+  searchAttempted = false;
   searchResults: any[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.searchForm = this.fb.group({
       email: [''],
     });
   }
 
   searchTickets() {
-    const email = this.searchForm.value.email;
-    // Perform search logic here
-    this.searchResults = [
-      { id: 3, movie: 'Movie 3', date: '2024-12-04', seat: 'C5' },
-    ]; // Replace with API data
+    const email = this.searchForm.get('email')?.value;
+    const searchUrl = `http://localhost:8080/api/tickets/by-email?email=${email}`;
+    console.log('Searching for tickets with email:', email);
+    this.http.get<any[]>(searchUrl).subscribe(
+      (response) => {
+        console.log('Search response:', response); 
+        this.searchResults = response;
+        this.searchAttempted = true;
+      },
+      (error) => {
+        console.error('Error fetching tickets:', error);
+        this.searchResults = [];
+        this.searchAttempted = true;
+      }
+    );
   }
 
   cancelTicket(ticketId: number) {
-    // Implement cancellation logic here
-    alert(`Ticket with ID ${ticketId} has been canceled.`);
-    // Remove the ticket from bookedTickets or searchResults
-    this.bookedTickets = this.bookedTickets.filter((t) => t.id !== ticketId);
-    this.searchResults = this.searchResults.filter((t) => t.id !== ticketId);
+    const cancelUrl = `http://localhost:8080/api/tickets/${ticketId}/cancel`;
+    
+    this.http.post(cancelUrl, {}).subscribe(
+      (response) => {
+        alert(`Ticket ID ${ticketId} cancelled successfully!`);
+        // Remove the cancelled ticket from search results
+        // this.searchResults = this.searchResults.filter(ticket => ticket.id !== ticketId);
+        this.searchTickets();
+      },
+      (error) => {
+        console.error('Error cancelling ticket:', error);
+        alert('Failed to cancel the ticket.');
+      }
+    );
   }
 }
-
