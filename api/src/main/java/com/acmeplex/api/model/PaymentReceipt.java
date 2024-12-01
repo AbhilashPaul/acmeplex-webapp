@@ -75,4 +75,14 @@ public class PaymentReceipt {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
+
+    @Override
+    public String toString() {
+        return "PaymentReceipt{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", Payment Date=" + paymentDate +
+                ", Transaction ID:=" + transactionId +
+                '}';
+    }
 }
