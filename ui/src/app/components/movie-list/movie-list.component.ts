@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-movie-list',
@@ -19,7 +19,7 @@ import { MatIcon } from '@angular/material/icon';
     RouterModule,
     FormsModule,
     NgFor,
-    MatIcon
+    MatIconModule
   ],
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.css'],
