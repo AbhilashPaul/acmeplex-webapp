@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
+import { SessionStoreService } from '../../services/sessionstore.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -31,6 +32,7 @@ export class LoginPageComponent {
   constructor(
     private snackBar: MatSnackBar,
     private authService: AuthService,
+    private sessionStoreService: SessionStoreService,
     private router: Router
   ) {}
 
@@ -49,7 +51,7 @@ export class LoginPageComponent {
       next: (response) => {
         this.showSnackbar('Login successful!', 'success');
         console.log('Login Response:', response); // Log response for debugging
-        // Save token or user details (if applicable)
+        this.sessionStoreService.setUser(response)
         this.router.navigate(['/profile']); // Navigate to the profile page
       },
       error: (error) => {
