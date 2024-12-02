@@ -77,7 +77,7 @@ export class CancelTicketComponent {
         console.error('Error cancelling ticket:', error);
   
         // Extract the error message
-        const errorMessage = error.error?.message || 'An unexpected error occurred while cancelling the ticket.';
+        const errorMessage = error.error || 'An unexpected error occurred while cancelling the ticket.';
   
         // Display the error in a snackbar
         this.snackBar.open(errorMessage, 'Close', {
