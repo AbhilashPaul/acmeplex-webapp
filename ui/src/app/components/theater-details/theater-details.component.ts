@@ -5,6 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { SeatMapComponent } from '../seat-map/seat-map.component';
+import { Seat } from '../../models/seat.model';
 
 @Component({
   selector: 'app-theater-details',
@@ -14,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
     FormsModule,
     MatCardModule,
     MatButtonModule,
+    SeatMapComponent
   ],
   templateUrl: './theater-details.component.html',
   styleUrls: ['./theater-details.component.css']
@@ -24,6 +27,7 @@ export class TheaterDetailsComponent implements OnInit {
   selectedTheater: any = null;
   selectedShowTime: any = null;
   selectedSeats: { row: number; seat: number }[] = [];
+  seats: Seat[] = [];
   seatMap: any[][] = []; // Dummy seat map
 
   constructor(private router: Router, private http: HttpClient) {}
@@ -62,12 +66,7 @@ export class TheaterDetailsComponent implements OnInit {
 
   // Update the seatMap based on the selected showtime's data
   if (this.selectedTheater && this.selectedShowTime) {
-    const seats: any[] = this.selectedShowTime.seats;
-    if (seats) {
-      this.seatMap = this.generateSeatMap(seats);
-    } else {
-      this.seatMap = []; // Reset if no seats are available
-    }
+    this.seats = this.selectedShowTime.seats;
   }
 }
 generateSeatMap(seats: any[]): string[][] {
