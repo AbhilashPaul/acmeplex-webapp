@@ -52,15 +52,21 @@ export class PaymentComponent implements OnInit {
       expiryDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
     });
-    
-
-    // Fetch ticket details
-    this.fetchTicketDetails();
   }
 
 
 
   fetchTicketDetails(): void {
+
+  }
+
+  onSubmit(): void {
+    this.isSubmitted = true;
+
+    if (this.paymentForm.invalid) {
+      console.error('Invalid payment form:', this.paymentForm.value);
+      return;
+    }
     const ticketPayload = {
       customerName: this.customerName || this.paymentForm.value.fullName,
       customerEmail: this.customerEmail || this.paymentForm.value.email,
@@ -73,46 +79,36 @@ export class PaymentComponent implements OnInit {
         this.ticketDetails = ticket;
         this.ticketPrice = ticket.price || 0;
         console.log('Ticket details fetched:', this.ticketDetails);
+        // Prepare the payment payload
+        const paymentPayload = {
+          customerName: this.paymentForm.value.fullName,
+          customerEmail: this.paymentForm.value.email,
+          ticketId: this.ticketDetails.id,
+          amount: this.ticketDetails.price,
+          paymentCard: {
+            cardNumber: this.paymentForm.value.cardNumber,
+            cardHolderName: this.paymentForm.value.cardHolderName,
+            expiryDate: this.paymentForm.value.expiryDate,
+            cvv: this.paymentForm.value.cvv,
+          },
+        };
+        console.log("payload", paymentPayload)
+
+        this.paymentService.makePayment(paymentPayload).subscribe({
+            next: (response) => {
+              console.log('Payment successful:', response);
+              this.confirmationMessage = 'Payment Successful! Your ticket has been booked.';
+            },
+            error: (err) => {
+              console.error('Payment failed:', err);
+              console.error('Full error details:', err)
+              this.confirmationMessage = 'Payment Failed! Please try again.';
+            },
+          });
       },
       error: (err) => {
         console.error('Failed to fetch ticket details:', err);
         this.confirmationMessage = 'Failed to fetch ticket details. Please try again.';
-      },
-    });
-  }
-
-  onSubmit(): void {
-    this.isSubmitted = true;
-
-    if (this.paymentForm.invalid) {
-      console.error('Invalid payment form:', this.paymentForm.value);
-      return;
-    }
-
-    // Prepare the payment payload
-    const paymentPayload = {
-      customerName: this.paymentForm.value.fullName,
-      customerEmail: this.paymentForm.value.email,
-      ticketId: this.ticketDetails?.id,
-      amount: this.ticketPrice,
-      paymentCard: {
-        cardNumber: this.paymentForm.value.cardNumber,
-        cardHolderName: this.paymentForm.value.cardHolderName,
-        expiryDate: this.paymentForm.value.expiryDate,
-        cvv: this.paymentForm.value.cvv,
-      },
-    };
-    console.log("payload", paymentPayload)
-
-    this.paymentService.makePayment(paymentPayload).subscribe({
-      next: (response) => {
-        console.log('Payment successful:', response);
-        this.confirmationMessage = 'Payment Successful! Your ticket has been booked.';
-      },
-      error: (err) => {
-        console.error('Payment failed:', err);
-        console.error('Full error details:', err)
-        this.confirmationMessage = 'Payment Failed! Please try again.';
       },
     });
   }
