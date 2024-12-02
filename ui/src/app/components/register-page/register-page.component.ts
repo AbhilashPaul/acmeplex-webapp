@@ -5,11 +5,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { AuthService } from '../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register-page',
@@ -23,7 +21,6 @@ import { RouterModule, Router } from '@angular/router';
     FormsModule,
     RouterModule,
   ],
-  // providers: [AuthService],
   templateUrl: './register-page.component.html',
   styleUrls: ['./register-page.component.css'],
 })
@@ -37,7 +34,7 @@ export class RegisterPageComponent {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private router: Router) {}
 
   // Method to handle form submission
   onRegister() {
@@ -46,7 +43,7 @@ export class RegisterPageComponent {
       alert('Passwords do not match!');
       return;
     }
-  
+
     // Additional validation for required fields
     if (
       !this.firstName ||
@@ -60,8 +57,8 @@ export class RegisterPageComponent {
       alert('All fields are required!');
       return;
     }
-  
-    // Prepare form data
+
+    // Prepare user data to pass to the annual payment page
     const userData = {
       firstName: this.firstName,
       lastName: this.lastName,
@@ -70,27 +67,8 @@ export class RegisterPageComponent {
       phoneNumber: this.phoneNumber,
       password: this.password,
     };
-  
-    // Make HTTP POST request
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    this.authService.register(userData, {headers}).subscribe({
-      next: (response) => {
-        alert('Registration successful!');
-        console.log('Registration Response:', response); // Log the response for debugging
-      },
-      error: (error) => {
-        console.error('Error during registration:', error);
-        if (error.status === 400) {
-          // Check if the error contains a specific message from the backend
-          if (error.error && error.error.message) {
-            alert('Error: ' + error.error.message); // Show backend message if available
-          } else {
-            alert('Registration failed. Please try again.');
-          }
-        } else {
-          alert('An unexpected error occurred. Please try again.');
-        }
-      },
-    });
-  }  
+
+    // Redirect to the annual-payment component with user data
+    this.router.navigate(['/annual-payment'], { state: { userData } });
+  }
 }
