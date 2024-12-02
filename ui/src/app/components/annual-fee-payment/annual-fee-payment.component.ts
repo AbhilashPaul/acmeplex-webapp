@@ -66,27 +66,18 @@ export class AnnualFeePaymentComponent {
     this.http.post<any>(apiUrl,paymentPayload).subscribe({
       next: (data) => {
         this.receipt = data;
-        console.log('Fetched Theaters:', this.receipt);
-        alert("succesfull");
+        console.log('Annual Fee payment receipt:', this.receipt);
+        this.confirmationMessage = "Successfully paid the annual Fee. Email has benen sent to you with receipt details. Receipt Id: " + this.receipt.id + "Transaction Id: " + this.receipt.transactionId;
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 3000);
       },
       error: (error) => {
-        console.error('Error fetching theaters:', error);
+        console.error('Error paying annual fee:', error);
+        this.confirmationMessage =  'Error while paying annual fee'
       }
     });
-  
-      this.authService.register(this.userDetails, {
-        headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      }).subscribe({
-        next: () => {
-          this.confirmationMessage = 'Payment and Registration Successful!';
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
-        },
-        error: () => {
-          this.confirmationMessage = 'Registration Failed. Please try again.';
-        },
-      });
     }
   }
 }
+
