@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-register-page',
   standalone: true,
@@ -37,7 +38,9 @@ export class RegisterPageComponent {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+    private router: Router
+  ) {}
 
   // Method to handle form submission
   onRegister() {
@@ -77,6 +80,7 @@ export class RegisterPageComponent {
       next: (response) => {
         alert('Registration successful!');
         console.log('Registration Response:', response); // Log the response for debugging
+        this.router.navigate(['/profile']);
       },
       error: (error) => {
         console.error('Error during registration:', error);

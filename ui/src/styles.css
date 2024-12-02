@@ -3,3 +3,15 @@ body{
     background-color: black;
     color: white;
 }
+.custom-snackbar {
+    font-size: 1.2rem; /* Adjust font size */
+    padding: 20px; /* Adjust padding */
+    min-height: 80px; /* Adjust height */
+    border-radius: 8px; /* Add rounded corners */
+    background-color: #4caf50; /* Customize background color */
+    color: white; /* Customize text color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
