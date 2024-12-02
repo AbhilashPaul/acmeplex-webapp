@@ -9,16 +9,21 @@
         </a>
       </li>
       <li>
+        <a routerLink="/cancel-ticket">
+          Cancel Ticket
+        </a>
+      </li>
+      <li>
+        <a routerLink="/register">
+          Become a member
+        </a>
+      </li>  
+      <li>
         <a [routerLink]="isLoggedIn() ? '/profile' : '/login'">
           <mat-icon>person</mat-icon>
           Account
         </a>
-      </li>
-      <li>
-        <a routerLink="/cancel-ticket">
-          Cancel Ticket
-        </a>
-      </li>     
+      </li>    
     </ul>
   </nav>
 </header>
