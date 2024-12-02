@@ -3,10 +3,10 @@
     <mat-card class="profile-card">
       <mat-card-title class="profile-title">User Profile</mat-card-title>
       <mat-card-content>
-        <div class="profile-detail"><strong>First Name:</strong> {{ user.firstName }}</div>
-        <div class="profile-detail"><strong>Last Name:</strong> {{ user.lastName }}</div>
-        <div class="profile-detail"><strong>Email:</strong> {{ user.email }}</div>
-        <div class="profile-detail"><strong>Phone Number:</strong> {{ user.phoneNumber }}</div>
+        <div class="profile-detail"><strong>First Name:</strong> {{ userData.firstName }}</div>
+        <div class="profile-detail"><strong>Last Name:</strong> {{ userData.lastName }}</div>
+        <div class="profile-detail"><strong>Email:</strong> {{ userData.email }}</div>
+        <div class="profile-detail"><strong>Phone Number:</strong> {{ userData.phoneNumber }}</div>
         <div class="profile-detail credits">
           <strong>Available Credits:</strong> {{ credits | currency }}
         </div>
@@ -17,7 +17,7 @@
     </mat-card>
   </div>
 
-  <div class="booked-tickets">
+  <!-- <div class="booked-tickets">
     <mat-card class="tickets-card">
       <mat-card-title class="tickets-title">Booked Tickets</mat-card-title>
       <mat-card-content>
@@ -35,5 +35,5 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </div>
+  </div> -->
 </div>
