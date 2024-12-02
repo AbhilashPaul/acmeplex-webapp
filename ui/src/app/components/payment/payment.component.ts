@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms'; // <-- Import ReactiveFormsModule here
 import { RouterOutlet } from '@angular/router';
@@ -12,12 +12,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css'],
 })
-export class PaymentComponent {
+export class PaymentComponent  implements OnInit {
   paymentForm: FormGroup;
   isSubmitted = false;
   isRegistered = false;
   confirmationMessage = '';
   ticketDetails: any = null;
+  bookingDetails: any = null;
+
+  ngOnInit(): void {
+    this.bookingDetails = window.history.state.bookingDetails;
+    console.log(this.bookingDetails)
+  }
 
   constructor(private fb: FormBuilder, private paymentService: PaymentService) {
     // Initialize the form group
@@ -45,18 +51,7 @@ export class PaymentComponent {
       this.paymentService.makePayment(paymentData).subscribe({
         next: (response) => {
           this.confirmationMessage = 'Payment Successful!';
-          const ticketId = response.ticketId;
-
-          // Retrieve ticket details
-          this.paymentService.getTicket(ticketId).subscribe({
-            next: (ticket) => {
-              this.ticketDetails = ticket;
-            },
-            error: (err) => {
-              console.error('Failed to fetch ticket:', err);
-              this.confirmationMessage = 'Payment was successful, but ticket retrieval failed.';
-            }
-          });
+          this.ticketDetails = response
         },
         error: (err) => {
           console.error('Payment failed:', err);

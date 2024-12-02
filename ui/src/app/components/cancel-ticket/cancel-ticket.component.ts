@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardTitle } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common'; 
@@ -12,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule,MatButtonModule,MatCardModule, MatCardTitle, MatFormFieldModule, MatInputModule, CommonModule
+  imports: [ReactiveFormsModule,MatButtonModule,MatCardModule, MatFormFieldModule, MatInputModule, CommonModule
   ],
   selector: 'app-cancel-ticket',
   templateUrl: './cancel-ticket.component.html',

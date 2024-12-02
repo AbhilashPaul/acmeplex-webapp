@@ -117,27 +117,19 @@ generateSeatMap(seats: any[]): string[][] {
 
   bookTicket(): void {
     console.log('Booking tickets for:', this.selectedSeat);
-    const apiUrl = `http://localhost:8080/api/tickets`;
-    const user = this.sessionStoreService.getUser();
 
-    this.http.post<any>(apiUrl, {
-      "customerName": user.firstName + " " + user.lastName,
-      "customerEmail": user.email,
-      "seatId": this.selectedSeat.id,
-      "showtimeId": this.selectedShowTime.id
-  }).subscribe({
-      next: (data) => {
-        this.bookedTicket = data;
-        console.log('Booked Ticket:', this.bookedTicket);
-      },
-      error: (error) => {
-        console.error('Error fetching theaters:', error);
-      }
-    });
+    this.router.navigate(['/payment'], 
+      {
+        state:{
+          bookingDetails : {
+            "seatId": this.selectedSeat.id,
+            "showtimeId": this.selectedShowTime.id
+          }
+        }
+      })
   }
 
   onSeatSelected(seat: any | null): void {
-    console.log('Selected Seat:', seat);
     this.selectedSeat = seat
     // Handle the selected seat ID here
   }
