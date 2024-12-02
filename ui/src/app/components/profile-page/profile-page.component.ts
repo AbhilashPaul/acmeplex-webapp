@@ -72,6 +72,11 @@ export class ProfilePageComponent implements OnInit {
     });
     this.router.navigate(['/login']); 
   }
+  payAnnualFee(){
+    this.router.navigate(['/annual-payment']); 
+  }
+
+  
 
   // cancelTicket(ticket: any) {
   //   this.bookedTickets = this.bookedTickets.filter((t) => t.id !== ticket.id);

@@ -5,18 +5,22 @@ import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { SessionStoreService } from '../../services/sessionstore.service';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-annual-fee-payment',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule, // Add ReactiveFormsModule here
+    ReactiveFormsModule,
   ],
   templateUrl: './annual-fee-payment.component.html',
   styleUrls: ['./annual-fee-payment.component.css'],
 })
 export class AnnualFeePaymentComponent {
+
   paymentForm: FormGroup;
   confirmationMessage = '';
   userDetails = {
@@ -27,8 +31,12 @@ export class AnnualFeePaymentComponent {
     phoneNumber: '',
     password: '',
   };
+  receipt:any;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router,
+    private sessionStoreService: SessionStoreService,
+    private http: HttpClient, 
+) {
     this.paymentForm = this.fb.group({
       cardHolderName: ['', [Validators.required]],
       cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
@@ -44,6 +52,28 @@ export class AnnualFeePaymentComponent {
 
   onSubmit() {
     if (this.paymentForm.valid) {
+      const user=this.sessionStoreService.getUser();
+      const paymentPayload = {
+        userId: user.id,
+        paymentCard: {
+          cardNumber: this.paymentForm.value.cardNumber,
+          cardHolderName: this.paymentForm.value.cardHolderName,
+          expiryDate: this.paymentForm.value.expiryDate,
+          cvv: this.paymentForm.value.cvv,
+        },
+      };
+      const apiUrl = `http://localhost:8080/api/payments/annualFee`;
+    this.http.post<any>(apiUrl,paymentPayload).subscribe({
+      next: (data) => {
+        this.receipt = data;
+        console.log('Fetched Theaters:', this.receipt);
+        alert("succesfull");
+      },
+      error: (error) => {
+        console.error('Error fetching theaters:', error);
+      }
+    });
+  
       this.authService.register(this.userDetails, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
       }).subscribe({
