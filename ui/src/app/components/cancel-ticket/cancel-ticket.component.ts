@@ -71,6 +71,7 @@ export class CancelTicketComponent {
           verticalPosition: 'top',
           panelClass: ['custom-snackbar'], // Optional custom styling
         });
+        this.searchResults = this.searchResults.filter(ticket => ticket.id !== ticketId);
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error cancelling ticket:', error);
