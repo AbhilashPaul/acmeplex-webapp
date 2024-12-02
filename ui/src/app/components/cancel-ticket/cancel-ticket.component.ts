@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common'; 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { error } from 'console';
 
 @Component({
   standalone: true,
@@ -36,8 +37,12 @@ export class CancelTicketComponent {
     console.log('Searching for tickets with email:', email);
     this.http.get<any[]>(searchUrl).subscribe(
       (response) => {
-        console.log('Search response:', response); 
-        this.searchResults = response;
+        console.log('Search response:', response);
+        for (let item of response){
+          if(item.status == 'CONFIRMED'){
+            this.searchResults.push(item);
+          }
+        }
         this.searchAttempted = true;
       },
       (error) => {
@@ -54,14 +59,16 @@ export class CancelTicketComponent {
     this.http.post(cancelUrl, {}).subscribe(
       (response) => {
         alert(`Ticket ID ${ticketId} cancelled successfully!`);
-        this.cancellationMessage = "Ticket cancelled successfully! You gained a credit, which will be automatically applied to your next purchase.";
-        this.snackBar.open(this.cancellationMessage, 'Close', { duration: 5000 });
-        this.searchResults = this.searchResults.filter(ticket => ticket.id !== ticketId);
-        // this.searchTickets();
+        // Handle successful response
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         console.error('Error cancelling ticket:', error);
-        alert('Failed to cancel the ticket.');
+
+        // Extract the error message from the response body
+        const errorMessage = error.error || 'An unexpected error occurred';
+        
+        // Display the error message in an alert
+        alert(errorMessage);
       }
     );
   }
