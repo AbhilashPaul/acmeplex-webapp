@@ -69,7 +69,7 @@ export class AnnualFeePaymentComponent {
         console.log('Annual Fee payment receipt:', this.receipt);
         this.confirmationMessage = "Successfully paid the annual Fee. Email has benen sent to you with receipt details. Receipt Id: " + this.receipt.id + "Transaction Id: " + this.receipt.transactionId;
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/profile']);
         }, 3000);
       },
       error: (error) => {
