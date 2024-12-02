@@ -19,6 +19,8 @@ public class Movie {
 
     private String genre;
 
+    private Boolean isOnlyAvailableForPrebooking;
+
     @Enumerated(EnumType.STRING)
     private MovieRating movieRating;
 
@@ -29,7 +31,10 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(Long id, String title, String description, Integer durationInMinute, String genre, MovieRating movieRating, String imageUrl) {
+    public Movie(Long id, String title, String description,
+                 Integer durationInMinute, String genre,
+                 MovieRating movieRating, String imageUrl,
+                 Boolean isOnlyAvailableForPrebooking) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -37,6 +42,7 @@ public class Movie {
         this.genre = genre;
         this.movieRating = movieRating;
         this.imageUrl = imageUrl;
+        this.isOnlyAvailableForPrebooking = isOnlyAvailableForPrebooking;
     }
 
     public Long getId() {
@@ -101,5 +107,13 @@ public class Movie {
 
     public void setShowtimes(Set<Showtime> showtimes) {
         this.showtimes = showtimes;
+    }
+
+    public Boolean getOnlyAvailableForPrebooking() {
+        return isOnlyAvailableForPrebooking;
+    }
+
+    public void setOnlyAvailableForPrebooking(Boolean onlyAvailableForPrebooking) {
+        isOnlyAvailableForPrebooking = onlyAvailableForPrebooking;
     }
 }

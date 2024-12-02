@@ -1,0 +1,2 @@
+ALTER TABLE Movie
+ADD COLUMN isOnlyAvailableForPrebooking BOOLEAN NOT NULL DEFAULT FALSE;
