@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Seat } from '../../models/seat.model';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -13,12 +13,19 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SeatMapComponent {
   @Input() seats: Seat[] = [];
+  @Output() seatSelected = new EventEmitter<number>();
   selectedSeat: any;
 
-  toggleReservation(seatId: number): void {
+  toggleSeatSelection(seatId: number): void {
     const seat = this.seats.find(s => s.id === seatId);
     if (seat) {
-      seat.reserved = !seat.reserved;
+      if (this.selectedSeat === seat) {
+        this.selectedSeat = null;
+      } else {
+        this.selectedSeat = seat;
+      }
+      console.log(this.selectedSeat)
+      this.seatSelected.emit(this.selectedSeat);
     }
   }
 }

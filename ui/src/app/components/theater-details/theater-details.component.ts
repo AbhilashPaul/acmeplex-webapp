@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { SeatMapComponent } from '../seat-map/seat-map.component';
 import { Seat } from '../../models/seat.model';
+import { SessionStoreService } from '../../services/sessionstore.service';
 
 @Component({
   selector: 'app-theater-details',
@@ -28,9 +29,15 @@ export class TheaterDetailsComponent implements OnInit {
   selectedShowTime: any = null;
   selectedSeats: { row: number; seat: number }[] = [];
   seats: Seat[] = [];
+  selectedSeat: any;
+  bookedTicket: any;
   seatMap: any[][] = []; // Dummy seat map
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router, 
+    private http: HttpClient, 
+    private sessionStoreService: SessionStoreService,
+  ) {}
 
   ngOnInit(): void {
     this.selctedMovie = window.history.state.selectedMovie;
@@ -109,11 +116,29 @@ generateSeatMap(seats: any[]): string[][] {
   }
 
   bookTicket(): void {
-    if (this.selectedSeats.length === 0) {
-      alert('Please select at least one seat before booking!');
-      return;
-    }
-    console.log('Booking tickets for:', this.selectedSeats);
-    // Further booking logic here
+    console.log('Booking tickets for:', this.selectedSeat);
+    const apiUrl = `http://localhost:8080/api/tickets`;
+    const user = this.sessionStoreService.getUser();
+
+    this.http.post<any>(apiUrl, {
+      "customerName": user.firstName + " " + user.lastName,
+      "customerEmail": user.email,
+      "seatId": this.selectedSeat.id,
+      "showtimeId": this.selectedShowTime.id
+  }).subscribe({
+      next: (data) => {
+        this.bookedTicket = data;
+        console.log('Booked Ticket:', this.bookedTicket);
+      },
+      error: (error) => {
+        console.error('Error fetching theaters:', error);
+      }
+    });
+  }
+
+  onSeatSelected(seat: any | null): void {
+    console.log('Selected Seat:', seat);
+    this.selectedSeat = seat
+    // Handle the selected seat ID here
   }
 }

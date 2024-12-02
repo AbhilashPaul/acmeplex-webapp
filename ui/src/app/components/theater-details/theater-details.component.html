@@ -7,8 +7,6 @@
         <mat-card-subtitle>{{ theater.address }}</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
-  </div>
-
   <div class="show-times" *ngIf="selectedTheater">
     <h2>Available Show Times</h2>
     <mat-card>
@@ -25,6 +23,7 @@
         </div>
       </mat-card-content>
     </mat-card>
+  </div>
   </div>
 <!--
   <div class="seat-selection" *ngIf="selectedShowTime">
@@ -49,8 +48,18 @@
 -->
   <!-- src/app/app.component.html -->
   <div class="seat-selection" *ngIf="selectedShowTime">
-    <h2>Select Your Seats for {{ selectedShowTime.date + ' ' + selectedShowTime.time }}</h2>
-    <app-seat-map [seats]="seats"></app-seat-map>
+    <h2>Select Your Seat for {{ selectedShowTime.date + ' ' + selectedShowTime.time }}</h2>
+    <app-seat-map [seats]="seats" (seatSelected)="onSeatSelected($event)"></app-seat-map>
+    <div *ngIf="selectedSeat"><p> {{"Selected seat: " +  selectedSeat.rowLabel + selectedSeat.seatNumber + ", Price: $" + selectedSeat.price }}</p></div>
+    <div>
+      <button 
+      mat-raised-button
+      (click)="bookTicket()" 
+      [disabled]="selectedSeat === null">
+      Book Ticket
+    </button>
+    </div>
   </div>
+ 
 
 </div>

@@ -1,6 +1,10 @@
 <mat-card>
     <div class="seat-map">
-        <button mat-raised-button color="primary" *ngFor="let seat of seats" [disabled]="seat.reserved">
+        <button mat-raised-button color="primary" 
+        *ngFor="let seat of seats" 
+        [disabled]="seat.reserved"
+        (click)="toggleSeatSelection(seat.id)"
+        >
         {{ "Seat: " + seat.rowLabel + seat.seatNumber + ", Price: $" + seat.price }}      
         </button>
     </div>
