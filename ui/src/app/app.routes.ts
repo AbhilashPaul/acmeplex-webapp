@@ -7,6 +7,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { TheaterDetailsComponent } from './components/theater-details/theater-details.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { CancelTicketComponent } from './components/cancel-ticket/cancel-ticket.component';
+import { AnnualFeePaymentComponent } from './components/annual-fee-payment/annual-fee-payment.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: 'theater-details', component: TheaterDetailsComponent },
   { path: 'movies/:title', component: MovieDetailsComponent },
   { path: 'cancel-ticket', component: CancelTicketComponent },
+  { path: 'annual-payment', component: AnnualFeePaymentComponent },
 ];

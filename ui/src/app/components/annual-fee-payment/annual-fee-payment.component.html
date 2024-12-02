@@ -1,0 +1,74 @@
+<div class="payment-container">
+    <h2>Annual Membership Fee</h2>
+  
+    <div class="membership-fee">
+      <label>Fee:</label>
+      <input type="text" value="$20" readonly class="fee-display" />
+    </div>
+  
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="cardHolderName">Card Holder Name</label>
+        <input
+          id="cardHolderName"
+          formControlName="cardHolderName"
+          type="text"
+          class="form-control"
+          placeholder="Enter card holder name"
+        />
+        <div *ngIf="formControls['cardHolderName'].invalid && formControls['cardHolderName'].touched" class="error">
+          Card holder name is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input
+          id="cardNumber"
+          formControlName="cardNumber"
+          type="text"
+          class="form-control"
+          placeholder="Enter card number"
+        />
+        <div *ngIf="formControls['cardNumber'].invalid && formControls['cardNumber'].touched" class="error">
+          Card number must be 16 digits.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="expiryDate">Expiry Date</label>
+        <input
+          id="expiryDate"
+          formControlName="expiryDate"
+          type="text"
+          class="form-control"
+          placeholder="MM/YY"
+        />
+        <div *ngIf="formControls['expiryDate'].invalid && formControls['expiryDate'].touched" class="error">
+          Expiry date must be in MM/YY format.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input
+          id="cvv"
+          formControlName="cvv"
+          type="text"
+          class="form-control"
+          placeholder="Enter CVV"
+        />
+        <div *ngIf="formControls['cvv'].invalid && formControls['cvv'].touched" class="error">
+          CVV must be 3 digits.
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Submit Payment</button>
+    </form>
+  
+    <!-- Confirmation Message -->
+    <div *ngIf="confirmationMessage" class="confirmation-message">
+      {{ confirmationMessage }}
+    </div>
+  </div>
+  
