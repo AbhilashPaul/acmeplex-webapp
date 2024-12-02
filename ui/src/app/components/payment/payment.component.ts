@@ -1,5 +1,3 @@
-// 
-
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PaymentService } from '../../services/payment.service';
