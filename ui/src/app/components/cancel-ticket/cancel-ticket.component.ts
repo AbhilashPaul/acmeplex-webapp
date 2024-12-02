@@ -55,21 +55,38 @@ export class CancelTicketComponent {
 
   cancelTicket(ticketId: number) {
     const cancelUrl = `http://localhost:8080/api/tickets/${ticketId}/cancel`;
-    
-    this.http.post(cancelUrl, {}).subscribe(
-      (response) => {
-        alert(`Ticket ID ${ticketId} cancelled successfully!`);
-        // Handle successful response
+  
+    this.http.post<{ amount: number }>(cancelUrl, {}).subscribe({
+      next: (response) => {
+        // Construct the success snackbar message
+        const snackBarMessage = `
+          Ticket ID ${ticketId} cancelled successfully!
+          You gained a credit of ${response.amount}, which will be automatically applied to your next purchase.
+        `;
+  
+        // Display the snackbar
+        this.snackBar.open(snackBarMessage, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['custom-snackbar'], // Optional custom styling
+        });
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         console.error('Error cancelling ticket:', error);
-
-        // Extract the error message from the response body
-        const errorMessage = error.error || 'An unexpected error occurred';
-        
-        // Display the error message in an alert
-        alert(errorMessage);
-      }
-    );
+  
+        // Extract the error message
+        const errorMessage = error.error?.message || 'An unexpected error occurred while cancelling the ticket.';
+  
+        // Display the error in a snackbar
+        this.snackBar.open(errorMessage, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar'], // Optional custom styling
+        });
+      },
+    });
   }
+  
 }

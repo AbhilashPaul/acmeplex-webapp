@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsMod
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { SessionStoreService } from '../../services/sessionstore.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-payment',
@@ -28,6 +29,7 @@ export class PaymentComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder, 
+    private snackBar: MatSnackBar, 
     private paymentService: PaymentService,
     private sessionStoreService: SessionStoreService,
   ) {}
@@ -97,7 +99,17 @@ export class PaymentComponent implements OnInit {
         this.paymentService.makePayment(paymentPayload).subscribe({
             next: (response) => {
               console.log('Payment successful:', response);
-              this.confirmationMessage = 'Payment Successful! Your ticket has been booked.';
+              const snackBarMessage = `
+            Payment Successful! Your ticket and receipt details are sent to ${response.customerEmail}.
+            Ticket ID: ${response.id}, Seat: Row ${response.seat.rowLabel} Seat ${response.seat.seatNumber}, 
+            Price: $${response.price}`;
+
+          this.snackBar.open(snackBarMessage, 'Close', {
+            duration: 10000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['custom-snackbar']
+          });
             },
             error: (err) => {
               console.error('Payment failed:', err);

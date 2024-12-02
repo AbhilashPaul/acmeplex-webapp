@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SessionStoreService } from '../../services/sessionstore.service';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class AnnualFeePaymentComponent {
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router,
     private sessionStoreService: SessionStoreService,
     private http: HttpClient, 
+    private snackbar: MatSnackBar
 ) {
     this.paymentForm = this.fb.group({
       cardHolderName: ['', [Validators.required]],
@@ -67,7 +69,18 @@ export class AnnualFeePaymentComponent {
       next: (data) => {
         this.receipt = data;
         console.log('Annual Fee payment receipt:', this.receipt);
-        this.confirmationMessage = "Successfully paid the annual Fee. Email has benen sent to you with receipt details. Receipt Id: " + this.receipt.id + "Transaction Id: " + this.receipt.transactionId;
+        const snackBarMessage = `
+            Successfully paid the annual fee.
+            Receipt ID: ${this.receipt.id}
+            Transaction ID: ${this.receipt.transactionId}
+            An email has been sent to ${user.email} with the receipt details.
+          `;
+          this.snackbar.open(snackBarMessage, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['custom-snackbar']
+          });
         setTimeout(() => {
           this.router.navigate(['/profile']);
         }, 3000);
