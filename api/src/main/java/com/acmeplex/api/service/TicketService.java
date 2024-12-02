@@ -145,7 +145,8 @@ public class TicketService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Ticket %d is already cancelled", ticketId));
         }
         if (ticket.getStatus() == TicketStatus.BOOKED && ticket.getPaymentReceipt() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Payment is yet to be made for ticket %d", ticketId));
+            makeSeatAvailable(ticket);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Ticket is cancelled. Payment is yet to be made for ticket %d", ticketId));
         }
 
         // Check if cancellation is allowed (72 hours before showtime)
