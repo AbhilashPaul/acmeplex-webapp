@@ -1,6 +1,7 @@
 <mat-card>
     <div class="seat-map">
         <button mat-raised-button color="primary" 
+        class="seat-button"
         *ngFor="let seat of seats" 
         [disabled]="seat.reserved"
         (click)="toggleSeatSelection(seat.id)"
