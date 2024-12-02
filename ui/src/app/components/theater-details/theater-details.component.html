@@ -7,8 +7,6 @@
         <mat-card-subtitle>{{ theater.address }}</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
-  </div>
-
   <div class="show-times" *ngIf="selectedTheater">
     <h2>Available Show Times</h2>
     <mat-card>
@@ -17,18 +15,19 @@
       </mat-card-header>
       <mat-card-content>
         <div class="show-time-list">
-          <button mat-raised-button color="primary" *ngFor="let time of selectedTheater.showTimes"
-            (click)="selectShowTime(time)"
-            [class.active]="selectedShowTime === time">
-            {{ time }}
+          <button mat-raised-button color="primary" *ngFor="let showtime of selectedTheater.showtimes"
+            (click)="selectShowTime(showtime)"
+            [class.active]="selectedShowTime === showtime">
+            {{ showtime.date + ' ' + showtime.time }}
           </button>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
-  
+  </div>
+<!--
   <div class="seat-selection" *ngIf="selectedShowTime">
-    <h2>Select Your Seats for {{ selectedShowTime }}</h2>
+    <h2>Select Your Seats for {{ selectedShowTime.date + ' ' + selectedShowTime.time }}</h2>
     <mat-card>
       <div class="seat-map">
         <div *ngFor="let row of seatMap; let rowIndex = index" class="seat-row">
@@ -46,5 +45,21 @@
       </div>
     </mat-card>
   </div>
+-->
+  <!-- src/app/app.component.html -->
+  <div class="seat-selection" *ngIf="selectedShowTime">
+    <h2>Select Your Seat for {{ selectedShowTime.date + ' ' + selectedShowTime.time }}</h2>
+    <app-seat-map [seats]="seats" (seatSelected)="onSeatSelected($event)"></app-seat-map>
+    <div *ngIf="selectedSeat"><p> {{"Selected seat: " +  selectedSeat.rowLabel + selectedSeat.seatNumber + ", Price: $" + selectedSeat.price }}</p></div>
+    <div>
+      <button 
+      mat-raised-button
+      (click)="bookTicket()" 
+      [disabled]="selectedSeat === null">
+      Book Ticket
+    </button>
+    </div>
+  </div>
+ 
 
 </div>

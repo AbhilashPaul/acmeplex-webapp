@@ -22,6 +22,6 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   getTicket() {
-    this.router.navigate(['/theater-details'])
+    this.router.navigate(['/theater-details'], {state:{selectedMovie : this.movie}})
   }
 }

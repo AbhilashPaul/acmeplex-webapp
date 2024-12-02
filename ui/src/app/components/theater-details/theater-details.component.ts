@@ -5,6 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { SeatMapComponent } from '../seat-map/seat-map.component';
+import { Seat } from '../../models/seat.model';
+import { SessionStoreService } from '../../services/sessionstore.service';
 
 @Component({
   selector: 'app-theater-details',
@@ -14,21 +17,31 @@ import { HttpClient } from '@angular/common/http';
     FormsModule,
     MatCardModule,
     MatButtonModule,
+    SeatMapComponent
   ],
   templateUrl: './theater-details.component.html',
   styleUrls: ['./theater-details.component.css']
 })
 export class TheaterDetailsComponent implements OnInit {
+  selctedMovie: any;
   theaters: any[] = [];
   selectedTheater: any = null;
-  selectedShowTime: string | null = null;
+  selectedShowTime: any = null;
   selectedSeats: { row: number; seat: number }[] = [];
+  seats: Seat[] = [];
+  selectedSeat: any;
+  bookedTicket: any;
   seatMap: any[][] = []; // Dummy seat map
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router, 
+    private http: HttpClient, 
+    private sessionStoreService: SessionStoreService,
+  ) {}
 
   ngOnInit(): void {
-    this.fetchTheaters(1); // Example movieId = 1
+    this.selctedMovie = window.history.state.selectedMovie;
+    this.fetchTheaters(this.selctedMovie.id); 
   }
 
   fetchTheaters(movieId: number): void {
@@ -60,15 +73,7 @@ export class TheaterDetailsComponent implements OnInit {
 
   // Update the seatMap based on the selected showtime's data
   if (this.selectedTheater && this.selectedShowTime) {
-    const showtime = this.selectedTheater.showtimes.find(
-      (st: any) => st.time === this.selectedShowTime
-    );
-    if (showtime && showtime.seats) {
-      // Create a seat map based on the showtime's seats
-      this.seatMap = this.generateSeatMap(showtime.seats);
-    } else {
-      this.seatMap = []; // Reset if no seats are available
-    }
+    this.seats = this.selectedShowTime.seats;
   }
 }
 generateSeatMap(seats: any[]): string[][] {
@@ -77,7 +82,7 @@ generateSeatMap(seats: any[]): string[][] {
 
   seats.forEach((seat) => {
     const rowLabel = seat.rowLabel;
-    if (!rowMap[rowLabel]) {
+    if (!rowMap[rowLabel] ) {
       rowMap[rowLabel] = [];
     }
     rowMap[rowLabel].push(seat.reserved ? 'N' : 'A');
@@ -111,11 +116,29 @@ generateSeatMap(seats: any[]): string[][] {
   }
 
   bookTicket(): void {
-    if (this.selectedSeats.length === 0) {
-      alert('Please select at least one seat before booking!');
-      return;
-    }
-    console.log('Booking tickets for:', this.selectedSeats);
-    // Further booking logic here
+    console.log('Booking tickets for:', this.selectedSeat);
+    const apiUrl = `http://localhost:8080/api/tickets`;
+    const user = this.sessionStoreService.getUser();
+
+    this.http.post<any>(apiUrl, {
+      "customerName": user.firstName + " " + user.lastName,
+      "customerEmail": user.email,
+      "seatId": this.selectedSeat.id,
+      "showtimeId": this.selectedShowTime.id
+  }).subscribe({
+      next: (data) => {
+        this.bookedTicket = data;
+        console.log('Booked Ticket:', this.bookedTicket);
+      },
+      error: (error) => {
+        console.error('Error fetching theaters:', error);
+      }
+    });
+  }
+
+  onSeatSelected(seat: any | null): void {
+    console.log('Selected Seat:', seat);
+    this.selectedSeat = seat
+    // Handle the selected seat ID here
   }
 }
