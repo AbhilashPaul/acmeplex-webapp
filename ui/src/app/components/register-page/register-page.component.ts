@@ -80,7 +80,7 @@ export class RegisterPageComponent {
       next: (response) => {
         alert('Registration successful!');
         console.log('Registration Response:', response); // Log the response for debugging
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Error during registration:', error);
