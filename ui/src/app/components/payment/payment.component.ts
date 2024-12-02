@@ -4,6 +4,7 @@ import { PaymentService } from '../../services/payment.service';
 import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { SessionStoreService } from '../../services/sessionstore.service';
 
 @Component({
   selector: 'app-payment',
@@ -22,21 +23,37 @@ export class PaymentComponent implements OnInit {
   bookingDetails: any = null;
   seatID: any;
   showTimeID: any;
-  constructor(private fb: FormBuilder, private paymentService: PaymentService) {}
+  customerEmail: any;
+  customerName: any;
+
+  constructor(
+    private fb: FormBuilder, 
+    private paymentService: PaymentService,
+    private sessionStoreService: SessionStoreService,
+  ) {}
 
   ngOnInit(): void {
     // Initialize the payment form
+    this.bookingDetails = window.history.state.bookingDetails;
+    this.seatID = this.bookingDetails.seatId;
+    this.showTimeID = this.bookingDetails.showtimeId
+    const user = this.sessionStoreService.getUser()
+    if (user != null){
+      this.isRegistered = true;
+      this.customerName = user.firstName + ' ' + user.lastName;
+      this.customerEmail = user.email;
+    }
+
     this.paymentForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
+      fullName: [this.customerName, [Validators.required, Validators.minLength(3)]],
+      email: [this.customerEmail, [Validators.required, Validators.email]],
       cardHolderName: ['', [Validators.required]],
       cardNumber: ['', [Validators.required, Validators.pattern(/^\d{12,16}$/)]],
       expiryDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
     });
-    this.bookingDetails = window.history.state.bookingDetails;
-    this.seatID = this.bookingDetails.seatId;
-    this.showTimeID = this.bookingDetails.showtimeId
+    
+
     // Fetch ticket details
     this.fetchTicketDetails();
   }
@@ -45,8 +62,8 @@ export class PaymentComponent implements OnInit {
 
   fetchTicketDetails(): void {
     const ticketPayload = {
-      customerName: this.paymentForm.value.fullName || 'Default Name',
-      customerEmail: this.paymentForm.value.email || 'default@example.com',
+      customerName: this.customerName || this.paymentForm.value.fullName,
+      customerEmail: this.customerEmail || this.paymentForm.value.email,
       seatId: this.seatID,
       showtimeId: this.showTimeID,
     };

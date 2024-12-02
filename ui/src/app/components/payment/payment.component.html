@@ -2,15 +2,15 @@
     <h2>Payment Processing</h2>
   
     <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-      <div class="form-group" *ngIf="!isRegistered">
-        <label for="fullName">Full Name</label>
-        <input id="fullName" formControlName="fullName" type="text" class="form-control" />
+      <div class="form-group"  >
+        <label for="fullName" *ngIf="!isRegistered">Full Name</label>
+        <input id="fullName"  *ngIf="!isRegistered" formControlName="fullName" type="text" class="form-control"/>
         <div *ngIf="formControls['fullName'].invalid && isSubmitted" class="error">
           Full Name is required and must be at least 3 characters.
         </div>
   
-        <label for="email">Email</label>
-        <input id="email" formControlName="email" type="email" class="form-control" />
+        <label for="email" *ngIf="!isRegistered">Email</label>
+        <input id="email"  *ngIf="!isRegistered" formControlName="email" type="email" class="form-control" />
         <div *ngIf="formControls['email'].invalid && isSubmitted" class="error">
           Please enter a valid email address.
         </div>
